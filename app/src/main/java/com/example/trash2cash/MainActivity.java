@@ -2,6 +2,7 @@ package com.example.trash2cash;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
@@ -10,5 +11,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Temp button to navigate to the RewardSettingsActivity
+        findViewById(R.id.rewardSettingsTempButton).setOnClickListener(view -> startActivity(new Intent(MainActivity.this, RewardSettingsActivity.class)));
     }
 }
