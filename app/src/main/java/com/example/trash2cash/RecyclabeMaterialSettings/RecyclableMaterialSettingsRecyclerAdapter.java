@@ -1,4 +1,4 @@
-package com.example.trash2cash;
+package com.example.trash2cash.RecyclabeMaterialSettings;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,25 +12,28 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class RewardSettingsRecyclerAdapter extends RecyclerView.Adapter<RewardSettingsRecyclerAdapter.MyViewHolder> {
+import com.example.trash2cash.R;
+import com.example.trash2cash.RecyclableMaterialTypes;
+
+public class RecyclableMaterialSettingsRecyclerAdapter extends RecyclerView.Adapter<RecyclableMaterialSettingsRecyclerAdapter.MyViewHolder> {
     private final Context context;
     private final RecyclableMaterialTypes recyclableMaterialTypes;
 
-    public RewardSettingsRecyclerAdapter(Context context, RecyclableMaterialTypes recyclableMaterialTypes){
+    public RecyclableMaterialSettingsRecyclerAdapter(Context context, RecyclableMaterialTypes recyclableMaterialTypes){
         this.context = context;
         this.recyclableMaterialTypes = recyclableMaterialTypes;
     }
 
     @NonNull
     @Override
-    public RewardSettingsRecyclerAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclableMaterialSettingsRecyclerAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.reward_settings_recycler_view, parent, false);
-        return new RewardSettingsRecyclerAdapter.MyViewHolder(view);
+        View view = inflater.inflate(R.layout.recyclable_material_settings_recycler_view, parent, false);
+        return new RecyclableMaterialSettingsRecyclerAdapter.MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RewardSettingsRecyclerAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclableMaterialSettingsRecyclerAdapter.MyViewHolder holder, int position) {
         holder.textView.setText(recyclableMaterialTypes.get(position).getType());
 
         holder.imageView.setImageResource(recyclableMaterialTypes.get(position).getImage());

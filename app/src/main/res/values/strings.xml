@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Trash2Cash</string>
+    <string name="exp">Exp:</string>
+    <string name="reward_amount">Reward amount:</string>
     <string name="emptyNumField">value</string>
     <string name="expNumValue">Value for exp num</string>
     <string name="rewardNumValue">Value for reward num</string>

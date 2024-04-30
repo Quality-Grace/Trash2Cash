@@ -1,4 +1,4 @@
-package com.example.trash2cash;
+package com.example.trash2cash.RecyclabeMaterialSettings;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -8,18 +8,21 @@ import androidx.recyclerview.widget.SnapHelper;
 
 import android.os.Bundle;
 
-public class RewardSettingsActivity extends AppCompatActivity {
+import com.example.trash2cash.R;
+import com.example.trash2cash.RecyclableMaterialTypes;
+
+public class RecyclableMaterialSettingsActivity extends AppCompatActivity {
     // This variable will probably move
     static RecyclableMaterialTypes recyclableMaterialTypes = new RecyclableMaterialTypes();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reward_settings);
+        setContentView(R.layout.activity_recyclable_material_settings);
 
         RecyclerView recyclerView = findViewById(R.id.rewardSettingsRecyclerView);
 
         // Adds CardView components to the Recycler
-        RewardSettingsRecyclerAdapter adapter = new RewardSettingsRecyclerAdapter(this, recyclableMaterialTypes);
+        RecyclableMaterialSettingsRecyclerAdapter adapter = new RecyclableMaterialSettingsRecyclerAdapter(this, recyclableMaterialTypes);
         recyclerView.setAdapter(adapter);
 
         // Sets a vertical layout for the Recycler
