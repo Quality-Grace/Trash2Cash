@@ -3,7 +3,12 @@
     <string name="exp">Exp:</string>
     <string name="reward_amount">Reward amount:</string>
     <string name="emptyNumField">value</string>
-    <string name="expNumValue">Value for exp num</string>
-    <string name="rewardNumValue">Value for reward num</string>
-    <string name="typeOfTrashImage">Image representing a trash type</string>
+    <string name="expNumValue">Exp Amount</string>
+    <string name="rewardNumValue">Reward Amount</string>
+    <string name="costNumValue">Cost Amount</string>
+    <string name="levelNumValue">Cost Amount</string>
+    <string name="typeOfRecyclableMaterialImage">Image representing a recyclable material type</string>
+    <string name="rewardImage">Image representing a reward</string>
+    <string name="addCardSymbol">+</string>
+    <string name="removeCardSymbol">-</string>
 </resources>

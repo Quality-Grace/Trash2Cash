@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RewardSettings.RewardSettingsActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom|fill_vertical"
+        android:orientation="vertical"
+        android:weightSum="2">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.8">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rewardSettingsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <FrameLayout
+            android:id="@+id/frameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:padding="20dp"
+                    app:cardBackgroundColor="@color/reward_card"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="8dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/addCostText"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="30dp"
+                            android:layout_weight="1"
+                            android:autofillHints="@string/costNumValue"
+                            android:hint="@string/emptyNumField"
+                            android:inputType="number"
+                            android:maxWidth="20dp"
+                            android:maxEms="2"
+                            android:maxLength="20"
+                            android:singleLine="true"
+                            android:textAlignment="center"
+                            android:textSize="21sp" />
+
+                        <EditText
+                            android:id="@+id/addLevelRequiredText"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="30dp"
+                            android:layout_weight="1"
+                            android:autofillHints="@string/levelNumValue"
+                            android:hint="@string/emptyNumField"
+                            android:inputType="number"
+                            android:maxWidth="20dp"
+                            android:maxEms="2"
+                            android:maxLength="20"
+                            android:singleLine="true"
+                            android:textAlignment="center"
+                            android:textSize="21sp" />
+
+                        <ImageView
+                            android:id="@+id/addRewardImage"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_margin="10dp"
+                            android:layout_weight="1"
+                            android:contentDescription="@string/rewardImage"
+                            app:srcCompat="@drawable/ic_launcher_foreground" />
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <ImageView
+                android:id="@+id/addCardButton"
+                android:layout_width="62dp"
+                android:layout_height="49dp"
+                android:layout_gravity="center|top"
+                android:contentDescription="@string/addCardSymbol"
+                app:srcCompat="@drawable/add_card_button" />
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

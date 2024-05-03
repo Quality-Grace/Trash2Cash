@@ -19,14 +19,14 @@ public class RecyclableMaterialSettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recyclable_material_settings);
 
-        RecyclerView recyclerView = findViewById(R.id.rewardSettingsRecyclerView);
+        RecyclerView recyclerView = findViewById(R.id.recyclableMaterialSettingsRecyclerView);
 
         // Adds CardView components to the Recycler
         RecyclableMaterialSettingsRecyclerAdapter adapter = new RecyclableMaterialSettingsRecyclerAdapter(this, recyclableMaterialTypes);
         recyclerView.setAdapter(adapter);
 
         // Sets a vertical layout for the Recycler
-         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         // Adds snappy scrolling
         SnapHelper helper = new LinearSnapHelper();
