@@ -2,6 +2,7 @@ package com.example.trash2cash.RewardSettings;
 
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +42,7 @@ public class RewardSettingsRecyclerAdapter extends RecyclerView.Adapter<RewardSe
         holder.levelRequiredText.setText(String.valueOf(rewardList.get(position).getLevel()));
         setupEditTextListener(holder.costText, position, "level");
 
-        holder.rewardImage.setImageResource(rewardList.get(position).getIcon());
+        holder.rewardImage.setImageURI(Uri.parse(rewardList.get(position).getIcon()));
         holder.rewardImage.setTag(rewardList.get(position).getIcon());
 
     }
@@ -71,7 +72,6 @@ public class RewardSettingsRecyclerAdapter extends RecyclerView.Adapter<RewardSe
             levelRequiredText = itemView.findViewById(R.id.levelRequiredText);
             rewardImage = itemView.findViewById(R.id.rewardImage);
             closeButton = itemView.findViewById(R.id.closeButton);
-
 
             closeButton.setOnClickListener(view -> {
                 if(rewardRecyclerInterface != null){

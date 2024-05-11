@@ -11,4 +11,6 @@
     <string name="rewardImage">Image representing a reward</string>
     <string name="addCardSymbol">+</string>
     <string name="removeCardSymbol">-</string>
+    <string name="tapAnImage">Tap An Image</string>
+    <string name="orOpenTheImageGallery">Or open the image gallery</string>
 </resources>

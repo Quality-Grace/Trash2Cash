@@ -1,20 +1,28 @@
 package com.example.trash2cash.RewardSettings;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.example.trash2cash.imageGallery.ImagePickerActivity;
 import com.example.trash2cash.R;
 import com.example.trash2cash.Reward;
 import com.example.trash2cash.RewardList;
+
+import java.util.Objects;
 
 public class RewardSettingsActivity extends AppCompatActivity implements RewardRecyclerInterface{
     private static final RewardList rewardList = new RewardList();
@@ -42,19 +50,46 @@ public class RewardSettingsActivity extends AppCompatActivity implements RewardR
         // When the addCardButton is clicked a new card is added the recycler view
         ImageView addCardButton = (ImageView) findViewById(R.id.addCardButton);
         addCardButton.setOnClickListener(addCardListener());
+
+        ImageView image = (ImageView) findViewById(R.id.addRewardImage);
+
+        ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        if (data != null) {
+                            Uri resultUri = data.getData();
+                            if(data.getStringExtra("type").equals("fromGallery")){
+                                getContentResolver().takePersistableUriPermission(resultUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                            }
+
+                            image.setImageURI(resultUri);
+                            image.setTag(String.valueOf(resultUri));
+                        }
+                    }
+                });
+
+
+        image.setOnClickListener(view -> {
+            Intent intent = new Intent(this, ImagePickerActivity.class);
+            launcher.launch(intent);
+        });
     }
 
+    // Adds a new reward to the list
     public View.OnClickListener addCardListener(){
         return view -> {
             int cost = parseEditableTextToInt(((EditText) findViewById(R.id.addCostText)).getText());
             int level = parseEditableTextToInt(((EditText) findViewById(R.id.addLevelRequiredText)).getText());
-            // TODO
-            // Allow user to pick image
-            int icon = R.drawable.ic_launcher_foreground;
+
+            String icon = (String) ((ImageView) findViewById(R.id.addRewardImage)).getTag();
+
+            if(icon == null) {
+                icon = "android.resource://"+ Objects.requireNonNull(R.class.getPackage()).getName()+"/"+R.drawable.ic_launcher_foreground;
+            }
 
             rewardList.add(new Reward(cost, level, icon));
             int position = rewardList.size()==0 ? 0: rewardList.size()-1;
-
             adapter.notifyItemInserted(position);
         };
     }
@@ -67,6 +102,7 @@ public class RewardSettingsActivity extends AppCompatActivity implements RewardR
         }
     }
 
+    // Removes a reward from the list
     @Override
     public void removeCardOnClick(int position) {
         rewardList.remove(position);
