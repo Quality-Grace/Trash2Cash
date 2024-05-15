@@ -2,15 +2,17 @@
     <string name="app_name">Trash2Cash</string>
     <string name="exp">Exp:</string>
     <string name="reward_amount">Reward amount:</string>
-    <string name="emptyNumField">value</string>
+    <string name="emptyNumField">Numeric Value</string>
     <string name="expNumValue">Exp Amount</string>
     <string name="rewardNumValue">Reward Amount</string>
     <string name="costNumValue">Cost Amount</string>
-    <string name="levelNumValue">Cost Amount</string>
+    <string name="levelNumValue">Level Amount</string>
     <string name="typeOfRecyclableMaterialImage">Image representing a recyclable material type</string>
     <string name="rewardImage">Image representing a reward</string>
     <string name="addCardSymbol">+</string>
     <string name="removeCardSymbol">-</string>
     <string name="tapAnImage">Tap An Image</string>
     <string name="orOpenTheImageGallery">Or open the image gallery</string>
+    <string name="rewardTitleTextValue">Reward Title</string>
+    <string name="emptyTextField">Text Value</string>
 </resources>

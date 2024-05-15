@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.trash2cash.R;
 import com.example.trash2cash.RecyclableMaterialTypes;
+import com.example.trash2cash.UserInputParser;
 
 public class RecyclableMaterialSettingsRecyclerAdapter extends RecyclerView.Adapter<RecyclableMaterialSettingsRecyclerAdapter.MyViewHolder> {
     private final Context context;
@@ -39,10 +40,15 @@ public class RecyclableMaterialSettingsRecyclerAdapter extends RecyclerView.Adap
         holder.imageView.setImageResource(recyclableMaterialTypes.get(position).getImage());
 
         holder.expNum.setText(String.valueOf(recyclableMaterialTypes.get(position).getExp()));
+        setupEdiTextListener(holder.expBar, holder.expNum, position, "exp");
+
         holder.expBar.setProgress(recyclableMaterialTypes.get(position).getExp());
         setupSeekBarListener(holder.expBar, holder.expNum, position, "exp");
 
+
         holder.rewardNum.setText(String.valueOf(recyclableMaterialTypes.get(position).getRewardAmount()));
+        setupEdiTextListener(holder.rewardBar, holder.rewardNum, position, "rewardAmount");
+
         holder.rewardBar.setProgress(recyclableMaterialTypes.get(position).getRewardAmount());
         setupSeekBarListener(holder.rewardBar, holder.rewardNum, position, "rewardAmount");
     }
@@ -70,6 +76,21 @@ public class RecyclableMaterialSettingsRecyclerAdapter extends RecyclerView.Adap
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
+    }
+
+    private void setupEdiTextListener(SeekBar seekBar, EditText editText, int position, String type) {
+       editText.setOnFocusChangeListener((v, hasFocus) -> {
+           int amount = UserInputParser.parseEditableTextToInt(editText.getText());
+           if(amount>100) amount = 100;
+
+           if(type.equals("exp")){
+               recyclableMaterialTypes.get(position).setExp(amount);
+           } else {
+               recyclableMaterialTypes.get(position).setRewardAmount(amount);
+           }
+
+           seekBar.setProgress(amount);
+       });
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{

@@ -10,10 +10,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.trash2cash.R;
 import com.example.trash2cash.RewardList;
+import com.example.trash2cash.UserInputParser;
 
 public class RewardSettingsRecyclerAdapter extends RecyclerView.Adapter<RewardSettingsRecyclerAdapter.MyViewHolder> {
     private final Context context;
@@ -36,6 +38,9 @@ public class RewardSettingsRecyclerAdapter extends RecyclerView.Adapter<RewardSe
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        holder.titleText.setText(String.valueOf(rewardList.get(position).getTitle()));
+        setupEditTextListener(holder.titleText, position, "title");
+
         holder.costText.setText(String.valueOf(rewardList.get(position).getCost()));
         setupEditTextListener(holder.costText, position, "cost");
 
@@ -50,9 +55,11 @@ public class RewardSettingsRecyclerAdapter extends RecyclerView.Adapter<RewardSe
     private void setupEditTextListener(EditText editText, int position, String type) {
         editText.setOnFocusChangeListener((view, b) -> {
             if(type.equals("cost")){
-                rewardList.get(position).setCost(Integer.parseInt(String.valueOf(editText.getText())));
+                rewardList.get(position).setCost(UserInputParser.parseEditableTextToInt(editText.getText()));
+            } else if(type.equals("level")) {
+                rewardList.get(position).setLevel(UserInputParser.parseEditableTextToInt((editText.getText())));
             } else {
-                rewardList.get(position).setLevel(Integer.parseInt(String.valueOf(editText.getText())));
+                rewardList.get(position).setTitle(UserInputParser.parseEditableTextToString((editText.getText())));
             }
         });
     }
@@ -63,15 +70,17 @@ public class RewardSettingsRecyclerAdapter extends RecyclerView.Adapter<RewardSe
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
-        private final EditText costText, levelRequiredText;
-        private final ImageView rewardImage, closeButton;
+        private final EditText costText, levelRequiredText, titleText;
+        private final ImageView rewardImage;
+
         public MyViewHolder(@NonNull View itemView, RewardRecyclerInterface rewardRecyclerInterface) {
             super(itemView);
 
+            titleText = itemView.findViewById(R.id.rewardTitleText);
             costText = itemView.findViewById(R.id.costText);
             levelRequiredText = itemView.findViewById(R.id.levelRequiredText);
             rewardImage = itemView.findViewById(R.id.rewardImage);
-            closeButton = itemView.findViewById(R.id.closeButton);
+            ImageView closeButton = itemView.findViewById(R.id.closeButton);
 
             closeButton.setOnClickListener(view -> {
                 if(rewardRecyclerInterface != null){
@@ -81,6 +90,19 @@ public class RewardSettingsRecyclerAdapter extends RecyclerView.Adapter<RewardSe
                         rewardRecyclerInterface.removeCardOnClick(pos);
                     }
                 }
+            });
+
+            CardView cardView = itemView.findViewById(R.id.rewardSettingsCard);
+            cardView.setOnLongClickListener(view -> {
+                if(rewardRecyclerInterface != null){
+                    int pos = getAdapterPosition();
+
+                    if(pos != RecyclerView.NO_POSITION){
+                        rewardRecyclerInterface.moveCardUp(pos);
+                        return true;
+                    }
+                }
+               return false;
             });
         }
     }

@@ -12,16 +12,17 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Editable;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.example.trash2cash.UserInputParser;
 import com.example.trash2cash.imageGallery.ImagePickerActivity;
 import com.example.trash2cash.R;
 import com.example.trash2cash.Reward;
 import com.example.trash2cash.RewardList;
 
+import java.util.Collections;
 import java.util.Objects;
 
 public class RewardSettingsActivity extends AppCompatActivity implements RewardRecyclerInterface{
@@ -48,10 +49,10 @@ public class RewardSettingsActivity extends AppCompatActivity implements RewardR
 
         // Adds a listener to the addCardButton
         // When the addCardButton is clicked a new card is added the recycler view
-        ImageView addCardButton = (ImageView) findViewById(R.id.addCardButton);
+        ImageView addCardButton = findViewById(R.id.addCardButton);
         addCardButton.setOnClickListener(addCardListener());
 
-        ImageView image = (ImageView) findViewById(R.id.addRewardImage);
+        ImageView image = findViewById(R.id.addRewardImage);
 
         ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -79,33 +80,40 @@ public class RewardSettingsActivity extends AppCompatActivity implements RewardR
     // Adds a new reward to the list
     public View.OnClickListener addCardListener(){
         return view -> {
-            int cost = parseEditableTextToInt(((EditText) findViewById(R.id.addCostText)).getText());
-            int level = parseEditableTextToInt(((EditText) findViewById(R.id.addLevelRequiredText)).getText());
+            String title = UserInputParser.parseEditableTextToString(((EditText) findViewById(R.id.addRewardTitleText)).getText());
+            int cost = UserInputParser.parseEditableTextToInt(((EditText) findViewById(R.id.addCostText)).getText());
+            int level = UserInputParser.parseEditableTextToInt(((EditText) findViewById(R.id.addLevelRequiredText)).getText());
 
-            String icon = (String) ((ImageView) findViewById(R.id.addRewardImage)).getTag();
+            String icon = (String) findViewById(R.id.addRewardImage).getTag();
 
             if(icon == null) {
                 icon = "android.resource://"+ Objects.requireNonNull(R.class.getPackage()).getName()+"/"+R.drawable.ic_launcher_foreground;
             }
 
-            rewardList.add(new Reward(cost, level, icon));
+            rewardList.add(new Reward(title, cost, level, icon));
             int position = rewardList.size()==0 ? 0: rewardList.size()-1;
             adapter.notifyItemInserted(position);
         };
     }
 
-    public int parseEditableTextToInt(Editable text){
-        try{
-            return Integer.parseInt(String.valueOf(text));
-        } catch(Exception e) {
-            return 0;
-        }
-    }
-
     // Removes a reward from the list
     @Override
     public void removeCardOnClick(int position) {
+        View currentFocus = getCurrentFocus();
+        if(currentFocus!=null) currentFocus.clearFocus();
+
         rewardList.remove(position);
         adapter.notifyItemRemoved(position);
+    }
+
+    @Override
+    public void moveCardUp(int position) {
+        if(position>0){
+            Collections.swap(rewardList, position, position-1);
+            adapter.notifyItemMoved(position, position-1);
+        } else if(rewardList.size()>0){
+            Collections.swap(rewardList, position, position+1);
+            adapter.notifyItemMoved(position, position+1);
+        }
     }
 }
