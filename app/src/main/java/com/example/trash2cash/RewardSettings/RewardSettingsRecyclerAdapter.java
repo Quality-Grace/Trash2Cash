@@ -2,7 +2,8 @@ package com.example.trash2cash.RewardSettings;
 
 
 import android.content.Context;
-import android.net.Uri;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.trash2cash.R;
 import com.example.trash2cash.RewardList;
 import com.example.trash2cash.UserInputParser;
+
+import java.io.IOException;
+import java.net.URL;
 
 public class RewardSettingsRecyclerAdapter extends RecyclerView.Adapter<RewardSettingsRecyclerAdapter.MyViewHolder> {
     private final Context context;
@@ -47,8 +51,14 @@ public class RewardSettingsRecyclerAdapter extends RecyclerView.Adapter<RewardSe
         holder.levelRequiredText.setText(String.valueOf(rewardList.get(position).getLevel()));
         setupEditTextListener(holder.costText, position, "level");
 
-        holder.rewardImage.setImageURI(Uri.parse(rewardList.get(position).getIcon()));
-        holder.rewardImage.setTag(rewardList.get(position).getIcon());
+        try {
+            URL url = new URL(rewardList.get(position).getIcon());
+            Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+            holder.rewardImage.setImageBitmap(bmp);
+            holder.rewardImage.setTag(rewardList.get(position).getIcon());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -60,6 +70,12 @@ public class RewardSettingsRecyclerAdapter extends RecyclerView.Adapter<RewardSe
                 rewardList.get(position).setLevel(UserInputParser.parseEditableTextToInt((editText.getText())));
             } else {
                 rewardList.get(position).setTitle(UserInputParser.parseEditableTextToString((editText.getText())));
+            }
+
+            try {
+                rewardRecyclerInterface.updateReward(rewardList.get(position), position);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
         });
     }

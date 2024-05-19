@@ -4,9 +4,9 @@ public class RecyclableMaterial {
     private final String type;
     private int exp;
     private int rewardAmount;
-    private final int image;
+    private final String image;
 
-    public RecyclableMaterial(String type, int exp, int rewardAmount, int image){
+    public RecyclableMaterial(String type, int exp, int rewardAmount, String image){
         this.type = type;
         this.exp = exp;
         this.rewardAmount = rewardAmount;
@@ -17,7 +17,7 @@ public class RecyclableMaterial {
         return type;
     }
 
-    public int getImage() {
+    public String getImage() {
         return image;
     }
 

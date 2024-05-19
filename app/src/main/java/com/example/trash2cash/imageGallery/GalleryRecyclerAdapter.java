@@ -1,6 +1,8 @@
 package com.example.trash2cash.imageGallery;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,14 +13,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.trash2cash.R;
 
+import java.net.URL;
 import java.util.ArrayList;
 
 public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecyclerAdapter.MyViewHolder> {
     private final Context context;
-    private final ArrayList<Integer> imageList;
+    private final ArrayList<String> imageList;
     private final ImagePickerInterface imagePickerInterface;
 
-    public GalleryRecyclerAdapter(Context context, ArrayList<Integer> imageList, ImagePickerInterface imagePickerInterface){
+    public GalleryRecyclerAdapter(Context context, ArrayList<String> imageList, ImagePickerInterface imagePickerInterface){
         this.context = context;
         this.imageList = imageList;
         this.imagePickerInterface = imagePickerInterface;
@@ -34,7 +37,16 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
 
     @Override
     public void onBindViewHolder(@NonNull GalleryRecyclerAdapter.MyViewHolder holder, int position) {
-        holder.imageView.setImageResource(imageList.get(position));
+        try {
+            String urlString = imageList.get(position);
+            URL url = new URL(urlString);
+
+            Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+
+            holder.imageView.setImageBitmap(bmp);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

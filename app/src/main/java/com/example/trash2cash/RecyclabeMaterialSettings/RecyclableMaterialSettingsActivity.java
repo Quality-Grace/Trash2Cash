@@ -12,8 +12,7 @@ import com.example.trash2cash.R;
 import com.example.trash2cash.RecyclableMaterialTypes;
 
 public class RecyclableMaterialSettingsActivity extends AppCompatActivity {
-    // This variable will probably move
-    static RecyclableMaterialTypes recyclableMaterialTypes = new RecyclableMaterialTypes();
+    private final RecyclableMaterialTypes recyclableMaterialTypes = new RecyclableMaterialTypes();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

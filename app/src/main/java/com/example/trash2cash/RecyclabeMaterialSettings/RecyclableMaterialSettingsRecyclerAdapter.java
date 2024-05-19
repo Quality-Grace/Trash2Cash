@@ -1,6 +1,8 @@
 package com.example.trash2cash.RecyclabeMaterialSettings;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +14,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.trash2cash.DB.OkHttpHandler;
 import com.example.trash2cash.R;
 import com.example.trash2cash.RecyclableMaterialTypes;
 import com.example.trash2cash.UserInputParser;
+
+import java.net.URL;
 
 public class RecyclableMaterialSettingsRecyclerAdapter extends RecyclerView.Adapter<RecyclableMaterialSettingsRecyclerAdapter.MyViewHolder> {
     private final Context context;
@@ -37,7 +42,18 @@ public class RecyclableMaterialSettingsRecyclerAdapter extends RecyclerView.Adap
     public void onBindViewHolder(@NonNull RecyclableMaterialSettingsRecyclerAdapter.MyViewHolder holder, int position) {
         holder.textView.setText(recyclableMaterialTypes.get(position).getType());
 
-        holder.imageView.setImageResource(recyclableMaterialTypes.get(position).getImage());
+        try {
+            String urlString = OkHttpHandler.getPATH() + recyclableMaterialTypes.get(position).getImage();
+            URL url = new URL(urlString);
+
+            System.out.println(urlString+"LOLOL");
+
+            Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+
+            holder.imageView.setImageBitmap(bmp);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         holder.expNum.setText(String.valueOf(recyclableMaterialTypes.get(position).getExp()));
         setupEdiTextListener(holder.expBar, holder.expNum, position, "exp");

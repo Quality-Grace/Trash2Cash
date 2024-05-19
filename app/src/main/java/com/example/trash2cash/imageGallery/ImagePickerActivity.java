@@ -9,19 +9,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.widget.Button;
 
+import com.example.trash2cash.DB.OkHttpHandler;
 import com.example.trash2cash.R;
 
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Objects;
 
 
 public class ImagePickerActivity extends AppCompatActivity implements ImagePickerInterface {
     private ActivityResultLauncher<PickVisualMediaRequest> pickMedia;
-    private static final ArrayList<Integer> imageList = new ArrayList<>();
+    private ArrayList<String> imageList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,11 +58,29 @@ public class ImagePickerActivity extends AppCompatActivity implements ImagePicke
                 .build()));
     }
 
+    public String getRealPathFromURI(Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = { MediaStore.Images.Media.DATA };
+            cursor = this.getContentResolver().query(contentUri,  proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
     public void endActivity(Uri resultData){
         Intent resultIntent = new Intent();
-        resultIntent.setData(resultData);
-        // Used by the RewardSettingsActivity to check if the selected image came from the phone's storage
-        resultIntent.putExtra("type", "fromGallery");
+
+        OkHttpHandler okHttpHandler = new OkHttpHandler();
+        File file = new File(getRealPathFromURI(resultData));
+        String urlString = okHttpHandler.uploadImage(OkHttpHandler.getPATH()+"uploadImage.php", file);
+
+        resultIntent.putExtra("url", urlString);
         setResult(Activity.RESULT_OK, resultIntent);
 
         finish();
@@ -69,21 +90,19 @@ public class ImagePickerActivity extends AppCompatActivity implements ImagePicke
     @Override
     public void endActivityWithImageFromGallery(int position) {
         Intent resultIntent = new Intent();
-        resultIntent.setData(Uri.parse("android.resource://"+ Objects.requireNonNull(R.class.getPackage()).getName()+"/"+imageList.get(position)));
-        // Used by the RewardSettingsActivity to check if the selected image is from app images
-        resultIntent.putExtra("type", "fromDrawables");
+        resultIntent.putExtra("url", imageList.get(position));
         setResult(Activity.RESULT_OK, resultIntent);
 
         finish();
     }
 
-    // Method to initialize the image list array
-    // TODO Fill the array with the content of an xml file
+
     public void initializeImageList(){
-        for(int i=0; i<7; i++){
-            imageList.add(R.drawable.glass_type);
-            imageList.add(R.drawable.other_type);
-            imageList.add(R.drawable.metal_type);
+        OkHttpHandler okHttpHandler = new OkHttpHandler();
+        try {
+            imageList = okHttpHandler.getRewardImages(OkHttpHandler.getPATH()+"getRewardImages.php");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }

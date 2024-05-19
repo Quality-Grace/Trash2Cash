@@ -10,23 +10,27 @@ import androidx.recyclerview.widget.SnapHelper;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.example.trash2cash.DB.OkHttpHandler;
 import com.example.trash2cash.UserInputParser;
 import com.example.trash2cash.imageGallery.ImagePickerActivity;
 import com.example.trash2cash.R;
 import com.example.trash2cash.Reward;
 import com.example.trash2cash.RewardList;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.Collections;
 import java.util.Objects;
 
 public class RewardSettingsActivity extends AppCompatActivity implements RewardRecyclerInterface{
-    private static final RewardList rewardList = new RewardList();
+    private final RewardList rewardList = new RewardList();
     private RewardSettingsRecyclerAdapter adapter;
 
     @Override
@@ -59,13 +63,15 @@ public class RewardSettingsActivity extends AppCompatActivity implements RewardR
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
                         if (data != null) {
-                            Uri resultUri = data.getData();
-                            if(data.getStringExtra("type").equals("fromGallery")){
-                                getContentResolver().takePersistableUriPermission(resultUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                            String urlString = data.getStringExtra("url");
+                            try {
+                                URL url = new URL(urlString);
+                                Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                                image.setImageBitmap(bmp);
+                                image.setTag(urlString);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
                             }
-
-                            image.setImageURI(resultUri);
-                            image.setTag(String.valueOf(resultUri));
                         }
                     }
                 });
@@ -90,8 +96,16 @@ public class RewardSettingsActivity extends AppCompatActivity implements RewardR
                 icon = "android.resource://"+ Objects.requireNonNull(R.class.getPackage()).getName()+"/"+R.drawable.ic_launcher_foreground;
             }
 
-            rewardList.add(new Reward(title, cost, level, icon));
+            Reward reward = new Reward(title, cost, level, icon);
+            rewardList.add(reward);
             int position = rewardList.size()==0 ? 0: rewardList.size()-1;
+            OkHttpHandler okHttpHandler = new OkHttpHandler();
+            try {
+                okHttpHandler.insertReward(OkHttpHandler.getPATH()+"insertReward.php?POSITION=" + position + "&COST=" + reward.getCost() + "&LEVEL=" + reward.getLevel() + "&ICON=" + reward.getIcon() + "&TITLE=" + reward.getTitle());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             adapter.notifyItemInserted(position);
         };
     }
@@ -102,6 +116,12 @@ public class RewardSettingsActivity extends AppCompatActivity implements RewardR
         View currentFocus = getCurrentFocus();
         if(currentFocus!=null) currentFocus.clearFocus();
 
+        OkHttpHandler okHttpHandler = new OkHttpHandler();
+        try{
+            okHttpHandler.deleteReward(OkHttpHandler.getPATH()+"deleteReward.php?POSITION=" + position);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         rewardList.remove(position);
         adapter.notifyItemRemoved(position);
     }
@@ -110,10 +130,28 @@ public class RewardSettingsActivity extends AppCompatActivity implements RewardR
     public void moveCardUp(int position) {
         if(position>0){
             Collections.swap(rewardList, position, position-1);
+            try {
+                updateReward(rewardList.get(position), position);
+                updateReward(rewardList.get(position-1), position-1);
+            } catch(Exception e){
+                e.printStackTrace();
+            }
             adapter.notifyItemMoved(position, position-1);
         } else if(rewardList.size()>0){
             Collections.swap(rewardList, position, position+1);
+            try {
+                updateReward(rewardList.get(position), position);
+                updateReward(rewardList.get(position+1), position+1);
+            } catch(Exception e){
+                e.printStackTrace();
+            }
             adapter.notifyItemMoved(position, position+1);
         }
+    }
+
+    @Override
+    public void updateReward(Reward reward, int position) throws Exception {
+        OkHttpHandler okHttpHandler = new OkHttpHandler();
+        okHttpHandler.updateReward(OkHttpHandler.getPATH()+"updateReward.php?POSITION=" + position + "&COST=" + reward.getCost() + "&LEVEL=" + reward.getLevel() + "&ICON=" + reward.getIcon() + "&TITLE=" + reward.getTitle());
     }
 }
