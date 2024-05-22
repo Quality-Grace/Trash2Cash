@@ -65,21 +65,21 @@ public class MaterialLoggerActivity extends AppCompatActivity {
                 ImageView itemImage = findViewById(R.id.itemImage);
                 String selectedItem = itemSelector.getSelectedItem().toString();
                 switch (selectedItem){
-                    case "Bag":
+                    case "BAG":
                         itemImage.setImageResource(R.drawable.bag);
                         break;
-                    case "Bottle":
+                    case "BOTTLE":
                         itemImage.setImageResource(R.drawable.bottle);
                     break;
-                    case "Can":
+                    case "CAN":
                         itemImage.setImageResource(R.drawable.can);
                     break;
-                    case "Box":
+                    case "BOX":
                         itemImage.setImageResource(R.drawable.box);
                     break;
-                    case "Card Board":
-                        itemImage.setImageResource(R.drawable.cardboard);
-                    break;
+                    default:
+                        itemImage.setImageResource(R.drawable.ic_launcher_foreground);
+
                 }
             }
 
