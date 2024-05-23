@@ -3,4 +3,7 @@
     <string name="material_logger">Material Logger</string>
     <string name="itemImageTxt">Item Image</string>
     <string name="addItemBtn">Add Item</string>
+    <string name="admin_request_logger">Admin Request Logger</string>
+    <string name="todo">TODO</string>
+    <string name="to">TODO</string>
 </resources>

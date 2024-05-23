@@ -10,9 +10,9 @@ public class RecyclableItem {
 
     private final RecyclableItemType type;
 
-    private final Image image;
+    private final int image;
 
-    public RecyclableItem(RecyclableMaterial material, RecyclableItemType type, Image image, int id) {
+    public RecyclableItem(RecyclableMaterial material, RecyclableItemType type, int image, int id) {
         this.material = material;
         this.type = type;
         this.image = image;
@@ -27,7 +27,7 @@ public class RecyclableItem {
         return type;
     }
 
-    public Image getImage() {
+    public int getImage() {
         return image;
     }
 

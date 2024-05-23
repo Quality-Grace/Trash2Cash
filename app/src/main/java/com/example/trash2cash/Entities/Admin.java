@@ -16,13 +16,18 @@ public class Admin {
 
     private Map<Integer, List<Request>> recyclableRequests;
 
+    public Map<Integer, List<Request>> getRecyclableRequests() {
+        return recyclableRequests;
+    }
+
     private Admin() {
         this.recyclableRequests = new HashMap<>();
     }
 
     public static Admin getAdmin(){
         if(instance==null){
-            return new Admin();
+            instance = new Admin();
+            return instance;
         }
         return instance;
     }

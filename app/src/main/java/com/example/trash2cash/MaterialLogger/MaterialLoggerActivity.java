@@ -1,13 +1,5 @@
 package com.example.trash2cash.MaterialLogger;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.LinearSnapHelper;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SnapHelper;
-
-import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,14 +8,31 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
+
 import com.example.trash2cash.Entities.MaterialType;
+import com.example.trash2cash.Entities.RecyclableItem;
 import com.example.trash2cash.Entities.RecyclableItemType;
+import com.example.trash2cash.Entities.RecyclableManager;
+import com.example.trash2cash.Entities.RecyclableMaterial;
+import com.example.trash2cash.Entities.Request;
+import com.example.trash2cash.Entities.RequestStatus;
+import com.example.trash2cash.Entities.User;
 import com.example.trash2cash.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MaterialLoggerActivity extends AppCompatActivity {
+
+    private static ArrayList<Request> itemList = new ArrayList<>();
+    private MaterialLoggerAdapter myAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +44,10 @@ public class MaterialLoggerActivity extends AppCompatActivity {
         // Set up the RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        myAdapter = new MaterialLoggerAdapter(itemList, this);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
+        recyclerView.setAdapter(myAdapter);
 
         SnapHelper helper = new LinearSnapHelper();
         helper.attachToRecyclerView(recyclerView);
@@ -44,13 +56,25 @@ public class MaterialLoggerActivity extends AppCompatActivity {
         addItemBtn.setOnClickListener(addItemCardListener());
     }
 
+    /**
+     * Listener for the "Add Item" button.
+     * @return the listener.
+     */
     private View.OnClickListener addItemCardListener() {
         return view -> {
             String item = ((Spinner) findViewById(R.id.itemSelector)).getSelectedItem().toString();
             String material = ((Spinner) findViewById(R.id.materialSelector)).getSelectedItem().toString();
 
+            // Add the item to the RecyclerView
+            RecyclerView recyclerView = findViewById(R.id.recyclerView);
 
-
+            RecyclableManager recyclableManager = RecyclableManager.getRecyclableManager();
+            User user = new User("User", 0, 0, 0);
+            recyclableManager.addUser(user);
+            RecyclableMaterial recyclableMaterial = recyclableManager.getRecyclableMaterial(material);
+            RecyclableItem recyclableItem = recyclableManager.createRecyclableItem(recyclableMaterial, RecyclableItemType.valueOf(item), 0);
+            itemList.add(recyclableManager.addRequest(recyclableItem, user.getId(), RequestStatus.PENDING));
+            myAdapter.notifyItemInserted(itemList.size() - 1);
         };
     }
 
@@ -81,6 +105,35 @@ public class MaterialLoggerActivity extends AppCompatActivity {
                         itemImage.setImageResource(R.drawable.ic_launcher_foreground);
 
                 }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        materialSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                CardView cardView = findViewById(R.id.addItemCardView);
+                String selectedMaterial = materialSelector.getSelectedItem().toString();
+                switch (selectedMaterial){
+                    case "PLASTIC":
+                        cardView.setCardBackgroundColor(getResources().getColor(R.color.plastic));
+                        break;
+                    case "ALUMINUM":
+                        cardView.setCardBackgroundColor(getResources().getColor(R.color.aluminium));
+                        break;
+                    case "GLASS":
+                        cardView.setCardBackgroundColor(getResources().getColor(R.color.glass));
+                        break;
+                    case "PAPER":
+                        cardView.setCardBackgroundColor(getResources().getColor(R.color.paper));
+                        break;
+                    default:
+                }
+
             }
 
             @Override

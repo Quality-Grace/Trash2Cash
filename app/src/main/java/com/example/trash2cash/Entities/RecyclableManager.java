@@ -1,5 +1,9 @@
 package com.example.trash2cash.Entities;
 
+import android.media.Image;
+
+import com.example.trash2cash.R;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,7 +15,20 @@ public class RecyclableManager {
 
     private static RecyclableManager instance;
 
+    private HashMap<String, RecyclableMaterial> recyclableItems;
+
     private RecyclableManager() {
+        RecyclableMaterial paper = new RecyclableMaterial(MaterialType.PAPER.getMaterialType(), 100, 10, R.drawable.paper_type);
+        RecyclableMaterial plastic = new RecyclableMaterial(MaterialType.PLASTIC.getMaterialType(), 100, 10, R.drawable.plastic_type);
+        RecyclableMaterial glass = new RecyclableMaterial(MaterialType.GLASS.getMaterialType(), 100, 10, R.drawable.glass_type);
+        RecyclableMaterial metal = new RecyclableMaterial(MaterialType.ALUMINUM.getMaterialType(),  100, 10, R.drawable.metal_type);
+
+        recyclableItems = new HashMap<>();
+        recyclableItems.put("PAPER", paper);
+        recyclableItems.put("PLASTIC", plastic);
+        recyclableItems.put("GLASS", glass);
+        recyclableItems.put("METAL", metal);
+
         users = new HashMap<>();
     }
 
@@ -26,13 +43,19 @@ public class RecyclableManager {
         return instance;
     }
 
-    public void addRequest(RecyclableItem recyclableItem, int user_id, RequestStatus status){
+    public Request addRequest(RecyclableItem recyclableItem, int user_id, RequestStatus status){
+        Request request = null;
         try {
-            users.get(user_id).addRequest(new Request(recyclableItem, status, requestId));
+            request = new Request(recyclableItem, status, requestId, user_id);
+            User user = users.get(user_id);
+            assert user != null;
+            user.addRequest(request);
+            addRecyclableItemRequest(request, user_id);
             requestId++;
         } catch (NullPointerException e){
             System.err.println("This user with user id does not exist!");
         }
+        return request;
     }
 
     public void addUser(User user){
@@ -44,10 +67,42 @@ public class RecyclableManager {
     }
     public void addPoints(RecyclableItem recyclableItem, int user_id) {
         float level = recyclableItem.getMaterial().getExp();
-        users.get(user_id).addLevel(level);
+        User user = users.get(user_id);
+        assert user != null;
+        user.addLevel(level);
     }
 
     public void alterRequest(Request requestItem, int user_id, RequestStatus approved) {
-        users.get(user_id).alterStatus(requestItem, approved);
+        User user = users.get(user_id);
+        assert user != null;
+        user.alterStatus(requestItem, approved);
     }
+
+    public RecyclableItem createRecyclableItem(RecyclableMaterial material, RecyclableItemType type, int id) {
+        int image = R.drawable.ic_launcher_foreground;
+        switch (type){
+            case BAG:
+                image = R.drawable.bag;
+                break;
+            case BOX:
+                image = R.drawable.box;
+                break;
+            case BOTTLE:
+                image = R.drawable.bottle;
+                break;
+            case CAN:
+                image = R.drawable.can;
+                break;
+            case CARD_BOARD:
+                image = R.drawable.ic_launcher_foreground;
+                break;
+        }
+
+        return new RecyclableItem(material, type, image, id);
+    }
+
+    public RecyclableMaterial getRecyclableMaterial(String name) {
+        return recyclableItems.get(name);
+    }
+
 }

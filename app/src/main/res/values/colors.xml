@@ -3,4 +3,11 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="add_card">#8BC34A</color>
+    <color name="plastic">#376DAE</color>
+    <color name="aluminium">#545454</color>
+    <color name="paper">#D1CCBA</color>
+    <color name="glass">#9FD7CA</color>
+    <color name="rejected">#E91E63</color>
+    <color name="approved">#4CAF50</color>
+    <color name="pending">#FFC107</color>
 </resources>
