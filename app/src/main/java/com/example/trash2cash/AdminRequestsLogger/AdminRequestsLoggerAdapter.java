@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.trash2cash.Entities.Admin;
 import com.example.trash2cash.Entities.RecyclableManager;
 import com.example.trash2cash.Entities.Request;
+import com.example.trash2cash.Entities.User;
 import com.example.trash2cash.R;
 
 
@@ -45,6 +46,9 @@ public class AdminRequestsLoggerAdapter extends RecyclerView.Adapter<AdminReques
         holder.itemTextView.setText(requestList.get(position).getRequestItem().getType().toString());
         holder.materialTextView.setText(requestList.get(position).getRequestItem().getMaterial().getType());
         holder.imageView.setImageResource(requestList.get(position).getRequestItem().getImage());
+        RecyclableManager recyclableManager = RecyclableManager.getRecyclableManager();
+        User user = recyclableManager.getUserById(requestList.get(position).getUser_id());
+        holder.userTextView.setText(String.format("From %s", user.getName()));
     }
 
     @Override
@@ -61,6 +65,7 @@ public class AdminRequestsLoggerAdapter extends RecyclerView.Adapter<AdminReques
         public ImageView imageView;
         public ImageView approveView;
         public ImageView rejectView;
+        public TextView userTextView;
         public MyViewHolder(View requestView, List<Request> requestList, AdminRequestsLoggerInterface adminRequestsLoggerInterface) {
             super(requestView);
             itemTextView = requestView.findViewById(R.id.ItemTextView);
@@ -68,6 +73,7 @@ public class AdminRequestsLoggerAdapter extends RecyclerView.Adapter<AdminReques
             imageView = requestView.findViewById(R.id.requestItemIMage);
             approveView = requestView.findViewById(R.id.approveBtn);
             rejectView = requestView.findViewById(R.id.rejectBtn);
+            userTextView = requestView.findViewById(R.id.userTextView);
 
             approveView.setOnClickListener(view -> {
                 int position = getAdapterPosition();

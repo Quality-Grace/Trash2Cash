@@ -5,7 +5,7 @@ public enum RequestStatus {
     APPROVED("APPROVED"),
     REJECTED("REJECTED");
 
-    private final String requestStatus;
+    private String requestStatus;
 
     RequestStatus(String requestStatus) {
         this.requestStatus = requestStatus;

@@ -1,11 +1,10 @@
 package com.example.trash2cash.Entities;
 
-import androidx.room.Dao;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 
 public class Admin {
@@ -14,7 +13,7 @@ public class Admin {
 
     private static Admin instance;
 
-    private Map<Integer, List<Request>> recyclableRequests;
+    private final Map<Integer, List<Request>> recyclableRequests;
 
     public Map<Integer, List<Request>> getRecyclableRequests() {
         return recyclableRequests;
@@ -34,7 +33,7 @@ public class Admin {
 
     public void approve(int user_id, Request request) {
         try {
-            recyclableRequests.get(user_id).remove(request);
+            Objects.requireNonNull(recyclableRequests.get(user_id)).remove(request);
             RecyclableManager.getRecyclableManager().alterRequest(request, user_id, RequestStatus.APPROVED);
             RecyclableManager.getRecyclableManager().addPoints(request.getRequestItem(), user_id);
         } catch (NullPointerException e){
@@ -44,16 +43,17 @@ public class Admin {
 
     public void reject(int user_id, Request request) {
         try {
-            recyclableRequests.get(user_id).remove(request);
+            Objects.requireNonNull(recyclableRequests.get(user_id)).remove(request);
             RecyclableManager.getRecyclableManager().alterRequest(request, user_id, RequestStatus.REJECTED);
         } catch (NullPointerException e){
             System.err.println("This user or recyclableItem doesn't exist");
+            e.printStackTrace();
         }
     }
 
     public void addRecyclableItemRequest(Request request, int user_id) {
         if(recyclableRequests.containsKey(user_id))
-            recyclableRequests.get(user_id).add(request);
+            Objects.requireNonNull(recyclableRequests.get(user_id)).add(request);
         else {
             List<Request> recyclableItems = new ArrayList<>();
             recyclableItems.add(request);

@@ -31,7 +31,7 @@ import java.util.List;
 
 public class MaterialLoggerActivity extends AppCompatActivity {
 
-    private static ArrayList<Request> itemList = new ArrayList<>();
+    private static final ArrayList<Request> itemList = new ArrayList<>();
     private MaterialLoggerAdapter myAdapter;
 
     @Override
@@ -69,10 +69,9 @@ public class MaterialLoggerActivity extends AppCompatActivity {
             RecyclerView recyclerView = findViewById(R.id.recyclerView);
 
             RecyclableManager recyclableManager = RecyclableManager.getRecyclableManager();
-            User user = new User("User", 0, 0, 0);
-            recyclableManager.addUser(user);
+            User user = recyclableManager.getUser();
             RecyclableMaterial recyclableMaterial = recyclableManager.getRecyclableMaterial(material);
-            RecyclableItem recyclableItem = recyclableManager.createRecyclableItem(recyclableMaterial, RecyclableItemType.valueOf(item), 0);
+            RecyclableItem recyclableItem = recyclableManager.createRecyclableItem(recyclableMaterial, RecyclableItemType.valueOf(item));
             itemList.add(recyclableManager.addRequest(recyclableItem, user.getId(), RequestStatus.PENDING));
             myAdapter.notifyItemInserted(itemList.size() - 1);
         };

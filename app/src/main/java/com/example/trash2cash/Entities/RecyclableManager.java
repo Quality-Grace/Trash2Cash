@@ -13,9 +13,13 @@ public class RecyclableManager {
 
     private static int requestId = 0;
 
+    public User activeUser = null;
+
     private static RecyclableManager instance;
 
     private HashMap<String, RecyclableMaterial> recyclableItems;
+
+    private int recyclableItemId = 0;
 
     private RecyclableManager() {
         RecyclableMaterial paper = new RecyclableMaterial(MaterialType.PAPER.getMaterialType(), 100, 10, R.drawable.paper_type);
@@ -27,7 +31,7 @@ public class RecyclableManager {
         recyclableItems.put("PAPER", paper);
         recyclableItems.put("PLASTIC", plastic);
         recyclableItems.put("GLASS", glass);
-        recyclableItems.put("METAL", metal);
+        recyclableItems.put("ALUMINUM", metal);
 
         users = new HashMap<>();
     }
@@ -78,7 +82,7 @@ public class RecyclableManager {
         user.alterStatus(requestItem, approved);
     }
 
-    public RecyclableItem createRecyclableItem(RecyclableMaterial material, RecyclableItemType type, int id) {
+    public RecyclableItem createRecyclableItem(RecyclableMaterial material, RecyclableItemType type) {
         int image = R.drawable.ic_launcher_foreground;
         switch (type){
             case BAG:
@@ -97,7 +101,7 @@ public class RecyclableManager {
                 image = R.drawable.ic_launcher_foreground;
                 break;
         }
-
+        int id = recyclableItemId++;
         return new RecyclableItem(material, type, image, id);
     }
 
@@ -105,4 +109,16 @@ public class RecyclableManager {
         return recyclableItems.get(name);
     }
 
+    public User getUser() {
+        if(activeUser==null){
+            activeUser = new User("User", 0, 0, 0);
+            addUser(activeUser);
+            return activeUser;
+        }
+        return activeUser;
+    }
+
+    public User getUserById(int id){
+        return users.get(id);
+    }
 }
