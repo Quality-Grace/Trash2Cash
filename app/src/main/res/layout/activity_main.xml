@@ -32,9 +32,18 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="46dp"
         android:text="RewardSettings"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/RecyclableMateriaSettingsTempButton" />
+
+    <Button
+        android:id="@+id/RewardsTempButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rewards"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/RewardSettingsTempButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

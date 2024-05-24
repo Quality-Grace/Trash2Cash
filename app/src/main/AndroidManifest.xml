@@ -30,6 +30,9 @@
             android:name=".RecyclabeMaterialSettings.RecyclableMaterialSettingsActivity"
             android:exported="false" />
         <activity
+            android:name=".RewardScreen.RewardsActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

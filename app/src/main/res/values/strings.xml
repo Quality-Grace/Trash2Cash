@@ -15,4 +15,10 @@
     <string name="orOpenTheImageGallery">Or open the image gallery</string>
     <string name="rewardTitleTextValue">Reward Title</string>
     <string name="emptyTextField">Text Value</string>
+    <string name="available">AVAILABLE FOR YOU</string>
+    <string name="other_rewards">OTHER REWARDS</string>
+    <string name="earned_points">Earned Points</string>
+    <string name="claim_reward">Claim Reward</string>
+    <string name="required_level_value">Required Level Value</string>
+    <string name="required_cost_value">Required Cost Value</string>
 </resources>
