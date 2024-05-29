@@ -17,9 +17,13 @@ public class OkHttpHandler {
     public int loginUser(String url, String email, String password) throws IOException {
         OkHttpClient client = new OkHttpClient().newBuilder().build();
 
+        long currentTimestamp = System.currentTimeMillis();
+
         RequestBody body = new FormBody.Builder()
+                .add("id", id)
                 .add("email", email)
                 .add("password", password)
+                .add("timestamp", currentTimestamp)
                 .build();
 
         Request request = new Request.Builder()
