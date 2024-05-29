@@ -1,5 +1,6 @@
 package com.example.trash2cash.R1;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.example.trash2cash.LoginRegisterActivity;
+import com.example.trash2cash.MainActivity;
 import com.example.trash2cash.OkHttpHandler;
 import com.example.trash2cash.R;
 import com.google.android.material.textfield.TextInputLayout;
@@ -95,11 +97,8 @@ public class LoginUser extends Fragment {
         } else {
             Toast.makeText(getContext(), "Login successful", Toast.LENGTH_LONG).show();
 //            Metavasi se nea othoni
-//            Intent intent = new Intent(requireActivity(), UserMainActivity.class);
-//            intent.putExtra("Email", parameter1.getEditText().getText().toString());
-//            startActivity(intent);
-//            requireActivity().overridePendingTransition(R.anim.slide_in_from_bottom, R.anim.no_slide_in_or_out);
-//            requireActivity().finish();
+            Intent intent = new Intent(requireActivity(), MainActivity.class);
+            startActivity(intent);
         }
     }
 }
