@@ -20,14 +20,10 @@ if ($conn->connect_error) {
 }
 
 // Check if form is submitted
-// if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // $id = $_POST['id'];
-    // $email = $_POST['email'];
-    // $password = $_POST['password'];
-
-    $id = "100";
-    $email = "testNAME";
-    $password = "passWDTEST";
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $id = $_POST['id'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
 
     // Prepare and bind
     $stmt = $conn->prepare("INSERT INTO users (id, email, password) VALUES (?, ?, ?)");
@@ -35,14 +31,14 @@ if ($conn->connect_error) {
 
     // Execute the statement
     if ($stmt->execute()) {
-        echo "New record created successfully";
+        echo "1";
     } else {
         echo "Error: " . $stmt->error;
     }
 
     // Close the statement
     $stmt->close();
-// }
+}
 
 // Close the connection
 $conn->close();
