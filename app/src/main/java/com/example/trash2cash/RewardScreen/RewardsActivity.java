@@ -1,6 +1,7 @@
 package com.example.trash2cash.RewardScreen;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,11 +22,19 @@ public class RewardsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rewards);
 
+        setAmountOfRewards(findViewById (R.id.availableRewardsText), rewardList.size());
+        setAmountOfRewards(findViewById (R.id.otherRewardsText), rewardList.size());
+
         RecyclerView availableForYouRecycler = findViewById(R.id.availableForYouRecycler);
         initializeRecycler(availableForYouRecycler, rewardList, true);
 
         RecyclerView otherRewardsRecycler = findViewById(R.id.otherRewardsRecycler);
         initializeRecycler(otherRewardsRecycler, rewardList, false);
+    }
+
+    public void setAmountOfRewards(TextView textView, int amount) {
+        String text = textView.getText() + " (" + amount + ")";
+        textView.setText(text);
     }
 
     public void initializeRecycler(RecyclerView recycler, RewardList rewardList, Boolean available){

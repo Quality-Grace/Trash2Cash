@@ -1,4 +1,4 @@
-package com.example.trash2cash.RecyclabeMaterialSettings;
+package com.example.trash2cash.RecyclableMaterialSettings;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.example.trash2cash.R;
 import com.example.trash2cash.RecyclableMaterialTypes;
@@ -30,5 +31,8 @@ public class RecyclableMaterialSettingsActivity extends AppCompatActivity {
         // Adds snappy scrolling
         SnapHelper helper = new LinearSnapHelper();
         helper.attachToRecyclerView(recyclerView);
+
+        if(recyclableMaterialTypes.isEmpty())
+            findViewById(R.id.recyclableMaterialsErrorText).setVisibility(View.VISIBLE);
     }
 }

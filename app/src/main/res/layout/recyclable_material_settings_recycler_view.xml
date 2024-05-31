@@ -5,12 +5,13 @@
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:elevation="8dp"
         android:visibility="visible"
-        app:layout_constraintDimensionRatio="W,1:1"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="W,1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -20,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:alpha="0.3"
-            android:contentDescription="@string/typeOfRecyclableMaterialImage"
+            android:contentDescription="@string/type_of_recyclable_material_image"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -55,6 +56,7 @@
 
             <SeekBar
                 android:id="@+id/expBar"
+                style="@style/blueSeekBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -77,15 +79,16 @@
                     style="@style/Widget.AppCompat.AutoCompleteTextView"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:autofillHints="@string/emptyNumField"
+                    android:autofillHints="@string/empty_num_field"
                     android:background="@null"
                     android:ems="10"
-                    android:hint="@string/expNumValue"
+                    android:hint="@string/exp_num_value"
                     android:inputType="number" />
             </LinearLayout>
 
             <SeekBar
                 android:id="@+id/rewardBar"
+                style="@style/blueSeekBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -107,10 +110,10 @@
                     android:id="@+id/rewardNum"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:autofillHints="@string/emptyNumField"
+                    android:autofillHints="@string/empty_num_field"
                     android:background="@null"
                     android:ems="10"
-                    android:hint="@string/rewardNumValue"
+                    android:hint="@string/reward_num_value"
                     android:inputType="number" />
             </LinearLayout>
 

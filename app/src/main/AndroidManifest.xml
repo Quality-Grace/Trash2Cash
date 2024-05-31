@@ -27,7 +27,7 @@
             android:name=".RewardSettings.RewardSettingsActivity"
             android:exported="false" />
         <activity
-            android:name=".RecyclabeMaterialSettings.RecyclableMaterialSettingsActivity"
+            android:name=".RecyclableMaterialSettings.RecyclableMaterialSettingsActivity"
             android:exported="false" />
         <activity
             android:name=".RewardScreen.RewardsActivity"

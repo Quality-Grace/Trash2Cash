@@ -3,4 +3,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="reward_card">#8BC34A</color>
+    <color name="image_picker_background">#43BEBEBE</color>
+    <color name="dark_blue">#23395B</color>
+    <color name="reward_card_grey">#F5F5F5</color>
 </resources>

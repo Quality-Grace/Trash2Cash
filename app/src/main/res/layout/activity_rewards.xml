@@ -22,32 +22,50 @@
         android:orientation="vertical">
 
       <TextView
-          android:id="@+id/textView9"
+          android:id="@+id/rewardsText"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginStart="16dp"
           android:layout_marginTop="16dp"
-          android:text="@string/available" />
+          android:layout_weight="0.25"
+          android:gravity="center"
+          android:text="@string/rewards"
+          android:textSize="32sp"
+          android:textStyle="bold" />
+
+      <TextView
+          android:id="@+id/availableRewardsText"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="16dp"
+          android:layout_marginTop="16dp"
+          android:layout_weight="0.05"
+          android:text="@string/available"
+          android:textSize="20sp" />
 
       <androidx.recyclerview.widget.RecyclerView
           android:id="@+id/availableForYouRecycler"
           android:layout_width="match_parent"
-          android:layout_height="wrap_content">
+          android:layout_height="wrap_content"
+          android:layout_weight="1">
 
       </androidx.recyclerview.widget.RecyclerView>
 
       <TextView
-          android:id="@+id/textView8"
+          android:id="@+id/otherRewardsText"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginStart="16dp"
           android:layout_marginTop="16dp"
-          android:text="@string/other_rewards" />
+          android:layout_weight="0.05"
+          android:text="@string/other_rewards"
+          android:textSize="20sp" />
 
       <androidx.recyclerview.widget.RecyclerView
           android:id="@+id/otherRewardsRecycler"
           android:layout_width="match_parent"
-          android:layout_height="wrap_content" />
+          android:layout_height="wrap_content"
+          android:layout_weight="1" />
     </LinearLayout>
   </androidx.core.widget.NestedScrollView>
 

@@ -1,4 +1,4 @@
-package com.example.trash2cash.RecyclabeMaterialSettings;
+package com.example.trash2cash.RecyclableMaterialSettings;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -95,18 +95,18 @@ public class RecyclableMaterialSettingsRecyclerAdapter extends RecyclerView.Adap
     }
 
     private void setupEdiTextListener(SeekBar seekBar, EditText editText, int position, String type) {
-       editText.setOnFocusChangeListener((v, hasFocus) -> {
-           int amount = UserInputParser.parseEditableTextToInt(editText.getText());
-           if(amount>100) amount = 100;
+        editText.setOnFocusChangeListener((v, hasFocus) -> {
+            int amount = UserInputParser.parseEditableTextToInt(editText.getText());
+            if(amount>100) amount = 100;
 
-           if(type.equals("exp")){
-               recyclableMaterialTypes.get(position).setExp(amount);
-           } else {
-               recyclableMaterialTypes.get(position).setRewardAmount(amount);
-           }
+            if(type.equals("exp")){
+                recyclableMaterialTypes.get(position).setExp(amount);
+            } else {
+                recyclableMaterialTypes.get(position).setRewardAmount(amount);
+            }
 
-           seekBar.setProgress(amount);
-       });
+            seekBar.setProgress(amount);
+        });
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{

@@ -13,6 +13,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.View;
 import android.widget.Button;
 
 import com.example.trash2cash.DB.OkHttpHandler;
@@ -33,6 +34,10 @@ public class ImagePickerActivity extends AppCompatActivity implements ImagePicke
 
         // Fills the imageList array with image ids
         initializeImageList();
+
+        if(imageList.size()==0) {
+            findViewById(R.id.imageGalleryIsEmptyText).setVisibility(View.VISIBLE);
+        }
 
         RecyclerView recyclerView = findViewById(R.id.imageGallery);
 
@@ -78,7 +83,7 @@ public class ImagePickerActivity extends AppCompatActivity implements ImagePicke
 
         OkHttpHandler okHttpHandler = new OkHttpHandler();
         File file = new File(getRealPathFromURI(resultData));
-        String urlString = okHttpHandler.uploadImage(OkHttpHandler.getPATH()+"uploadImage.php", file);
+        String urlString = okHttpHandler.uploadImage(OkHttpHandler.getPATH() + "uploadImage.php", file);
 
         resultIntent.putExtra("url", urlString);
         setResult(Activity.RESULT_OK, resultIntent);
@@ -102,7 +107,8 @@ public class ImagePickerActivity extends AppCompatActivity implements ImagePicke
         try {
             imageList = okHttpHandler.getRewardImages(OkHttpHandler.getPATH()+"getRewardImages.php");
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            findViewById(R.id.openImageGallery).setVisibility(View.GONE);
+            e.printStackTrace();
         }
     }
 }

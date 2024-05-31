@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/RecyclableMateriaSettingsTempButton"
+        android:id="@+id/RecyclableMaterialSettingsTempButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="RecyclableMaterialSettings"
@@ -34,7 +34,7 @@
         android:text="RewardSettings"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/RecyclableMateriaSettingsTempButton" />
+        app:layout_constraintTop_toBottomOf="@+id/RecyclableMaterialSettingsTempButton" />
 
     <Button
         android:id="@+id/RewardsTempButton"

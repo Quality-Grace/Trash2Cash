@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="25dp"
-            android:text="@string/tapAnImage"
+            android:text="@string/tap_an_image"
             android:textSize="28sp" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
-            android:text="@string/orOpenTheImageGallery" />
+            android:text="@string/or_open_the_image_gallery" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
