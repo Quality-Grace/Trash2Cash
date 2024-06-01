@@ -11,4 +11,8 @@
     <color name="approved">#4CAF50</color>
     <color name="pending">#FFC107</color>
     <color name="blue">#71D0F0</color>
+    <color name="reward_card">#8BC34A</color>
+    <color name="image_picker_background">#43BEBEBE</color>
+    <color name="dark_blue">#23395B</color>
+    <color name="reward_card_grey">#F5F5F5</color>
 </resources>
