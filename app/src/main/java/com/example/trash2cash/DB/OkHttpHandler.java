@@ -2,8 +2,9 @@ package com.example.trash2cash.DB;
 
 import android.os.StrictMode;
 
-import com.example.trash2cash.RecyclableMaterial;
-import com.example.trash2cash.Reward;
+import com.example.trash2cash.Entities.RecyclableMaterial;
+import com.example.trash2cash.LoginRegisterActivity;
+import com.example.trash2cash.Entities.Reward;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -22,7 +24,9 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class OkHttpHandler {
-    private static final String IP = "Your IP";
+    private static final String IP = "Your Ip";
+
+    private int id;
     private static final String PATH = "http://"+IP+"/trash2cash/";
     public OkHttpHandler() {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -159,4 +163,61 @@ public class OkHttpHandler {
 
         return recyclableMaterialArrayList;
     }
+
+    public void updateMaterialType(String url) throws Exception {
+        OkHttpClient client = new OkHttpClient().newBuilder().build();
+        RequestBody body = RequestBody.create("", MediaType.parse("text/plain"));
+        Request request = new Request.Builder().url(url).method("PUT", body).build();
+        client.newCall(request).execute();
+    }
+
+    public int loginUser(String url, String email, String password) throws IOException {
+        OkHttpClient client = new OkHttpClient().newBuilder().build();
+
+        RequestBody body = new FormBody.Builder()
+                .add("email", email)
+                .add("password", password)
+                .build();
+
+        Request request = new Request.Builder()
+                .url("http://" + IP + url)
+                .post(body)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        assert response.body() != null;
+        return Integer.parseInt(response.body().string());
+    }
+
+    public int registerUser(String url, String email, String password) throws IOException {
+        OkHttpClient client = new OkHttpClient();
+
+        String urlTmp = "http://" + IP + "/trash2cash/createDBIfNotExists.php";
+
+        Request requestTmp = new Request.Builder()
+                .url(urlTmp)
+                .build();
+
+        client.newCall(requestTmp).execute();
+
+        OkHttpClient clientRe = new OkHttpClient().newBuilder().build();
+
+
+        RequestBody body = new FormBody.Builder()
+                .add("id", String.valueOf(id))
+                .add("email", email)
+                .add("password", password)
+                .build();
+        id++;
+        Request request = new Request.Builder()
+                .url("http://" + IP + url)
+                .post(body)
+                .build();
+
+        Response response = clientRe.newCall(request).execute();
+        assert response.body() != null;
+        return Integer.parseInt(response.body().string());
+    }
+
+
 }

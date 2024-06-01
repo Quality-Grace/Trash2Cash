@@ -10,7 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.trash2cash.R;
-import com.example.trash2cash.RecyclableMaterialTypes;
+import com.example.trash2cash.Entities.RecyclableMaterialTypes;
 
 public class RecyclableMaterialSettingsActivity extends AppCompatActivity {
     private final RecyclableMaterialTypes recyclableMaterialTypes = new RecyclableMaterialTypes();

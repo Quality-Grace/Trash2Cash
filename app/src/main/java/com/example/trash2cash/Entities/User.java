@@ -1,8 +1,6 @@
 package com.example.trash2cash.Entities;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class User {
@@ -11,17 +9,17 @@ public class User {
     private int id;
     private float level;
 
-    private float balance;
+    private float rewardPoints;
 
     private Map<Integer, Request> userRequestList;
 
 
 
-    public User(String name, int id, float level, float balance) {
+    public User(String name, int id, float level, float rewardPoints) {
         this.name = name;
         this.id = id;
         this.level = level;
-        this.balance = balance;
+        this.rewardPoints = rewardPoints;
         userRequestList = new HashMap<>();
     }
 
@@ -37,8 +35,12 @@ public class User {
         return level;
     }
 
-    public float getBalance(){
-        return balance;
+    public float getRewardPoints(){
+        return rewardPoints;
+    }
+
+    public void addRewardPoints(float rewardPoints){
+        this.rewardPoints += rewardPoints;
     }
 
     public Map<Integer, Request> getRecyclableItemList() {

@@ -15,8 +15,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.trash2cash.R;
-import com.example.trash2cash.RewardList;
-import com.example.trash2cash.UserInputParser;
+import com.example.trash2cash.Entities.RewardList;
 
 import java.io.IOException;
 import java.net.URL;

@@ -1,4 +1,4 @@
-package com.example.trash2cash;
+package com.example.trash2cash.RewardSettings;
 
 import android.text.Editable;
 

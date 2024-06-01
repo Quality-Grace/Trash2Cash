@@ -1,7 +1,5 @@
 package com.example.trash2cash.Entities;
 
-import android.media.Image;
-
 import com.example.trash2cash.R;
 
 import java.util.HashMap;
@@ -9,7 +7,7 @@ import java.util.Map;
 
 public class RecyclableManager {
 
-    private Map<Integer, User> users;
+    private final Map<Integer, User> users;
 
     private static int requestId = 0;
 
@@ -17,22 +15,16 @@ public class RecyclableManager {
 
     private static RecyclableManager instance;
 
-    private HashMap<String, RecyclableMaterial> recyclableItems;
+    private final HashMap<String, RecyclableMaterial> recyclableItems;
 
     private int recyclableItemId = 0;
 
     private RecyclableManager() {
-        RecyclableMaterial paper = new RecyclableMaterial(MaterialType.PAPER.getMaterialType(), 100, 10, R.drawable.paper_type);
-        RecyclableMaterial plastic = new RecyclableMaterial(MaterialType.PLASTIC.getMaterialType(), 100, 10, R.drawable.plastic_type);
-        RecyclableMaterial glass = new RecyclableMaterial(MaterialType.GLASS.getMaterialType(), 100, 10, R.drawable.glass_type);
-        RecyclableMaterial metal = new RecyclableMaterial(MaterialType.ALUMINUM.getMaterialType(),  100, 10, R.drawable.metal_type);
 
         recyclableItems = new HashMap<>();
-        recyclableItems.put("PAPER", paper);
-        recyclableItems.put("PLASTIC", plastic);
-        recyclableItems.put("GLASS", glass);
-        recyclableItems.put("ALUMINUM", metal);
-
+        for (RecyclableMaterial material: new RecyclableMaterialTypes()) {
+            recyclableItems.put(material.getType(), material);
+        }
         users = new HashMap<>();
     }
 
@@ -70,10 +62,11 @@ public class RecyclableManager {
         Admin.getAdmin().addRecyclableItemRequest(recyclableItem, user_id);
     }
     public void addPoints(RecyclableItem recyclableItem, int user_id) {
-        float level = recyclableItem.getMaterial().getExp();
+        float level = (float) recyclableItem.getMaterial().getExp() /(100* ((float) 1.25));
         User user = users.get(user_id);
         assert user != null;
         user.addLevel(level);
+        user.addRewardPoints(recyclableItem.getMaterial().getRewardAmount());
     }
 
     public void alterRequest(Request requestItem, int user_id, RequestStatus approved) {

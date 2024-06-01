@@ -1,4 +1,4 @@
-package com.example.trash2cash;
+package com.example.trash2cash.Entities;
 
 public class Reward {
     private int cost;

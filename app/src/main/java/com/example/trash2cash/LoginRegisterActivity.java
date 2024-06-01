@@ -12,7 +12,6 @@ import com.example.trash2cash.R1.LoginUser;
 import com.example.trash2cash.R1.RegisterUser;
 
 public class LoginRegisterActivity extends AppCompatActivity {
-    private static final String IP = "172.18.12.79";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +40,5 @@ public class LoginRegisterActivity extends AppCompatActivity {
         fragmentManager.beginTransaction()
                 .replace(R.id.main_frameLayout, fragment)
                 .commit();
-    }
-
-    // getter for the IP address
-    public static String getIP() {
-        return IP;
     }
 }

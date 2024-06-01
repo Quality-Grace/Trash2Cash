@@ -1,10 +1,10 @@
 package com.example.trash2cash.Entities;
 
 public enum MaterialType {
-    PAPER("PAPER"),
-    PLASTIC("PLASTIC"),
-    ALUMINUM("ALUMINUM"),
-    GLASS("GLASS");
+    PAPER("Paper"),
+    PLASTIC("Plastic"),
+    METAL("Metal"),
+    GLASS("Glass");
 
     private final String itemType;
 
@@ -15,4 +15,5 @@ public enum MaterialType {
     public String getMaterialType() {
         return itemType;
     }
+
 }

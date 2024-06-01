@@ -118,16 +118,16 @@ public class MaterialLoggerActivity extends AppCompatActivity {
                 CardView cardView = findViewById(R.id.addItemCardView);
                 String selectedMaterial = materialSelector.getSelectedItem().toString();
                 switch (selectedMaterial){
-                    case "PLASTIC":
+                    case "Plastic":
                         cardView.setCardBackgroundColor(getResources().getColor(R.color.plastic));
                         break;
-                    case "ALUMINUM":
+                    case "Metal":
                         cardView.setCardBackgroundColor(getResources().getColor(R.color.aluminium));
                         break;
-                    case "GLASS":
+                    case "Glass":
                         cardView.setCardBackgroundColor(getResources().getColor(R.color.glass));
                         break;
-                    case "PAPER":
+                    case "Paper":
                         cardView.setCardBackgroundColor(getResources().getColor(R.color.paper));
                         break;
                     default:
@@ -149,10 +149,10 @@ public class MaterialLoggerActivity extends AppCompatActivity {
     @NonNull
     private SpinnerAdapter getStringMaterialArrayAdapter() {
         List<String> spinnerItems = new ArrayList<>();
-        spinnerItems.add(MaterialType.PLASTIC.toString());
-        spinnerItems.add(MaterialType.ALUMINUM.toString());
-        spinnerItems.add(MaterialType.GLASS.toString());
-        spinnerItems.add(MaterialType.PAPER.toString());
+        spinnerItems.add(MaterialType.PLASTIC.getMaterialType());
+        spinnerItems.add(MaterialType.METAL.getMaterialType());
+        spinnerItems.add(MaterialType.GLASS.getMaterialType());
+        spinnerItems.add(MaterialType.PAPER.getMaterialType());
 
         // Create an ArrayAdapter using the list of items and a default spinner layout
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,

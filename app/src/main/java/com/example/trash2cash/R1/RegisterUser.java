@@ -12,8 +12,8 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.trash2cash.DB.OkHttpHandler;
 import com.example.trash2cash.LoginRegisterActivity;
-import com.example.trash2cash.OkHttpHandler;
 import com.example.trash2cash.R;
 
 /**
@@ -41,9 +41,6 @@ public class RegisterUser extends Fragment {
                              Bundle savedInstanceState) {
         // inflates the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_register2, container, false);
-
-        // gets the IP from the MainActivity
-        ip = LoginRegisterActivity.getIP();
 
         button = rootView.findViewById(R.id.registerBtn);
         email = rootView.findViewById(R.id.editTextTextEmailAddress);
@@ -81,7 +78,7 @@ public class RegisterUser extends Fragment {
     private void register(){
         int result = 0;
 
-        String url = "http://" + ip + "/trash2cash/addUser.php";
+        String url = "/trash2cash/addUser.php";
         try {
             OkHttpHandler okHttpHandler = new OkHttpHandler();
             result = okHttpHandler.registerUser(url, email.getText().toString(),

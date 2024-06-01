@@ -18,11 +18,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.example.trash2cash.DB.OkHttpHandler;
-import com.example.trash2cash.UserInputParser;
 import com.example.trash2cash.imageGallery.ImagePickerActivity;
 import com.example.trash2cash.R;
-import com.example.trash2cash.Reward;
-import com.example.trash2cash.RewardList;
+import com.example.trash2cash.Entities.Reward;
+import com.example.trash2cash.Entities.RewardList;
 
 import java.io.IOException;
 import java.net.URL;

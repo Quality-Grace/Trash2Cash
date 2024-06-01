@@ -15,9 +15,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.trash2cash.DB.OkHttpHandler;
+import com.example.trash2cash.Entities.RecyclableMaterial;
+import com.example.trash2cash.Entities.Reward;
 import com.example.trash2cash.R;
-import com.example.trash2cash.RecyclableMaterialTypes;
-import com.example.trash2cash.UserInputParser;
+import com.example.trash2cash.Entities.RecyclableMaterialTypes;
+import com.example.trash2cash.RewardSettings.UserInputParser;
 
 import java.net.URL;
 
@@ -45,8 +47,6 @@ public class RecyclableMaterialSettingsRecyclerAdapter extends RecyclerView.Adap
         try {
             String urlString = OkHttpHandler.getPATH() + recyclableMaterialTypes.get(position).getImage();
             URL url = new URL(urlString);
-
-            System.out.println(urlString+"LOLOL");
 
             Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
 
@@ -84,6 +84,11 @@ public class RecyclableMaterialSettingsRecyclerAdapter extends RecyclerView.Adap
                 } else {
                     recyclableMaterialTypes.get(position).setRewardAmount(progress);
                 }
+                try {
+                    updateMaterialType(recyclableMaterialTypes.get(position));
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             }
 
             @Override
@@ -92,6 +97,11 @@ public class RecyclableMaterialSettingsRecyclerAdapter extends RecyclerView.Adap
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
+    }
+
+    public void updateMaterialType(RecyclableMaterial materialType) throws Exception {
+        OkHttpHandler okHttpHandler = new OkHttpHandler();
+        okHttpHandler.updateMaterialType(OkHttpHandler.getPATH()+"updateMaterialType.php?TYPE=\"" + materialType.getType() + "\"&EXP=" + materialType.getExp() + "&REWARD_AMOUNT=" + materialType.getRewardAmount());
     }
 
     private void setupEdiTextListener(SeekBar seekBar, EditText editText, int position, String type) {

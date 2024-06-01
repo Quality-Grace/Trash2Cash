@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.SnapHelper;
 
 
 import com.example.trash2cash.R;
-import com.example.trash2cash.RewardList;
+import com.example.trash2cash.Entities.RewardList;
 
 
 public class RewardsActivity extends AppCompatActivity {

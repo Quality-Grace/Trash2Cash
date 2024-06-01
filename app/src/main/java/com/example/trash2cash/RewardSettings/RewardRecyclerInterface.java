@@ -1,6 +1,6 @@
 package com.example.trash2cash.RewardSettings;
 
-import com.example.trash2cash.Reward;
+import com.example.trash2cash.Entities.Reward;
 
 public interface RewardRecyclerInterface {
     void removeCardOnClick(int position);

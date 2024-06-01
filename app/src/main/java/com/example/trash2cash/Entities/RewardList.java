@@ -1,4 +1,4 @@
-package com.example.trash2cash;
+package com.example.trash2cash.Entities;
 
 import com.example.trash2cash.DB.OkHttpHandler;
 

@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.trash2cash.R;
-import com.example.trash2cash.RewardList;
+import com.example.trash2cash.Entities.RewardList;
 
 import java.io.IOException;
 import java.net.URL;
