@@ -53,6 +53,8 @@
     <string name="image_gallery_is_empty">The image gallery is empty</string>
     <string name="recyclablematerialsettings">RecyclableMaterialSettings</string>
     <string name="rewardsettings">RewardSettings</string>
+
+    <!--User profile activity-->
     <string name="user_name_tag_text">Username:</string>
     <string name="user_level_tag_text">Level:</string>
     <string name="user_points_tag_text">Points:</string>
@@ -65,11 +67,14 @@
     <string name="points_text">100</string>
     <string name="details_title_text">Material recycling percentage:</string>
     <string name="details_glass_text">Glass</string>
-    <string name="glass_percentage_text">0</string>
     <string name="details_plastic_text">Plastic</string>
-    <string name="plastic_percentage_text">0</string>
     <string name="details_paper_text">Paper</string>
-    <string name="paper_percentage_text">0</string>
     <string name="details_aluminum_text">Aluminum</string>
-    <string name="aluminum_percentage">0</string>
+    <string name="profile">profile</string>
+    <string name="my_rewards_btn_text">My rewards</string>
+    <string name="first_barChart_title">Amounts of materials in percentage</string>
+    <string name="second_barChart_title">Amounts of glass materials in percentage</string>
+    <string name="third_barChart_title">Amounts of paper materials in percentage</string>
+    <string name="fourth_barChart_title">Amounts of plastic materials in percentage</string>
+    <string name="fifth_barChart_title">Amounts of aluminum materials in percentage</string>
 </resources>

@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.example.trash2cash.Entities.User;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -25,7 +26,7 @@ import java.util.HashMap;
 public class UserProfileActivity extends AppCompatActivity {
 
     //temp user
-    User user = new User("Evi", "abc", 100, "kati");
+    User user = new User("Evi", 0, 100, 0);
     //User user = RecyclableManager.getRecyclableManager().getUser();
     HashMap<String, Integer> materials_map;
     HashMap<String, HashMap<String,Integer>> items_map;
@@ -36,7 +37,7 @@ public class UserProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
-        user.setPoints(340);
+        user.setRewardPoints(340);
 
         //temp data for materials and their amounts
         user.putMaterials_and_Amounts("GLASS", 20);
@@ -110,7 +111,7 @@ public class UserProfileActivity extends AppCompatActivity {
         //set data to users info
         username.setText(user.getName());
         level.setText(String.valueOf(user.getLevel()));
-        points.setText(String.valueOf(user.getPoints()));
+        points.setText(String.valueOf(user.getRewardPoints()));
     }
 
     public void setDataPieChart(ArrayList<Float> percentages) {
@@ -173,11 +174,11 @@ public class UserProfileActivity extends AppCompatActivity {
         ArrayList<String> items_names = new ArrayList<>();
         //take the specific value for each material and create a new BarEntry
         HashMap<String,Float> temp = percentages.get(material);
-        int intex=0;
+        int index=0;
         for(String key: temp.keySet()) {
-            itemsAm.add(new BarEntry(intex, temp.get(key)));
+            itemsAm.add(new BarEntry(index, temp.get(key)));
             items_names.add(key);
-            intex++;
+            index++;
         }
 
 
