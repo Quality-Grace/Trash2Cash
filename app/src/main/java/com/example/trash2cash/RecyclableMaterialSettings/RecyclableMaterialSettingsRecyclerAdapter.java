@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.trash2cash.DB.OkHttpHandler;
 import com.example.trash2cash.Entities.RecyclableMaterial;
-import com.example.trash2cash.Entities.Reward;
 import com.example.trash2cash.R;
 import com.example.trash2cash.Entities.RecyclableMaterialTypes;
 import com.example.trash2cash.RewardSettings.UserInputParser;
@@ -128,7 +127,7 @@ public class RecyclableMaterialSettingsRecyclerAdapter extends RecyclerView.Adap
             super(itemView);
 
             textView = itemView.findViewById(R.id.textView);
-            imageView = itemView.findViewById(R.id.imageView);
+            imageView = itemView.findViewById(R.id.profile_photo);
             expBar = itemView.findViewById(R.id.expBar);
             expNum = itemView.findViewById(R.id.expNum);
             rewardBar = itemView.findViewById(R.id.rewardBar);

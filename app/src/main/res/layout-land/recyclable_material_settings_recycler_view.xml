@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/profile_photo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:alpha="0.3"
@@ -45,7 +45,7 @@
             android:layout_marginEnd="10dp"
             android:gravity="end"
             android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView"
+            app:layout_constraintBottom_toBottomOf="@+id/profile_photo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
