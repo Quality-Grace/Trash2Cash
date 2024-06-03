@@ -14,8 +14,6 @@ import com.example.trash2cash.Entities.Request;
 import com.example.trash2cash.R;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class AdminRequestsLoggerActivity extends AppCompatActivity implements AdminRequestsLoggerInterface{
 
@@ -34,9 +32,7 @@ public class AdminRequestsLoggerActivity extends AppCompatActivity implements Ad
         Admin admin = Admin.getAdmin();
 
         for(Integer user_id : admin.getRecyclableRequests().keySet()){
-            for(Request request : admin.getRecyclableRequests().get(user_id)){
-                itemList.add(request);
-            }
+            itemList.addAll(admin.getRecyclableRequests().get(user_id));
         }
 
 

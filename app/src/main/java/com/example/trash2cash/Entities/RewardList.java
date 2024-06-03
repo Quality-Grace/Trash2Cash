@@ -5,8 +5,10 @@ import com.example.trash2cash.DB.OkHttpHandler;
 import java.util.ArrayList;
 
 public class RewardList extends ArrayList<Reward> {
-    public RewardList(){
-        String url= OkHttpHandler.getPATH()+"populateRewards.php";
+    public RewardList() {
+
+    }
+    public RewardList(String url){
         try {
             OkHttpHandler okHttpHandler = new OkHttpHandler();
             this.addAll(okHttpHandler.populateRewards(url));

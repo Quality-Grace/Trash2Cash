@@ -1,6 +1,5 @@
 package com.example.trash2cash.AdminRequestsLogger;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,7 +76,6 @@ public class AdminRequestsLoggerAdapter extends RecyclerView.Adapter<AdminReques
 
             approveView.setOnClickListener(view -> {
                 int position = getAdapterPosition();
-                RecyclableManager recyclableManager = RecyclableManager.getRecyclableManager();
                 Request request = requestList.get(position);
                 int user_id = request.getUser_id();
                 Admin.getAdmin().approve(user_id, request);
@@ -86,7 +84,6 @@ public class AdminRequestsLoggerAdapter extends RecyclerView.Adapter<AdminReques
             });
             rejectView.setOnClickListener(view -> {
                 int position = getAdapterPosition();
-                RecyclableManager recyclableManager = RecyclableManager.getRecyclableManager();
                 Request request = requestList.get(position);
                 int user_id = request.getUser_id();
                 Admin.getAdmin().reject(user_id, request);

@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.trash2cash.DB.OkHttpHandler;
 import com.example.trash2cash.imageGallery.ImagePickerActivity;
@@ -25,11 +26,10 @@ import com.example.trash2cash.Entities.RewardList;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Collections;
 import java.util.Objects;
 
-public class RewardSettingsActivity extends AppCompatActivity implements RewardRecyclerInterface{
-    private final RewardList rewardList = new RewardList();
+public class RewardSettingsActivity extends AppCompatActivity implements RewardSettingsRecyclerInterface {
+    private final RewardList rewardList = new RewardList(OkHttpHandler.getPATH()+"populateRewards.php");
     private RewardSettingsRecyclerAdapter adapter;
 
     @Override
@@ -50,10 +50,10 @@ public class RewardSettingsActivity extends AppCompatActivity implements RewardR
         SnapHelper helper = new LinearSnapHelper();
         helper.attachToRecyclerView(recyclerView);
 
-        // Adds a listener to the addCardButton
-        // When the addCardButton is clicked a new card is added the recycler view
-        ImageView addCardButton = findViewById(R.id.addCardButton);
-        addCardButton.setOnClickListener(addCardListener());
+        findViewById(R.id.rewardSettingsCard).setOnLongClickListener(view -> {
+            addCard();
+            return true;
+        });
 
         ImageView image = findViewById(R.id.addRewardImage);
 
@@ -80,77 +80,56 @@ public class RewardSettingsActivity extends AppCompatActivity implements RewardR
             Intent intent = new Intent(this, ImagePickerActivity.class);
             launcher.launch(intent);
         });
+
+        Toast.makeText(getApplicationContext(), "Long tap on card to add/remove a reward", Toast.LENGTH_LONG).show();
     }
 
     // Adds a new reward to the list
-    public View.OnClickListener addCardListener(){
-        return view -> {
-            String title = UserInputParser.parseEditableTextToString(((EditText) findViewById(R.id.addRewardTitleText)).getText());
-            int cost = UserInputParser.parseEditableTextToInt(((EditText) findViewById(R.id.addCostText)).getText());
-            int level = UserInputParser.parseEditableTextToInt(((EditText) findViewById(R.id.addLevelRequiredText)).getText());
+    public void addCard(){
+        String title = UserInputParser.parseEditableTextToString(((EditText) findViewById(R.id.addRewardTitleText)).getText());
+        int cost = UserInputParser.parseEditableTextToInt(((EditText) findViewById(R.id.addCostText)).getText());
+        int level = UserInputParser.parseEditableTextToInt(((EditText) findViewById(R.id.addLevelRequiredText)).getText());
 
-            String icon = (String) findViewById(R.id.addRewardImage).getTag();
+        String icon = (String) findViewById(R.id.addRewardImage).getTag();
 
-            if(icon == null) {
-                icon = "android.resource://"+ Objects.requireNonNull(R.class.getPackage()).getName()+"/"+R.drawable.ic_launcher_foreground;
-            }
+        if(icon == null) {
+            icon = "android.resource://"+ Objects.requireNonNull(R.class.getPackage()).getName()+"/"+R.drawable.ic_launcher_foreground;
+        }
 
-            Reward reward = new Reward(title, cost, level, icon);
-            rewardList.add(reward);
-            int position = rewardList.size()==0 ? 0: rewardList.size()-1;
-            OkHttpHandler okHttpHandler = new OkHttpHandler();
-            try {
-                okHttpHandler.insertReward(OkHttpHandler.getPATH()+"insertReward.php?POSITION=" + position + "&COST=" + reward.getCost() + "&LEVEL=" + reward.getLevel() + "&ICON=" + reward.getIcon() + "&TITLE=" + reward.getTitle());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        Reward reward = new Reward(title, cost, level, icon);
+        rewardList.add(reward);
+        int position = rewardList.size()==0 ? 0: rewardList.size()-1;
+        OkHttpHandler okHttpHandler = new OkHttpHandler();
+        try {
+            okHttpHandler.insertReward(OkHttpHandler.getPATH()+"insertReward.php?COST=" + reward.getCost() + "&LEVEL=" + reward.getLevel() + "&ICON=" + reward.getIcon() + "&TITLE=" + reward.getTitle() + "&CODE=" + reward.getCode());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-            adapter.notifyItemInserted(position);
-        };
+        adapter.notifyItemInserted(position);
+        Toast.makeText(getApplicationContext(), "New reward was added to the list!", Toast.LENGTH_SHORT).show();
     }
 
     // Removes a reward from the list
     @Override
-    public void removeCardOnClick(int position) {
+    public void removeCardOnLongClick(int position) {
         View currentFocus = getCurrentFocus();
         if(currentFocus!=null) currentFocus.clearFocus();
 
         OkHttpHandler okHttpHandler = new OkHttpHandler();
         try{
-            okHttpHandler.deleteReward(OkHttpHandler.getPATH()+"deleteReward.php?POSITION=" + position);
+            okHttpHandler.deleteReward(OkHttpHandler.getPATH()+"deleteReward.php?CODE=\"" + rewardList.get(position).getCode() + "\"");
         } catch (Exception e) {
             e.printStackTrace();
         }
-        rewardList.remove(position);
+        rewardList.remove(rewardList.get(position));
         adapter.notifyItemRemoved(position);
-    }
-
-    @Override
-    public void moveCardUp(int position) {
-        if(position>0){
-            Collections.swap(rewardList, position, position-1);
-            try {
-                updateReward(rewardList.get(position), position);
-                updateReward(rewardList.get(position-1), position-1);
-            } catch(Exception e){
-                e.printStackTrace();
-            }
-            adapter.notifyItemMoved(position, position-1);
-        } else if(rewardList.size()>0){
-            Collections.swap(rewardList, position, position+1);
-            try {
-                updateReward(rewardList.get(position), position);
-                updateReward(rewardList.get(position+1), position+1);
-            } catch(Exception e){
-                e.printStackTrace();
-            }
-            adapter.notifyItemMoved(position, position+1);
-        }
+        Toast.makeText(getApplicationContext(), "The reward was removed from the list!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void updateReward(Reward reward, int position) throws Exception {
         OkHttpHandler okHttpHandler = new OkHttpHandler();
-        okHttpHandler.updateReward(OkHttpHandler.getPATH()+"updateReward.php?POSITION=" + position + "&COST=" + reward.getCost() + "&LEVEL=" + reward.getLevel() + "&ICON=" + reward.getIcon() + "&TITLE=" + reward.getTitle());
+        okHttpHandler.updateReward(OkHttpHandler.getPATH()+"updateReward.php?COST=" + reward.getCost() + "&LEVEL=" + reward.getLevel() + "&ICON=" + reward.getIcon() + "&TITLE=" + reward.getTitle() + "&CODE=\"" + reward.getCode() + "\"");
     }
 }

@@ -7,12 +7,15 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.trash2cash.Entities.RecyclableManager;
+import com.example.trash2cash.Entities.User;
 import com.example.trash2cash.R;
 import com.example.trash2cash.Entities.RewardList;
 
@@ -23,11 +26,15 @@ public class RewardsRecyclerAdapter extends RecyclerView.Adapter<RewardsRecycler
     private final Context context;
     private final RewardList rewardList;
     private final Boolean available;
+    private final RewardRecyclerInterface rewardsRecyclerAdapter;
+    private final User currentUser;
 
-    public RewardsRecyclerAdapter(Context context, RewardList rewardList, boolean available){
+    public RewardsRecyclerAdapter(Context context, RewardList rewardList, boolean available, RewardRecyclerInterface rewardsRecyclerAdapter){
         this.context = context;
         this.rewardList = rewardList;
         this.available = available;
+        this.rewardsRecyclerAdapter = rewardsRecyclerAdapter;
+        this.currentUser = RecyclableManager.getRecyclableManager().getUser();
     }
 
     @NonNull
@@ -37,7 +44,7 @@ public class RewardsRecyclerAdapter extends RecyclerView.Adapter<RewardsRecycler
         View view;
         if(available) view = inflater.inflate(R.layout.available_rewards_recycler_view, parent, false);
         else view = inflater.inflate(R.layout.other_rewards_recycler_view, parent, false);
-        return new RewardsRecyclerAdapter.MyViewHolder(view);
+        return new RewardsRecyclerAdapter.MyViewHolder(view, rewardsRecyclerAdapter, available);
     }
 
     @Override
@@ -57,11 +64,11 @@ public class RewardsRecyclerAdapter extends RecyclerView.Adapter<RewardsRecycler
         }
 
         if(!available) {
-            String requirement = rewardList.get(position).getLevel() + " points left";
+            String requirement = rewardList.get(position).getCost() - currentUser.getRewardPoints() + " points left";
             holder.requiredLevelText.setText(requirement);
             holder.requiredLevelText.setMovementMethod(new ScrollingMovementMethod());
 
-            requirement = rewardList.get(position).getCost() + " levels left";
+            requirement = rewardList.get(position).getLevel() - currentUser.getLevel()+ " levels left";
             holder.requiredCostText.setText(requirement);
             holder.requiredCostText.setMovementMethod(new ScrollingMovementMethod());
         }
@@ -76,7 +83,7 @@ public class RewardsRecyclerAdapter extends RecyclerView.Adapter<RewardsRecycler
         private final TextView costText, requiredLevelText, requiredCostText, titleText;
         private final ImageView rewardImage;
 
-        public MyViewHolder(@NonNull View itemView) {
+        public MyViewHolder(@NonNull View itemView, RewardRecyclerInterface rewardRecyclerInterface, boolean available) {
             super(itemView);
 
             titleText = itemView.findViewById(R.id.rewardTitleText);
@@ -84,6 +91,19 @@ public class RewardsRecyclerAdapter extends RecyclerView.Adapter<RewardsRecycler
             requiredLevelText = itemView.findViewById(R.id.requiredLevelText);
             requiredCostText = itemView.findViewById(R.id.requiredCostText);
             rewardImage = itemView.findViewById(R.id.rewardImage);
+
+            if(available){
+                Button claimRewardButton = itemView.findViewById(R.id.claimRewardButton);
+                claimRewardButton.setOnClickListener(view -> {
+                    if(rewardRecyclerInterface != null){
+                        int pos = getAdapterPosition();
+
+                        if(pos != RecyclerView.NO_POSITION){
+                            rewardRecyclerInterface.claimReward(pos);
+                        }
+                    }
+                });
+            }
         }
     }
 }

@@ -13,7 +13,7 @@ public class User {
 
     private Map<Integer, Request> userRequestList;
 
-
+    private RewardList rewardList;
 
     public User(String name, int id, float level, float rewardPoints) {
         this.name = name;
@@ -21,6 +21,7 @@ public class User {
         this.level = level;
         this.rewardPoints = rewardPoints;
         userRequestList = new HashMap<>();
+        this.rewardList = new RewardList();
     }
 
     public String getName() {
@@ -59,4 +60,16 @@ public class User {
         this.level += level;
     }
 
+    public void addReward(Reward reward) { this.rewardList.add(reward); }
+
+    public RewardList getRewardList() {
+        return this.rewardList;
+    }
+
+    public boolean hasReward(Reward reward) {
+        for(Reward r : this.rewardList){
+            if(reward.equals(r)) return true;
+        }
+        return false;
+    }
 }

@@ -4,119 +4,102 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <FrameLayout
+    <androidx.cardview.widget.CardView
+        android:id="@+id/rewardSettingsCard"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:padding="20dp"
+        app:cardBackgroundColor="@color/reward_card"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/rewardSettingsCard"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:padding="20dp"
-                app:cardBackgroundColor="@color/reward_card"
-                app:cardCornerRadius="15dp"
-                app:cardElevation="8dp">
+            <ImageView
+                android:id="@+id/rewardImage"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center|start"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/reward_image"
+                app:srcCompat="@drawable/ic_launcher_foreground" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/rewardTitleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:autofillHints="@string/empty_text_field"
+                    android:hint="@string/reward_title_text_value"
+                    android:inputType="text"
+                    android:maxEms="5"
+                    android:maxLength="20"
+                    android:textAlignment="center"
+                    android:textSize="22sp" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_gravity="center"
                     android:orientation="horizontal">
 
-                    <ImageView
-                        android:id="@+id/rewardImage"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_gravity="center|start"
-                        android:layout_margin="10dp"
-                        android:layout_weight="1"
-                        android:contentDescription="@string/reward_image"
-                        app:srcCompat="@drawable/ic_launcher_foreground" />
-
-                    <LinearLayout
-                        android:id="@+id/linearLayout2"
+                    <EditText
+                        android:id="@+id/costText"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
                         android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:autofillHints="@string/empty_num_field"
+                        android:drawableStart="@drawable/reward_points"
+                        android:hint="@string/cost_num_value"
+                        android:inputType="number"
+                        android:maxWidth="20dp"
+                        android:maxEms="3"
+                        android:maxLength="20"
+                        android:singleLine="true"
+                        android:textAlignment="center"
+                        android:textSize="21sp" />
 
-                        <EditText
-                            android:id="@+id/rewardTitleText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:autofillHints="@string/empty_text_field"
-                            android:hint="@string/reward_title_text_value"
-                            android:inputType="text"
-                            android:maxEms="5"
-                            android:maxLength="20"
-                            android:textAlignment="center"
-                            android:textSize="22sp" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:orientation="horizontal">
-
-                            <EditText
-                                android:id="@+id/costText"
-                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginEnd="10dp"
-                                android:layout_weight="1"
-                                android:autofillHints="@string/empty_num_field"
-                                android:drawableStart="@drawable/reward_points"
-                                android:hint="@string/cost_num_value"
-                                android:inputType="number"
-                                android:maxWidth="20dp"
-                                android:maxEms="3"
-                                android:maxLength="20"
-                                android:singleLine="true"
-                                android:textAlignment="center"
-                                android:textSize="21sp" />
-
-                            <EditText
-                                android:id="@+id/levelRequiredText"
-                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginEnd="10dp"
-                                android:layout_weight="1"
-                                android:autofillHints="@string/empty_num_field"
-                                android:drawableStart="@drawable/level"
-                                android:hint="@string/level_num_value"
-                                android:inputType="number"
-                                android:maxWidth="20dp"
-                                android:maxEms="4"
-                                android:maxLength="20"
-                                android:singleLine="true"
-                                android:textAlignment="center"
-                                android:textSize="21sp" />
-                        </LinearLayout>
-                    </LinearLayout>
-
+                    <EditText
+                        android:id="@+id/levelRequiredText"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1"
+                        android:autofillHints="@string/empty_num_field"
+                        android:drawableStart="@drawable/level"
+                        android:hint="@string/level_num_value"
+                        android:inputType="number"
+                        android:maxWidth="20dp"
+                        android:maxEms="4"
+                        android:maxLength="20"
+                        android:singleLine="true"
+                        android:textAlignment="center"
+                        android:textSize="21sp" />
                 </LinearLayout>
+            </LinearLayout>
 
-            </androidx.cardview.widget.CardView>
+        </LinearLayout>
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-        <ImageView
-            android:id="@+id/closeButton"
-            android:layout_width="62dp"
-            android:layout_height="49dp"
-            android:contentDescription="@string/remove_card_symbol"
-            app:srcCompat="@drawable/remove_card_button" />
-
-    </FrameLayout>
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

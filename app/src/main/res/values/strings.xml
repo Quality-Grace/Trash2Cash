@@ -53,4 +53,5 @@
     <string name="image_gallery_is_empty">The image gallery is empty</string>
     <string name="recyclablematerialsettings">RecyclableMaterialSettings</string>
     <string name="rewardsettings">RewardSettings</string>
+    <string name="claimed_rewards">Claimed Rewards</string>
 </resources>

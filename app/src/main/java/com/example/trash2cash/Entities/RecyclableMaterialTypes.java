@@ -14,4 +14,20 @@ public class RecyclableMaterialTypes extends ArrayList<RecyclableMaterial> {
             e.printStackTrace();
         }
     }
+
+    public ArrayList<String> getTypes(){
+        ArrayList<String> typesList = new ArrayList<>();
+        for(RecyclableMaterial material : this){
+            typesList.add(material.getType());
+        }
+
+        return typesList;
+    }
+
+    public RecyclableMaterial getRecyclableMaterial(String type) {
+        for(RecyclableMaterial material : this){
+            if(material.isOfType(type)) return material;
+        }
+        return null;
+    }
 }

@@ -13,7 +13,6 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.example.trash2cash.DB.OkHttpHandler;
-import com.example.trash2cash.LoginRegisterActivity;
 import com.example.trash2cash.R;
 
 /**
@@ -25,7 +24,6 @@ public class RegisterUser extends Fragment {
 
     TextView email, password;
     private Button button;
-    private String ip;
 
     public RegisterUser() {
         // Required empty public constructor

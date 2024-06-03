@@ -23,9 +23,9 @@ import java.net.URL;
 public class RewardSettingsRecyclerAdapter extends RecyclerView.Adapter<RewardSettingsRecyclerAdapter.MyViewHolder> {
     private final Context context;
     private final RewardList rewardList;
-    private final RewardRecyclerInterface rewardRecyclerInterface;
+    private final RewardSettingsRecyclerInterface rewardRecyclerInterface;
 
-    public RewardSettingsRecyclerAdapter(Context context, RewardList rewardList, RewardRecyclerInterface rewardRecyclerInterface){
+    public RewardSettingsRecyclerAdapter(Context context, RewardList rewardList, RewardSettingsRecyclerInterface rewardRecyclerInterface){
         this.context = context;
         this.rewardList = rewardList;
         this.rewardRecyclerInterface = rewardRecyclerInterface;
@@ -48,7 +48,7 @@ public class RewardSettingsRecyclerAdapter extends RecyclerView.Adapter<RewardSe
         setupEditTextListener(holder.costText, position, "cost");
 
         holder.levelRequiredText.setText(String.valueOf(rewardList.get(position).getLevel()));
-        setupEditTextListener(holder.costText, position, "level");
+        setupEditTextListener(holder.levelRequiredText, position, "level");
 
         try {
             URL url = new URL(rewardList.get(position).getIcon());
@@ -88,24 +88,13 @@ public class RewardSettingsRecyclerAdapter extends RecyclerView.Adapter<RewardSe
         private final EditText costText, levelRequiredText, titleText;
         private final ImageView rewardImage;
 
-        public MyViewHolder(@NonNull View itemView, RewardRecyclerInterface rewardRecyclerInterface) {
+        public MyViewHolder(@NonNull View itemView, RewardSettingsRecyclerInterface rewardRecyclerInterface) {
             super(itemView);
 
             titleText = itemView.findViewById(R.id.rewardTitleText);
             costText = itemView.findViewById(R.id.costText);
             levelRequiredText = itemView.findViewById(R.id.levelRequiredText);
             rewardImage = itemView.findViewById(R.id.rewardImage);
-            ImageView closeButton = itemView.findViewById(R.id.closeButton);
-
-            closeButton.setOnClickListener(view -> {
-                if(rewardRecyclerInterface != null){
-                    int pos = getAdapterPosition();
-
-                    if(pos != RecyclerView.NO_POSITION){
-                        rewardRecyclerInterface.removeCardOnClick(pos);
-                    }
-                }
-            });
 
             CardView cardView = itemView.findViewById(R.id.rewardSettingsCard);
             cardView.setOnLongClickListener(view -> {
@@ -113,7 +102,7 @@ public class RewardSettingsRecyclerAdapter extends RecyclerView.Adapter<RewardSe
                     int pos = getAdapterPosition();
 
                     if(pos != RecyclerView.NO_POSITION){
-                        rewardRecyclerInterface.moveCardUp(pos);
+                        rewardRecyclerInterface.removeCardOnLongClick(pos);
                         return true;
                     }
                 }

@@ -9,8 +9,6 @@ import java.util.Objects;
 
 public class Admin {
 
-    private final String name = "Admin";
-
     private static Admin instance;
 
     private final Map<Integer, List<Request>> recyclableRequests;

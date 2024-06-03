@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.trash2cash.DB.OkHttpHandler;
 import com.example.trash2cash.Entities.RecyclableMaterial;
-import com.example.trash2cash.Entities.Reward;
 import com.example.trash2cash.R;
 import com.example.trash2cash.Entities.RecyclableMaterialTypes;
 import com.example.trash2cash.RewardSettings.UserInputParser;
@@ -107,7 +106,7 @@ public class RecyclableMaterialSettingsRecyclerAdapter extends RecyclerView.Adap
     private void setupEdiTextListener(SeekBar seekBar, EditText editText, int position, String type) {
         editText.setOnFocusChangeListener((v, hasFocus) -> {
             int amount = UserInputParser.parseEditableTextToInt(editText.getText());
-            if(amount>100) amount = 100;
+            if(amount>1000) amount = 1000;
 
             if(type.equals("exp")){
                 recyclableMaterialTypes.get(position).setExp(amount);

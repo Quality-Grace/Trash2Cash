@@ -1,4 +1,3 @@
-Use the sql file to create the necessary databases.
 Set your ip on the network_security_config.xml and the OkHttpHandler.java file.
 In the OkHttpHandler.java file you can change the name of the main directory by changing the path const.
 The default name of that directory is "trash2cash".

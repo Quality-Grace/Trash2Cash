@@ -16,11 +16,11 @@ import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
-import com.example.trash2cash.Entities.MaterialType;
 import com.example.trash2cash.Entities.RecyclableItem;
 import com.example.trash2cash.Entities.RecyclableItemType;
 import com.example.trash2cash.Entities.RecyclableManager;
 import com.example.trash2cash.Entities.RecyclableMaterial;
+import com.example.trash2cash.Entities.RecyclableMaterialTypes;
 import com.example.trash2cash.Entities.Request;
 import com.example.trash2cash.Entities.RequestStatus;
 import com.example.trash2cash.Entities.User;
@@ -64,10 +64,7 @@ public class MaterialLoggerActivity extends AppCompatActivity {
         return view -> {
             String item = ((Spinner) findViewById(R.id.itemSelector)).getSelectedItem().toString();
             String material = ((Spinner) findViewById(R.id.materialSelector)).getSelectedItem().toString();
-
-            // Add the item to the RecyclerView
-            RecyclerView recyclerView = findViewById(R.id.recyclerView);
-
+            
             RecyclableManager recyclableManager = RecyclableManager.getRecyclableManager();
             User user = recyclableManager.getUser();
             RecyclableMaterial recyclableMaterial = recyclableManager.getRecyclableMaterial(material);
@@ -117,22 +114,7 @@ public class MaterialLoggerActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 CardView cardView = findViewById(R.id.addItemCardView);
                 String selectedMaterial = materialSelector.getSelectedItem().toString();
-                switch (selectedMaterial){
-                    case "Plastic":
-                        cardView.setCardBackgroundColor(getResources().getColor(R.color.plastic));
-                        break;
-                    case "Metal":
-                        cardView.setCardBackgroundColor(getResources().getColor(R.color.aluminium));
-                        break;
-                    case "Glass":
-                        cardView.setCardBackgroundColor(getResources().getColor(R.color.glass));
-                        break;
-                    case "Paper":
-                        cardView.setCardBackgroundColor(getResources().getColor(R.color.paper));
-                        break;
-                    default:
-                }
-
+                cardView.setCardBackgroundColor(new RecyclableMaterialTypes().getRecyclableMaterial(selectedMaterial).getColour());
             }
 
             @Override
@@ -148,15 +130,9 @@ public class MaterialLoggerActivity extends AppCompatActivity {
 
     @NonNull
     private SpinnerAdapter getStringMaterialArrayAdapter() {
-        List<String> spinnerItems = new ArrayList<>();
-        spinnerItems.add(MaterialType.PLASTIC.getMaterialType());
-        spinnerItems.add(MaterialType.METAL.getMaterialType());
-        spinnerItems.add(MaterialType.GLASS.getMaterialType());
-        spinnerItems.add(MaterialType.PAPER.getMaterialType());
-
         // Create an ArrayAdapter using the list of items and a default spinner layout
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, spinnerItems);
+                android.R.layout.simple_spinner_item, new RecyclableMaterialTypes().getTypes());
 
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

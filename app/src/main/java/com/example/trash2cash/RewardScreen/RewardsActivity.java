@@ -10,37 +10,82 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
 
+import com.example.trash2cash.DB.OkHttpHandler;
+import com.example.trash2cash.Entities.RecyclableManager;
+import com.example.trash2cash.Entities.Reward;
+import com.example.trash2cash.Entities.User;
 import com.example.trash2cash.R;
 import com.example.trash2cash.Entities.RewardList;
 
+import java.util.Comparator;
 
-public class RewardsActivity extends AppCompatActivity {
-    private final RewardList rewardList = new RewardList();
+
+public class RewardsActivity extends AppCompatActivity implements RewardRecyclerInterface {
+    private final RewardList rewardList = new RewardList(OkHttpHandler.getPATH()+"populateRewards.php");
+    private final  RewardList availableRewards = new RewardList();
+    private final RewardList otherRewards = new RewardList();
+    private RewardsRecyclerAdapter availableRewardsAdapter, otherRewardsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rewards);
 
-        setAmountOfRewards(findViewById (R.id.availableRewardsText), rewardList.size());
-        setAmountOfRewards(findViewById (R.id.otherRewardsText), rewardList.size());
+        // Fills the availableRewards and otherRewards lists
+        initializeLists();
+
+        setAmountOfRewards(findViewById (R.id.availableRewardsText), availableRewards.size());
+        setAmountOfRewards(findViewById (R.id.otherRewardsText), otherRewards.size());
 
         RecyclerView availableForYouRecycler = findViewById(R.id.availableForYouRecycler);
-        initializeRecycler(availableForYouRecycler, rewardList, true);
+        initializeRecycler(availableForYouRecycler, availableRewards, true);
 
         RecyclerView otherRewardsRecycler = findViewById(R.id.otherRewardsRecycler);
-        initializeRecycler(otherRewardsRecycler, rewardList, false);
+        initializeRecycler(otherRewardsRecycler, otherRewards, false);
     }
 
+    public void initializeLists(){
+        User currentUser =  RecyclableManager.getRecyclableManager().getUser();
+        for(Reward reward : rewardList){
+            if(!currentUser.hasReward(reward)){
+                if(reward.getLevel() <= currentUser.getLevel() && reward.getCost() <= currentUser.getRewardPoints()){
+                    availableRewards.add(reward);
+                } else {
+                    otherRewards.add(reward);
+                }
+            }
+        }
+
+        availableRewards.sort(Comparator.comparingInt(Reward::getCost));
+        otherRewards.sort(Comparator.comparingInt(Reward::getLevel));
+    }
+
+    // Adds the amount of rewards to the given textview
     public void setAmountOfRewards(TextView textView, int amount) {
-        String text = textView.getText() + " (" + amount + ")";
+        String text = textView.getText().toString() + " (" + amount + ")";
         textView.setText(text);
+    }
+
+    // Updates the amount of rewards of the given textview
+    private void updateAmountOfRewards(TextView textView, int amount){
+        String text = textView.getText().toString();
+        int indexOfPar = text.indexOf("(");
+
+        if(indexOfPar != -1) {
+            text = text.substring(0, indexOfPar-1) + " (" + amount + ")";
+            textView.setText(text);
+        }
     }
 
     public void initializeRecycler(RecyclerView recycler, RewardList rewardList, Boolean available){
         // Adds CardView components to the Recycler
-        RewardsRecyclerAdapter adapter = new RewardsRecyclerAdapter(this, rewardList, available);
-        recycler.setAdapter(adapter);
+        if(available) {
+            availableRewardsAdapter = new RewardsRecyclerAdapter(this, rewardList, available, this);
+            recycler.setAdapter(availableRewardsAdapter);
+        } else {
+            otherRewardsAdapter = new RewardsRecyclerAdapter(this, rewardList, available, this);
+            recycler.setAdapter(otherRewardsAdapter);
+        }
 
         // Sets a vertical layout for the Recycler
         recycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -48,5 +93,15 @@ public class RewardsActivity extends AppCompatActivity {
         // Adds snappy scrolling
         SnapHelper helper = new LinearSnapHelper();
         helper.attachToRecyclerView(recycler);
+    }
+
+    @Override
+    public void claimReward(int position) {
+        User currentUser =  RecyclableManager.getRecyclableManager().getUser();
+
+        currentUser.addReward(availableRewards.get(position));
+        availableRewards.remove(position);
+        availableRewardsAdapter.notifyItemRemoved(position);
+        updateAmountOfRewards(findViewById (R.id.availableRewardsText), availableRewards.size());
     }
 }

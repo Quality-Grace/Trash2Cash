@@ -9,7 +9,7 @@
         $host="localhost";
         $uname="root";
         $pass="";
-        $dbname="RecyclableMaterialTypes";
+        $dbname="trash2cash";
 
         $dbh = mysqli_connect($host,$uname,$pass) or die("cannot connect");
         mysqli_select_db($dbh, $dbname);

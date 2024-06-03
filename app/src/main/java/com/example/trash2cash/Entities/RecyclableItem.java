@@ -1,7 +1,5 @@
 package com.example.trash2cash.Entities;
 
-import android.media.Image;
-
 public class RecyclableItem {
 
     private final RecyclableMaterial material;

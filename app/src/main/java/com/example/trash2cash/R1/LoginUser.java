@@ -13,7 +13,6 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.example.trash2cash.DB.OkHttpHandler;
-import com.example.trash2cash.LoginRegisterActivity;
 import com.example.trash2cash.MainActivity;
 import com.example.trash2cash.R;
 import com.google.android.material.textfield.TextInputLayout;
@@ -23,7 +22,6 @@ import java.util.Objects;
 public class LoginUser extends Fragment {
     TextInputLayout email, password;
     private Button button;
-    private String ip;
 
     public LoginUser() {
         // Required empty public constructor

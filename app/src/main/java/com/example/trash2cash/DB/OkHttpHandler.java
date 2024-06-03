@@ -3,7 +3,6 @@ package com.example.trash2cash.DB;
 import android.os.StrictMode;
 
 import com.example.trash2cash.Entities.RecyclableMaterial;
-import com.example.trash2cash.LoginRegisterActivity;
 import com.example.trash2cash.Entities.Reward;
 
 import org.json.JSONArray;
@@ -49,14 +48,14 @@ public class OkHttpHandler {
             JSONArray jsonArray = new JSONArray(data);
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                int position = jsonObject.getInt("POSITION");
                 int cost = jsonObject.getInt("COST");
                 int level = jsonObject.getInt("LEVEL");
+                String code = jsonObject.getString("CODE");
                 String icon = jsonObject.getString("ICON");
                 String title = jsonObject.getString("TITLE");
 
-                Reward reward = new Reward(title, cost, level, icon);
-                rewardList.add(position, reward);
+                Reward reward = new Reward(title, cost, level, icon, code);
+                rewardList.add(reward);
             }
         }catch (JSONException e) {
             e.printStackTrace();
@@ -153,8 +152,9 @@ public class OkHttpHandler {
                 int rewardAmount = jsonObject.getInt("REWARD_AMOUNT");
                 String type = jsonObject.getString("TYPE");
                 String image = "recyclableMaterialTypes"+jsonObject.getString("IMAGE");
+                String colour = jsonObject.getString("COLOUR");
 
-                RecyclableMaterial recyclableMaterial = new RecyclableMaterial(type, exp, rewardAmount, image);
+                RecyclableMaterial recyclableMaterial = new RecyclableMaterial(type, exp, rewardAmount, image, colour);
                 recyclableMaterialArrayList.add(recyclableMaterial);
             }
         }catch (JSONException e) {
