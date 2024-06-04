@@ -21,13 +21,14 @@ if ($conn->connect_error) {
 
 // Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $id = $_POST['id'];
     $email = $_POST['email'];
     $password = $_POST['password'];
+    $level = $_POST['level'];
+    $rewardPoints = $_POST['rewardPoints'];
 
     // Prepare and bind
-    $stmt = $conn->prepare("INSERT INTO users (id, email, password) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $id, $email, $password);
+    $stmt = $conn->prepare("INSERT INTO users (id, email, password, level, rewardPoints) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("ssss", $email, $password, $level, $rewardPoints);
 
     // Execute the statement
     if ($stmt->execute()) {
