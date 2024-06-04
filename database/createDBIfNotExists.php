@@ -44,6 +44,33 @@ if ($conn->query($sql) === TRUE) {
     echo "Error creating table: " . $conn->error;
 }
 
+$sql = "CREATE TABLE IF NOT EXISTS requests (
+    id INT(6) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    user_id INT(6) NOT NULL,
+    item_id INT(6) NOT NULL,
+    FOREIGN KEY (item_id) REFERENCES items(id)
+    FOREIGN KEY (user_id) REFERENCES users(id)
+    )";
+
+if ($conn->query($sql) === TRUE) {
+    echo "Table requests created successfully";
+} else {
+    echo "Error creating table: " . $conn->error;
+}
+
+$sql = "CREATE TABLE IF NOT EXISTS items (
+    id INT(6) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    material_type VARCHAR(20) NOT NULL,
+    item_type VARCHAR(50) NOT NULL,
+    FOREIGN KEY (material_type) REFERENCES RecyclableMaterialTypes(TYPE)
+    )";
+
+if ($conn->query($sql) === TRUE) {
+    echo "Table items created successfully";
+} else {
+    echo "Error creating table: " . $conn->error;
+}
+
 // Create the rewards table
 $sql = "CREATE TABLE IF NOT EXISTS rewards (
     COST INT NOT NULL,
