@@ -30,9 +30,11 @@ $conn->select_db($dbname);
 
 // SQL statement to create a table
 $sql = "CREATE TABLE IF NOT EXISTS users (
-    id INT(6) UNSIGNED PRIMARY KEY,
+    id INT(6) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     email VARCHAR(50) NOT NULL,
     password VARCHAR(255) NOT NULL,
+    level FLOAT NOT NULL,
+    rewardPoints FLOAT NOT NULL,
     reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)";
 
 // Execute the SQL statement

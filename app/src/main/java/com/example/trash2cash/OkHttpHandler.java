@@ -10,7 +10,6 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class OkHttpHandler {
-    private int id;
 
     public OkHttpHandler() throws IOException {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -49,11 +48,11 @@ public class OkHttpHandler {
 
 
         RequestBody body = new FormBody.Builder()
-                .add("id", String.valueOf(id))
                 .add("email", email)
                 .add("password", password)
+                .add("level", "0")
+                .add("rewardPoints", "0")
                 .build();
-        id++;
         Request request = new Request.Builder()
                 .url(url)
                 .post(body)
