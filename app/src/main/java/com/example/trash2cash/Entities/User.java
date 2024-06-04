@@ -8,11 +8,8 @@ public class User {
     private String name;
     private int id;
     private float level;
-
     private float rewardPoints;
-
     private Map<Integer, Request> userRequestList;
-
     private RewardList rewardList;
 
     public User(String name, int id, float level, float rewardPoints) {

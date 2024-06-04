@@ -4,6 +4,7 @@ import android.os.StrictMode;
 
 import com.example.trash2cash.Entities.RecyclableMaterial;
 import com.example.trash2cash.Entities.Reward;
+import com.example.trash2cash.LoginRegisterActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -204,13 +205,13 @@ public class OkHttpHandler {
 
 
         RequestBody body = new FormBody.Builder()
-                .add("id", String.valueOf(id))
                 .add("email", email)
                 .add("password", password)
+                .add("level", "0")
+                .add("rewardPoints", "0")
                 .build();
-        id++;
         Request request = new Request.Builder()
-                .url("http://" + IP + url)
+                .url(url)
                 .post(body)
                 .build();
 
