@@ -1,5 +1,6 @@
 package com.example.trash2cash.RewardScreen;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -14,8 +15,11 @@ import com.example.trash2cash.DB.OkHttpHandler;
 import com.example.trash2cash.Entities.RecyclableManager;
 import com.example.trash2cash.Entities.Reward;
 import com.example.trash2cash.Entities.User;
+import com.example.trash2cash.MainActivity;
+import com.example.trash2cash.MaterialLogger.MaterialLoggerActivity;
 import com.example.trash2cash.R;
 import com.example.trash2cash.Entities.RewardList;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.Comparator;
 
@@ -42,6 +46,22 @@ public class RewardsActivity extends AppCompatActivity implements RewardRecycler
 
         RecyclerView otherRewardsRecycler = findViewById(R.id.otherRewardsRecycler);
         initializeRecycler(otherRewardsRecycler, otherRewards, false);
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setSelectedItemId(R.id.RewardsItem);
+        setupNavigationListener(bottomNavigationView);
+    }
+
+    public void setupNavigationListener(BottomNavigationView bottomNavigationView){
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            if(item.getItemId() == R.id.RecycleItem){
+                startActivity(new Intent(RewardsActivity.this, MaterialLoggerActivity.class));
+            } else if(item.getItemId() == R.id.StatsItem) {
+                startActivity(new Intent(RewardsActivity.this, MainActivity.class));
+            }
+
+            return true;
+        });
     }
 
     public void initializeLists(){
@@ -100,6 +120,9 @@ public class RewardsActivity extends AppCompatActivity implements RewardRecycler
         User currentUser =  RecyclableManager.getRecyclableManager().getUser();
 
         currentUser.addReward(availableRewards.get(position));
+        OkHttpHandler okHttpHandler = new OkHttpHandler();
+        okHttpHandler.updateUserRewardList(currentUser);
+
         availableRewards.remove(position);
         availableRewardsAdapter.notifyItemRemoved(position);
         updateAmountOfRewards(findViewById (R.id.availableRewardsText), availableRewards.size());

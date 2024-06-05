@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/StatsItem"
+        android:icon="@drawable/stats_icon"
+        android:title="@string/stats_item" />
+    <item
+        android:id="@+id/RecycleItem"
+        android:icon="@drawable/recycle_icon"
+        android:title="@string/recycle_item" />
+    <item
+        android:id="@+id/RewardsItem"
+        android:icon="@drawable/rewards_icon"
+        android:title="@string/rewards_item" />
+</menu>

@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.2"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -83,17 +83,24 @@
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
+        <ImageView
+            android:id="@+id/addItemBtn"
+            android:layout_width="80dp"
+            android:layout_height="65dp"
+            android:layout_marginBottom="-45dp"
+            android:contentDescription="@string/addItemBtn"
+            android:layout_gravity="center|top"
+            app:srcCompat="@drawable/add_card_btn" />
+
     </FrameLayout>
 
-    <ImageView
-        android:id="@+id/addItemBtn"
-        android:layout_width="80dp"
-        android:layout_height="65dp"
-        android:layout_marginBottom="-45dp"
-        android:contentDescription="@string/addItemBtn"
-        app:layout_constraintBottom_toBottomOf="@+id/recyclerView"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/add_card_btn" />
+        app:menu="@menu/bottom_navigation_bar_user" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

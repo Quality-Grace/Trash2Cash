@@ -1,5 +1,6 @@
 package com.example.trash2cash.AdminRequestsLogger;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -11,7 +12,10 @@ import androidx.recyclerview.widget.SnapHelper;
 
 import com.example.trash2cash.Entities.Admin;
 import com.example.trash2cash.Entities.Request;
+import com.example.trash2cash.MainActivity;
 import com.example.trash2cash.R;
+import com.example.trash2cash.RewardSettings.RewardSettingsActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
@@ -43,6 +47,22 @@ public class AdminRequestsLoggerActivity extends AppCompatActivity implements Ad
 
         SnapHelper helper = new LinearSnapHelper();
         helper.attachToRecyclerView(recyclerView);
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        setupNavigationListener(bottomNavigationView);
+        bottomNavigationView.setSelectedItemId(R.id.RecycleItem);
+    }
+
+    public void setupNavigationListener(BottomNavigationView bottomNavigationView){
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            if(item.getItemId() == R.id.RewardsItem) {
+                startActivity(new Intent(AdminRequestsLoggerActivity.this, RewardSettingsActivity.class));
+            } else if(item.getItemId() == R.id.StatsItem) {
+                startActivity(new Intent(AdminRequestsLoggerActivity.this, MainActivity.class));
+            }
+
+            return true;
+        });
     }
 
     @Override

@@ -8,6 +8,7 @@ import com.example.trash2cash.Entities.RecyclableManager;
 import com.example.trash2cash.Entities.RecyclableMaterial;
 import com.example.trash2cash.Entities.RequestStatus;
 import com.example.trash2cash.Entities.Reward;
+import com.example.trash2cash.Entities.RewardList;
 import com.example.trash2cash.Entities.User;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -33,9 +34,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class OkHttpHandler {
-    private static final String IP = "172.19.0.1";
-
-    private int id;
+    private static final String IP = "192.168.100.2";
     private static final String PATH = "http://"+IP+"/trash2cash/";
     public OkHttpHandler() {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -181,7 +180,7 @@ public class OkHttpHandler {
         client.newCall(request).execute();
     }
 
-    public boolean loginUser(String url, String email, String password) throws IOException {
+    public boolean loginUser(String email, String password) throws IOException {
         initializeDB_Server();
         OkHttpClient client = new OkHttpClient().newBuilder().build();
 
@@ -191,14 +190,18 @@ public class OkHttpHandler {
                 .build();
 
         Request request = new Request.Builder()
-                .url("http://" + IP + url)
+                .url(PATH+"loginUser.php")
                 .post(body)
                 .build();
 
         Response response = client.newCall(request).execute();
         JsonObject jsonObject = parseUserData(response.body().string());
         assert response.body() != null;
-        User user = new User(jsonObject.get("email").getAsString(),jsonObject.get("id").getAsInt(), jsonObject.get("level").getAsFloat(), jsonObject.get("rewardPoints").getAsFloat());
+
+        Gson gson = new Gson();
+        RewardList rewardList =  gson.fromJson(jsonObject.get("rewardList").getAsString(), RewardList.class);
+
+        User user = new User(jsonObject.get("email").getAsString(), jsonObject.get("username").getAsString(),jsonObject.get("id").getAsInt(), jsonObject.get("level").getAsInt(), jsonObject.get("rewardPoints").getAsInt(), jsonObject.get("image").getAsString(), rewardList);
         RecyclableManager.getRecyclableManager().setActiveUser(user);
         return response.isSuccessful();
     }
@@ -210,25 +213,31 @@ public class OkHttpHandler {
             System.err.println("Error: " + jsonObject.get("error").getAsString());
         } else {
             // Print user details
-            System.out.println("User data: " + jsonObject.toString());
+            System.out.println("User data: " + jsonObject);
         }
         return jsonObject;
     }
 
-    public void registerUser(String url, String email, String password) throws IOException {
+    public void registerUser(String email, String username, String password, String image) throws IOException {
         initializeDB_Server();
+
+        Gson gson = new Gson();
+        String rewardList = gson.toJson(new RewardList());
 
         OkHttpClient clientRe = new OkHttpClient().newBuilder().build();
 
         RequestBody body = new FormBody.Builder()
                 .add("email", email)
+                .add("username", username)
                 .add("password", password)
                 .add("level", "0")
                 .add("rewardPoints", "0")
+                .add("image", image)
+                .add("rewardList", rewardList)
                 .build();
 
         Request request = new Request.Builder()
-                .url("http://" + IP + url)
+                .url(PATH + "addUser.php")
                 .post(body)
                 .build();
 
@@ -242,7 +251,7 @@ public class OkHttpHandler {
     private static void initializeDB_Server() throws IOException {
         OkHttpClient client = new OkHttpClient();
 
-        String urlTmp = "http://" + IP + "/trash2cash/createDBIfNotExists.php";
+        String urlTmp = PATH+"createDBIfNotExists.php";
 
         Request requestTmp = new Request.Builder()
                 .url(urlTmp)
@@ -259,7 +268,7 @@ public class OkHttpHandler {
                 .build();
         Request request = new Request.Builder()
                 .post(body)
-                .url("http://"+IP+"/trash2cash/addItem.php")
+                .url(PATH+"addItem.php")
                 .build();
         Response response = client.newCall(request).execute();
 
@@ -276,7 +285,7 @@ public class OkHttpHandler {
 
         Request request = new Request.Builder()
                 .post(body)
-                .url("http://"+IP+"/trash2cash/takeUserRequests.php")
+                .url(PATH+"takeUserRequests.php")
                 .build();
 
         ArrayList<com.example.trash2cash.Entities.Request> requests = new ArrayList<>();
@@ -312,7 +321,7 @@ public class OkHttpHandler {
 
         Request request = new Request.Builder()
                 .post(body)
-                .url("http://"+IP+"/trash2cash/takeItemById.php")
+                .url(PATH+"takeItemById.php")
                 .build();
 
         try {
@@ -344,7 +353,7 @@ public class OkHttpHandler {
                 .build();
 
         Request request = new Request.Builder()
-                .url("http://"+IP+"/trash2cash/addRequest.php")
+                .url(PATH+"addRequest.php")
                 .post(body)
                 .build();
         Response response = client.newCall(request).execute();
@@ -356,7 +365,7 @@ public class OkHttpHandler {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url("http://" + IP + "/trash2cash/takeAllUsers.php")
+                .url(PATH+"takeAllUsers.php")
                 .post(RequestBody.create(MediaType.parse("application/json"), "{}"))
                 .build();
 
@@ -388,7 +397,7 @@ public class OkHttpHandler {
                 .build();
 
         Request request = new Request.Builder()
-                .url("http://"+IP+"/trash2cash/updateReqStatus.php")
+                .url(PATH+"updateReqStatus.php")
                 .post(body)
                 .build();
 
@@ -410,12 +419,36 @@ public class OkHttpHandler {
                 .build();
 
         Request request = new Request.Builder()
-                .url("http://"+IP+"/trash2cash/updateUser.php")
+                .url(PATH+"updateUser.php")
                 .post(body)
                 .build();
 
         try {
             client.newCall(request).execute();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public void updateUserRewardList(User user){
+        OkHttpClient client = new OkHttpClient().newBuilder().build();
+
+        Gson gson = new Gson();
+        String rewardList = gson.toJson(user.getRewardList());
+
+        RequestBody body = new FormBody.Builder()
+                .add("id", String.valueOf(user.getId()))
+                .add("rewardList", rewardList)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(PATH+"updateUserRewardList.php")
+                .post(body)
+                .build();
+
+        try {
+           client.newCall(request).execute();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -32,9 +32,12 @@ $conn->select_db($dbname);
 $sql = "CREATE TABLE IF NOT EXISTS users (
     id INT(6) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     email VARCHAR(50) NOT NULL,
+    username VARCHAR(50) NOT NULL,
     password VARCHAR(255) NOT NULL,
     level FLOAT NOT NULL,
     rewardPoints FLOAT NOT NULL,
+    image TEXT COLLATE utf8_bin NOT NULL,
+    rewardList TEXT COLLATE utf8_bin NOT NULL,
     reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)";
 
 // Execute the SQL statement
@@ -55,37 +58,30 @@ $sql = "CREATE TABLE IF NOT EXISTS RecyclableMaterialTypes (
 
 if ($conn->query($sql) === TRUE) {
     echo "Table 'RecyclableMaterialTypes' created successfully<br>";
-} else {
-    echo "Error creating table: " . $conn->error . "<br>";
-}
+    // Check if the RecyclableMaterialTypes table is empty
+    $result = $conn->query("SELECT COUNT(*) AS count FROM RecyclableMaterialTypes");
+    $row = $result->fetch_assoc();
+    $count = $row['count'];
 
-// Check if the RecyclableMaterialTypes table is empty
-$result = $conn->query("SELECT COUNT(*) AS count FROM RecyclableMaterialTypes");
-$row = $result->fetch_assoc();
-$count = $row['count'];
+    if ($count == 0) {
+        // Insert values into the RecyclableMaterialTypes table
+        $sql = "INSERT INTO RecyclableMaterialTypes (TYPE, EXP, REWARD_AMOUNT, IMAGE, COLOUR) VALUES
+        ('Paper', 0, 0, '/paper_type.png', '#D1CCBA'),
+        ('Glass', 0, 0, '/glass_type.png', '#9FD7CA'),
+        ('Metal', 0, 0, '/metal_type.png', '#545454'),
+        ('Plastic', 0, 0, '/plastic_type.png', '#376DAE'),
+        ('Other', 0, 0, '/other_type.png', '#8BC34A')";
 
-if ($count == 0) {
-    // Insert values into the RecyclableMaterialTypes table
-    $sql = "INSERT INTO RecyclableMaterialTypes (TYPE, EXP, REWARD_AMOUNT, IMAGE, COLOUR) VALUES
-    ('Paper', 0, 0, '/paper_type.png', '#D1CCBA'),
-    ('Glass', 0, 0, '/glass_type.png', '#9FD7CA'),
-    ('Metal', 0, 0, '/metal_type.png', '#545454'),
-    ('Plastic', 0, 0, '/plastic_type.png', '#376DAE'),
-    ('Other', 0, 0, '/other_type.png', '#8BC34A')";
-
-    if ($conn->query($sql) === TRUE) {
-        echo "Values inserted successfully";
+        if ($conn->query($sql) === TRUE) {
+            echo "Values inserted successfully";
+        } else {
+            echo "Error inserting values: " . $conn->error;
+        }
     } else {
-        echo "Error inserting values: " . $conn->error;
+        echo "RecyclableMaterialTypes table is not empty";
     }
 } else {
-    echo "RecyclableMaterialTypes table is not empty";
-}
-
-if ($conn->query($sql) === TRUE) {
-    echo "Initial data inserted into 'RecyclableMaterialTypes' successfully<br>";
-} else {
-    echo "Error inserting data: " . $conn->error . "<br>";
+    echo "Error creating table: " . $conn->error . "<br>";
 }
 
 // Create the items table

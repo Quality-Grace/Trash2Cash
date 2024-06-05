@@ -6,11 +6,16 @@ import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.trash2cash.AdminRequestsLogger.AdminRequestsLoggerActivity;
+import com.example.trash2cash.MainActivity;
 import com.example.trash2cash.R;
 import com.example.trash2cash.Entities.RecyclableMaterialTypes;
+import com.example.trash2cash.RewardSettings.RewardSettingsActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class RecyclableMaterialSettingsActivity extends AppCompatActivity {
     private final RecyclableMaterialTypes recyclableMaterialTypes = new RecyclableMaterialTypes();
@@ -34,5 +39,23 @@ public class RecyclableMaterialSettingsActivity extends AppCompatActivity {
 
         if(recyclableMaterialTypes.isEmpty())
             findViewById(R.id.recyclableMaterialsErrorText).setVisibility(View.VISIBLE);
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setSelectedItemId(R.id.MaterialsItem);
+        setupNavigationListener(bottomNavigationView);
+    }
+
+    public void setupNavigationListener(BottomNavigationView bottomNavigationView){
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            if(item.getItemId() == R.id.RecycleItem){
+                startActivity(new Intent(RecyclableMaterialSettingsActivity.this, AdminRequestsLoggerActivity.class));
+            } else if(item.getItemId() == R.id.RewardsItem) {
+                startActivity(new Intent(RecyclableMaterialSettingsActivity.this, RewardSettingsActivity.class));
+            } else if(item.getItemId() == R.id.StatsItem) {
+                startActivity(new Intent(RecyclableMaterialSettingsActivity.this, MainActivity.class));
+            }
+
+            return true;
+        });
     }
 }

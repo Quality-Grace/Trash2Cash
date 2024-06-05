@@ -1,5 +1,6 @@
 package com.example.trash2cash.MaterialLogger;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,7 +26,10 @@ import com.example.trash2cash.Entities.RecyclableMaterialTypes;
 import com.example.trash2cash.Entities.Request;
 import com.example.trash2cash.Entities.RequestStatus;
 import com.example.trash2cash.Entities.User;
+import com.example.trash2cash.MainActivity;
 import com.example.trash2cash.R;
+import com.example.trash2cash.RewardScreen.RewardsActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -63,6 +67,22 @@ public class MaterialLoggerActivity extends AppCompatActivity {
 
         ImageView addItemBtn = findViewById(R.id.addItemBtn);
         addItemBtn.setOnClickListener(addItemCardListener());
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setSelectedItemId(R.id.RecycleItem);
+        setupNavigationListener(bottomNavigationView);
+    }
+
+    public void setupNavigationListener(BottomNavigationView bottomNavigationView){
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            if(item.getItemId() == R.id.RewardsItem) {
+                startActivity(new Intent(MaterialLoggerActivity.this, RewardsActivity.class));
+            } else if(item.getItemId() == R.id.StatsItem) {
+                startActivity(new Intent(MaterialLoggerActivity.this, MainActivity.class));
+            }
+
+            return true;
+        });
     }
 
     /**
@@ -73,12 +93,12 @@ public class MaterialLoggerActivity extends AppCompatActivity {
         return view -> {
             String item = ((Spinner) findViewById(R.id.itemSelector)).getSelectedItem().toString();
             String material = ((Spinner) findViewById(R.id.materialSelector)).getSelectedItem().toString();
-            
+
             RecyclableManager recyclableManager = RecyclableManager.getRecyclableManager();
             User user = recyclableManager.getUser();
             RecyclableMaterial recyclableMaterial = recyclableManager.getRecyclableMaterial(material);
             RecyclableItem recyclableItem = recyclableManager.createRecyclableItem(recyclableMaterial, RecyclableItemType.valueOf(item));
-            int item_id = 0;
+            int item_id;
             try {
                 item_id = okHttpHandler.addItem(recyclableMaterial.getType(), recyclableItem.getType().getItemType());
             } catch (IOException e) {

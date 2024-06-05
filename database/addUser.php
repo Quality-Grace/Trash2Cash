@@ -6,9 +6,12 @@ ini_set('display_errors', 1);
 // Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
+    $username = $_POST['username'];
     $password = $_POST['password']; // Hash the password
     $level = floatval($_POST['level']);
     $rewardPoints = floatval($_POST['rewardPoints']);
+    $image = $_POST['image'];
+    $reward_list = $_POST['rewardList'];
 
     $host = "localhost";
     $uname = "root";
@@ -24,8 +27,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Prepare and bind
-    $stmt = $dbh->prepare("INSERT INTO users (email, password, level, rewardPoints) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("ssdd", $email, $password, $level, $rewardPoints);
+    $stmt = $dbh->prepare("INSERT INTO users (email, username, password, level, rewardPoints, image, rewardList) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssddss", $email, $username, $password, $level, $rewardPoints, $image, $reward_list);
 
     // Execute the statement
     if ($stmt->execute()) {

@@ -18,11 +18,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.trash2cash.AdminRequestsLogger.AdminRequestsLoggerActivity;
 import com.example.trash2cash.DB.OkHttpHandler;
+import com.example.trash2cash.MainActivity;
+import com.example.trash2cash.RecyclableMaterialSettings.RecyclableMaterialSettingsActivity;
 import com.example.trash2cash.imageGallery.ImagePickerActivity;
 import com.example.trash2cash.R;
 import com.example.trash2cash.Entities.Reward;
 import com.example.trash2cash.Entities.RewardList;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.IOException;
 import java.net.URL;
@@ -82,6 +86,24 @@ public class RewardSettingsActivity extends AppCompatActivity implements RewardS
         });
 
         Toast.makeText(getApplicationContext(), "Long tap on card to add/remove a reward", Toast.LENGTH_LONG).show();
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        setupNavigationListener(bottomNavigationView);
+        bottomNavigationView.setSelectedItemId(R.id.RewardsItem);
+    }
+
+    public void setupNavigationListener(BottomNavigationView bottomNavigationView){
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            if(item.getItemId() == R.id.RecycleItem){
+                startActivity(new Intent(RewardSettingsActivity.this, AdminRequestsLoggerActivity.class));
+            } else if(item.getItemId() == R.id.MaterialsItem) {
+                startActivity(new Intent(RewardSettingsActivity.this, RecyclableMaterialSettingsActivity.class));
+            } else if(item.getItemId() == R.id.StatsItem) {
+                startActivity(new Intent(RewardSettingsActivity.this, MainActivity.class));
+            }
+
+            return true;
+        });
     }
 
     // Adds a new reward to the list
