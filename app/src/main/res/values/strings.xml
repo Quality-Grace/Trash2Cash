@@ -59,4 +59,6 @@
     <string name="rewards_item">Rewards</string>
     <string name="userNameRegister">Όνομα χρήστη</string>
     <string name="profile_image">Profile Image</string>
+    <string name="login_item">Login</string>
+    <string name="sign_up_item">Sign Up</string>
 </resources>

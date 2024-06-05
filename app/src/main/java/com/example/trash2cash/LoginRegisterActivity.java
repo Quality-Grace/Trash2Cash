@@ -3,13 +3,13 @@ package com.example.trash2cash;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 
 import com.example.trash2cash.R1.LoginUser;
 import com.example.trash2cash.R1.RegisterUser;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class LoginRegisterActivity extends AppCompatActivity {
 
@@ -18,27 +18,21 @@ public class LoginRegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_register);
 
-        // Set the initial fragment when the activity is created
-        Button regBtnButton = findViewById(R.id.registerButton);
-        Button logBtnButton = findViewById(R.id.loginButton);
-        regBtnButton.setVisibility(View.VISIBLE);
-        logBtnButton.setVisibility(View.VISIBLE);
-        regBtnButton.setOnClickListener(v -> {
-            regBtnButton.setVisibility(View.INVISIBLE);
-            logBtnButton.setVisibility(View.INVISIBLE);
-            loadFragment(new RegisterUser());
-        });
-        logBtnButton.setOnClickListener(v -> {
-            regBtnButton.setVisibility(View.INVISIBLE);
-            logBtnButton.setVisibility(View.INVISIBLE);
-            loadFragment(new LoginUser());
+        ((BottomNavigationView)findViewById(R.id.bottomNavigationView)).setOnItemSelectedListener(item -> {
+            if(item.getItemId() == R.id.loginItem) {
+                switchFragment(new LoginUser());
+            } else {
+                switchFragment(new RegisterUser());
+            }
+
+            return true;
         });
     }
 
-    private void loadFragment(Fragment fragment) {
+    public void switchFragment(Fragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.main_frameLayout, fragment)
-                .commit();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.fragmentContainerView, fragment);
+        transaction.commit();
     }
 }
