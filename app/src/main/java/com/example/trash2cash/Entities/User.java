@@ -114,11 +114,6 @@ public class User{
         return materials_amount.get(material);
     }
 
-    //temp method
-    public void putMaterials_and_Amounts(String mat, int amount) {
-        materials_amount.put(mat, amount);
-    }
-
     public HashMap<String, Integer> getMaterials_and_Amounts() {
         return materials_amount;
     }
@@ -149,16 +144,9 @@ public class User{
         return items_amount.get(material).get(item);
     }
 
-    //temp method
-    public void putItems_and_Amounts(String material, HashMap<String,Integer> m) {
-        items_amount.put(material,m);
-
-    }
-
     public HashMap<String, HashMap<String,Integer>>getItems_and_Amounts() {
         return items_amount;
     }
-
 
     //Method to calculate the percentage of each item
     public float calculateItemAmountPercentage(String material,String item) {
