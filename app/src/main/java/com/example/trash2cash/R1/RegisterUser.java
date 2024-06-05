@@ -170,7 +170,13 @@ public class RegisterUser extends Fragment {
             public void afterTextChanged(Editable s) { /* do nothing */ }
         });
 
-        button.setOnClickListener(view -> register());
+        button.setOnClickListener(view -> {
+            try {
+                register();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         image.setOnClickListener(view -> openImagePicker());
 
@@ -179,26 +185,26 @@ public class RegisterUser extends Fragment {
         return rootView;
     }
 
-    private void register(){
+    private void register() throws IOException {
         boolean result = false;
+        int registerCode;
+        OkHttpHandler okHttpHandler = new OkHttpHandler();
 
-        try {
-            OkHttpHandler okHttpHandler = new OkHttpHandler();
-            okHttpHandler.registerUser(email.getText().toString(), username.getText().toString(), password.getText().toString(), image.getTag().toString());
-            result = okHttpHandler.loginUser(email.getText().toString(), password.getText().toString());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        result = okHttpHandler.userExists(email.getText().toString(), password.getText().toString());
 
         if(result) {
-            Toast.makeText(getContext(), "Register successful", Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(requireActivity(), MainActivity.class);
-            startActivity(intent);
+            Toast.makeText(getContext(), "User already exists!", Toast.LENGTH_LONG).show();
         } else {
-            email.setText("");
-            username.setText("");
-            password.setText("");
-            Toast.makeText(getContext(), "Register has failed", Toast.LENGTH_LONG).show();
+            try {
+                registerCode = okHttpHandler.registerUser(email.getText().toString(), username.getText().toString(), password.getText().toString(), image.getTag().toString());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            if (registerCode == 200){
+                Toast.makeText(getContext(), "Register successful", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(requireActivity(), MainActivity.class);
+                startActivity(intent);
+            }
         }
     }
 }

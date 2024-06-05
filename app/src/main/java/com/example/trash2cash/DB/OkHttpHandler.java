@@ -34,7 +34,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class OkHttpHandler {
-    private static final String IP = "192.168.100.2";
+    private static final String IP = "192.168.1.207";
     private static final String PATH = "http://"+IP+"/trash2cash/";
     public OkHttpHandler() {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -180,6 +180,31 @@ public class OkHttpHandler {
         client.newCall(request).execute();
     }
 
+    public boolean userExists (String email, String password) throws IOException {
+        initializeDB_Server();
+        OkHttpClient client = new OkHttpClient().newBuilder().build();
+
+        RequestBody body = new FormBody.Builder()
+                .add("email", email)
+                .add("password", password)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(PATH+"loginUser.php")
+                .post(body)
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            if(response.body().string().equals("0")){
+                return false;
+            }
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
     public boolean loginUser(String email, String password) throws IOException {
         initializeDB_Server();
         OkHttpClient client = new OkHttpClient().newBuilder().build();
@@ -218,7 +243,7 @@ public class OkHttpHandler {
         return jsonObject;
     }
 
-    public void registerUser(String email, String username, String password, String image) throws IOException {
+    public int registerUser(String email, String username, String password, String image) throws IOException {
         initializeDB_Server();
 
         Gson gson = new Gson();
@@ -246,6 +271,8 @@ public class OkHttpHandler {
         Response response = clientRe.newCall(request).execute();
 
         System.out.println(response.code());
+
+        return response.code();
     }
 
     private static void initializeDB_Server() throws IOException {

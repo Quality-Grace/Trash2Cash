@@ -26,16 +26,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die("Connection failed: " . $dbh->connect_error);
     }
 
-    // Prepare and bind
-    $stmt = $dbh->prepare("INSERT INTO users (email, username, password, level, rewardPoints, image, rewardList) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssddss", $email, $username, $password, $level, $rewardPoints, $image, $reward_list);
+    $query = "SELECT * FROM users WHERE email='$email' AND password='$password'";
+    $result = mysqli_query($dbh, $query);
 
-    // Execute the statement
-    if ($stmt->execute()) {
-        echo "New record created successfully";
+    if (mysqli_num_rows($result) < 1) {
+        // Prepare and bind
+        $stmt = $dbh->prepare("INSERT INTO users (email, username, password, level, rewardPoints, image, rewardList) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssddss", $email, $username, $password, $level, $rewardPoints, $image, $reward_list);
+
+        // Execute the statement
+        if ($stmt->execute()) {
+            echo "New record created successfully";
+        } else {
+            echo "Error: " . $stmt->error;
+        }
     } else {
-        echo "Error: " . $stmt->error;
+        echo "user already exists!";
     }
+
+
+
+
 
     // Close the statement and connection
     $stmt->close();
