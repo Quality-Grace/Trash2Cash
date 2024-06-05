@@ -2,9 +2,13 @@ package com.example.trash2cash.DB;
 
 import android.os.StrictMode;
 
+import com.example.trash2cash.Entities.RecyclableManager;
 import com.example.trash2cash.Entities.RecyclableMaterial;
 import com.example.trash2cash.Entities.Reward;
+import com.example.trash2cash.Entities.User;
 import com.example.trash2cash.LoginRegisterActivity;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,6 +19,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -24,7 +30,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class OkHttpHandler {
-    private static final String IP = "Your Ip";
+    private static final String IP = "172.19.0.1";
 
     private int id;
     private static final String PATH = "http://"+IP+"/trash2cash/";
@@ -172,7 +178,35 @@ public class OkHttpHandler {
         client.newCall(request).execute();
     }
 
-    public int loginUser(String url, String email, String password) throws IOException {
+    public void takeUser(){
+        String url = PATH+ "takeUser.php";
+
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    // Handle the response
+                    String responseData = response.body().string();
+                    System.out.println(responseData);
+                } else {
+                    System.err.println("Request failed with status code: " + response.code());
+                }
+            }
+        });
+    }
+
+    public boolean loginUser(String url, String email, String password) throws IOException {
         OkHttpClient client = new OkHttpClient().newBuilder().build();
 
         RequestBody body = new FormBody.Builder()
@@ -186,11 +220,26 @@ public class OkHttpHandler {
                 .build();
 
         Response response = client.newCall(request).execute();
+        JsonObject jsonObject = parseUserData(response.body().string());
         assert response.body() != null;
-        return Integer.parseInt(response.body().string());
+        User user = new User(jsonObject.get("email").getAsString(),jsonObject.get("id").getAsInt(), jsonObject.get("level").getAsInt(), jsonObject.get("rewardPoints").getAsInt());
+        RecyclableManager.getRecyclableManager().setActiveUser(user);
+        return response.isSuccessful();
     }
 
-    public int registerUser(String url, String email, String password) throws IOException {
+    private JsonObject parseUserData(String responseData) {
+        JsonObject jsonObject = JsonParser.parseString(responseData).getAsJsonObject();
+
+        if (jsonObject.has("error")) {
+            System.err.println("Error: " + jsonObject.get("error").getAsString());
+        } else {
+            // Print user details
+            System.out.println("User data: " + jsonObject.toString());
+        }
+        return jsonObject;
+    }
+
+    public void registerUser(String url, String email, String password) throws IOException {
         OkHttpClient client = new OkHttpClient();
 
         String urlTmp = "http://" + IP + "/trash2cash/createDBIfNotExists.php";
@@ -203,21 +252,23 @@ public class OkHttpHandler {
 
         OkHttpClient clientRe = new OkHttpClient().newBuilder().build();
 
-
         RequestBody body = new FormBody.Builder()
                 .add("email", email)
                 .add("password", password)
                 .add("level", "0")
                 .add("rewardPoints", "0")
                 .build();
+
         Request request = new Request.Builder()
-                .url(url)
+                .url("http://" + IP + url)
                 .post(body)
                 .build();
 
+
+
         Response response = clientRe.newCall(request).execute();
-        assert response.body() != null;
-        return Integer.parseInt(response.body().string());
+
+        System.out.println(response.code());
     }
 
 

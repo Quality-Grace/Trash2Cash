@@ -103,12 +103,11 @@ public class RecyclableManager {
     }
 
     public User getUser() {
-        if(activeUser==null){
-            activeUser = new User("User", 0, 0, 0);
-            addUser(activeUser);
-            return activeUser;
-        }
         return activeUser;
+    }
+
+    public void setActiveUser(User user){
+        activeUser = user;
     }
 
     public User getUserById(int id){

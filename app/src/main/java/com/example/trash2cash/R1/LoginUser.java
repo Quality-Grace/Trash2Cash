@@ -74,7 +74,7 @@ public class LoginUser extends Fragment {
 
 
     private void userLogin() {
-        int result = 0;
+        boolean result = false;
 
         String url = "/trash2cash/loginUser.php";
         try {
@@ -85,7 +85,7 @@ public class LoginUser extends Fragment {
             e.printStackTrace();
         }
 
-        if (result == 0){
+        if (!result){
             Objects.requireNonNull(email.getEditText()).setText("");
             Objects.requireNonNull(password.getEditText()).setText("");
             Toast.makeText(getContext(), "Login has failed", Toast.LENGTH_LONG).show();

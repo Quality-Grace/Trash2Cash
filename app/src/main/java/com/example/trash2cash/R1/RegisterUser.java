@@ -79,8 +79,9 @@ public class RegisterUser extends Fragment {
         String url = "/trash2cash/addUser.php";
         try {
             OkHttpHandler okHttpHandler = new OkHttpHandler();
-            result = okHttpHandler.registerUser(url, email.getText().toString(),
+            okHttpHandler.registerUser(url, email.getText().toString(),
                     password.getText().toString());
+            result=1;
             if(result != 0)
                 Toast.makeText(getContext(), "Register successful", Toast.LENGTH_LONG).show();
         } catch (Exception e) {

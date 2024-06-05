@@ -3,44 +3,39 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-
-
-// Database configuration
-$servername = "localhost";  // Change if using a different host
-$username = "root";         // Change to your database username
-$password = "";             // Change to your database password
-$dbname = "trash2cash";    // Change to your database name
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
 // Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
-    $password = $_POST['password'];
-    $level = $_POST['level'];
-    $rewardPoints = $_POST['rewardPoints'];
+    $password = $_POST['password']; // Hash the password
+    $level = floatval($_POST['level']);
+    $rewardPoints = floatval($_POST['rewardPoints']);
+
+    $host = "localhost";
+    $uname = "root";
+    $pass = "";
+    $dbname = "trash2cash";
+
+    // Create connection
+    $dbh = new mysqli($host, $uname, $pass, $dbname);
+
+    // Check connection
+    if ($dbh->connect_error) {
+        die("Connection failed: " . $dbh->connect_error);
+    }
 
     // Prepare and bind
-    $stmt = $conn->prepare("INSERT INTO users (id, email, password, level, rewardPoints) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("ssss", $email, $password, $level, $rewardPoints);
+    $stmt = $dbh->prepare("INSERT INTO users (email, password, level, rewardPoints) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("ssdd", $email, $password, $level, $rewardPoints);
 
     // Execute the statement
     if ($stmt->execute()) {
-        echo "1";
+        echo "New record created successfully";
     } else {
         echo "Error: " . $stmt->error;
     }
 
-    // Close the statement
+    // Close the statement and connection
     $stmt->close();
+    $dbh->close();
 }
-
-// Close the connection
-$conn->close();
 ?>

@@ -20,9 +20,7 @@
 
     // Check if any rows were returned
     if (mysqli_num_rows($result) > 0) {
-        $user_row = mysqli_fetch_assoc($result);
-                // Convert the associative array to a JSON string
-        $response = json_encode($user_row);
+        $response = 1;
     } else {
         $response = 0;
     }

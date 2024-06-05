@@ -1,5 +1,8 @@
 package com.example.trash2cash.Entities;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.util.HashMap;
 import java.util.Map;
 

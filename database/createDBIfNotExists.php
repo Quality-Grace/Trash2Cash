@@ -44,11 +44,54 @@ if ($conn->query($sql) === TRUE) {
     echo "Error creating table: " . $conn->error;
 }
 
+// Create the RecyclableMaterialTypes table
+$sql = "CREATE TABLE IF NOT EXISTS RecyclableMaterialTypes (
+    TYPE VARCHAR(100) COLLATE utf8_bin PRIMARY KEY,
+    EXP INT NOT NULL,
+    REWARD_AMOUNT INT NOT NULL,
+    IMAGE TEXT COLLATE utf8_bin NOT NULL,
+    COLOUR TEXT COLLATE utf8_bin NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin";
+
+if ($conn->query($sql) === TRUE) {
+    echo "Table 'RecyclableMaterialTypes' created successfully<br>";
+} else {
+    echo "Error creating table: " . $conn->error . "<br>";
+}
+
+// // Insert values into the RecyclableMaterialTypes table
+// $sql = "INSERT INTO RecyclableMaterialTypes (TYPE, EXP, REWARD_AMOUNT, IMAGE, COLOUR) VALUES
+// ('Paper', 0, 0, '/paper_type.png', '#D1CCBA'),
+// ('Glass', 0, 0, '/glass_type.png', '#9FD7CA'),
+// ('Metal', 0, 0, '/metal_type.png', '#545454'),
+// ('Plastic', 0, 0, '/plastic_type.png', '#376DAE'),
+// ('Other', 0, 0, '/other_type.png', '#8BC34A')";
+
+if ($conn->query($sql) === TRUE) {
+    echo "Initial data inserted into 'RecyclableMaterialTypes' successfully<br>";
+} else {
+    echo "Error inserting data: " . $conn->error . "<br>";
+}
+
+// Create the items table
+$sql = "CREATE TABLE IF NOT EXISTS items (
+    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    material_type VARCHAR(100) COLLATE utf8_bin NOT NULL,
+    item_type VARCHAR(50) NOT NULL,
+    CONSTRAINT fk_material_type FOREIGN KEY (material_type) REFERENCES RecyclableMaterialTypes(TYPE)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin";
+
+if ($conn->query($sql) === TRUE) {
+    echo "Table 'items' created successfully<br>";
+} else {
+    echo "Error creating table: " . $conn->error . "<br>";
+}
+
 $sql = "CREATE TABLE IF NOT EXISTS requests (
     id INT(6) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    user_id INT(6) NOT NULL,
-    item_id INT(6) NOT NULL,
-    FOREIGN KEY (item_id) REFERENCES items(id)
+    user_id INT(6) UNSIGNED NOT NULL,
+    item_id INT(6) UNSIGNED NOT NULL,
+    FOREIGN KEY (item_id) REFERENCES items(id),
     FOREIGN KEY (user_id) REFERENCES users(id)
     )";
 
@@ -58,18 +101,6 @@ if ($conn->query($sql) === TRUE) {
     echo "Error creating table: " . $conn->error;
 }
 
-$sql = "CREATE TABLE IF NOT EXISTS items (
-    id INT(6) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    material_type VARCHAR(20) NOT NULL,
-    item_type VARCHAR(50) NOT NULL,
-    FOREIGN KEY (material_type) REFERENCES RecyclableMaterialTypes(TYPE)
-    )";
-
-if ($conn->query($sql) === TRUE) {
-    echo "Table items created successfully";
-} else {
-    echo "Error creating table: " . $conn->error;
-}
 
 // Create the rewards table
 $sql = "CREATE TABLE IF NOT EXISTS rewards (
@@ -83,35 +114,6 @@ if ($conn->query($sql) === TRUE) {
     echo "Table 'rewards' created successfully<br>";
 } else {
     echo "Error creating table: " . $conn->error . "<br>";
-}
-
-// Create the RecyclableMaterialTypes table
-$sql = "CREATE TABLE IF NOT EXISTS RecyclableMaterialTypes (
-    TYPE VARCHAR(100) COLLATE utf8_bin NOT NULL,
-    EXP INT NOT NULL,
-    REWARD_AMOUNT INT NOT NULL,
-    IMAGE TEXT COLLATE utf8_bin NOT NULL,
-    COLOUR TEXT COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin";
-
-if ($conn->query($sql) === TRUE) {
-    echo "Table 'RecyclableMaterialTypes' created successfully<br>";
-} else {
-    echo "Error creating table: " . $conn->error . "<br>";
-}
-
-// Insert values into the RecyclableMaterialTypes table
-$sql = "INSERT INTO RecyclableMaterialTypes (TYPE, EXP, REWARD_AMOUNT, IMAGE, COLOUR) VALUES
-('Paper', 0, 0, '/paper_type.png', '#D1CCBA'),
-('Glass', 0, 0, '/glass_type.png', '#9FD7CA'),
-('Metal', 0, 0, '/metal_type.png', '#545454'),
-('Plastic', 0, 0, '/plastic_type.png', '#376DAE'),
-('Other', 0, 0, '/other_type.png', '#8BC34A')";
-
-if ($conn->query($sql) === TRUE) {
-    echo "Initial data inserted into 'RecyclableMaterialTypes' successfully<br>";
-} else {
-    echo "Error inserting data: " . $conn->error . "<br>";
 }
 
 // Commit the transaction
