@@ -1,6 +1,6 @@
 package com.example.trash2cash.Entities;
 
-public class Reward {
+public class Reward implements Comparable<Reward>{
     private int cost;
     private int level;
     private String icon;
@@ -38,4 +38,11 @@ public class Reward {
     public void setIcon(String icon) { this.icon = icon; }
 
     public void setTitle(String title) { this.title = title; }
+
+    //method for sorting
+    public int compareTo(Reward other) {
+        if(cost == other.getCost()) return 0;
+        else if (cost > other.getCost()) return 1;
+        else return -1;
+    }
 }

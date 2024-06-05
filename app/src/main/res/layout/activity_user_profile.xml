@@ -56,7 +56,7 @@
                             android:id="@+id/user_level"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="50dp"
+                            android:layout_marginStart="45dp"
                             android:text="@string/level_text"
                             android:textAlignment="textEnd"
                             android:textColor="@color/black" />
@@ -81,7 +81,7 @@
                             android:id="@+id/user_points"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="50dp"
+                            android:layout_marginStart="100dp"
                             android:text="@string/points_text"
                             android:textAlignment="textEnd"
                             android:textColor="@color/black" />
@@ -133,20 +133,28 @@
                 android:weightSum="2">
 
                 <LinearLayout
-                    android:layout_width="200dp"
+                    android:layout_width="250dp"
                     android:layout_height="match_parent"
                     android:layout_marginStart="0dp"
                     android:gravity="center"
-                    android:orientation="horizontal">
+                    android:orientation="vertical"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:id="@+id/progress_bar_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:text="@string/progress_bar_title_text"/>
 
                     <ProgressBar
                         android:id="@+id/progressBar"
                         style="?android:attr/progressBarStyleHorizontal"
-                        android:layout_width="100dp"
+                        android:layout_width="150dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="50dp"
-                        android:layout_marginEnd="10dp"
-                        android:progressBackgroundTint="@color/royale_blue" />
+                        android:layout_marginTop="7dp"
+                        android:progressDrawable="@drawable/custom_reward_progressbar" />
 
                 </LinearLayout>
 
@@ -157,10 +165,9 @@
 
                     <Button
                         android:id="@+id/my_rewards"
-                        android:layout_width="150dp"
+                        android:layout_width="140dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginEnd="20dp"
+                        android:layout_marginStart="5dp"
                         android:backgroundTint="@color/royale_blue"
                         android:text="@string/my_rewards_btn_text" />
 

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.trash2cash.Entities.User;
@@ -34,6 +35,8 @@ public class UserProfileActivity extends AppCompatActivity {
     //HashMap for user's specific items and amounts
     HashMap<String, HashMap<String,Integer>> items_map;
 
+    //current progress for rewards progress bar
+    int currentProgress = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,29 +45,29 @@ public class UserProfileActivity extends AppCompatActivity {
 
         //Actual Code
         //store the data in the user's attributes
-//        user.storeApprovedRequests();
-//        user.storeMaterialsAndItemsAmounts();
+       user.storeApprovedRequests();
+       user.storeMaterialsAndItemsAmounts();
 
         //temp data for materials and their amounts
-        user.putMaterials_and_Amounts("PAPER", 20);
-        user.putMaterials_and_Amounts("GLASS", 50);
-        user.putMaterials_and_Amounts("ALUMINUM", 65);
-        user.putMaterials_and_Amounts("PLASTIC", 30);
+//        user.putMaterials_and_Amounts("PAPER", 20);
+//        user.putMaterials_and_Amounts("GLASS", 50);
+//        user.putMaterials_and_Amounts("ALUMINUM", 65);
+//        user.putMaterials_and_Amounts("PLASTIC", 30);
         //Actual Code
         materials_map = user.getMaterials_and_Amounts();
 
         //temp data for items and their amounts
-        for(String key: materials_map.keySet()) {
-            HashMap<String, Integer> temp = new HashMap<>();
-            int value = materials_map.get(key)/5;
-            temp.put("BAG", value);
-            temp.put("BOTTLE", value);
-            temp.put("CAN", value);
-            temp.put("BOX", value);
-            temp.put("CARD_BOARD", value);
-
-            user.putItems_and_Amounts(key,temp);
-        }
+//        for(String key: materials_map.keySet()) {
+//            HashMap<String, Integer> temp = new HashMap<>();
+//            int value = materials_map.get(key)/5;
+//            temp.put("BAG", value);
+//            temp.put("BOTTLE", value);
+//            temp.put("CAN", value);
+//            temp.put("BOX", value);
+//            temp.put("CARD_BOARD", value);
+//
+//            user.putItems_and_Amounts(key,temp);
+//        }
         //Actual code
         items_map = user.getItems_and_Amounts();
 
@@ -75,6 +78,9 @@ public class UserProfileActivity extends AppCompatActivity {
 
         //set data to users information
         setDataInfo();
+
+        //set data to progress bar
+        progressBar();
 
         //ArrayList with all percentages of materials
         ArrayList<Float> percentages = new ArrayList<>();
@@ -101,7 +107,6 @@ public class UserProfileActivity extends AppCompatActivity {
             setDataBarChart(key, itemPercentages);
         }
 
-
     }
 
     public void setDataInfo() {
@@ -119,6 +124,15 @@ public class UserProfileActivity extends AppCompatActivity {
         level.setText(String.valueOf(user.getLevel()));
         points.setText(String.valueOf(user.getRewardPoints()));
         //image.setImageResource(user.getImage());
+    }
+
+    public void progressBar() {
+        ProgressBar pr = findViewById(R.id.progressBar);
+        currentProgress = user.getRewardPoints();
+        pr.setMax(user.getRemainingRewardPoints());
+        pr.setProgress(currentProgress);
+        pr.invalidate();
+
     }
 
     public void setDataPieChart(ArrayList<Float> percentages) {

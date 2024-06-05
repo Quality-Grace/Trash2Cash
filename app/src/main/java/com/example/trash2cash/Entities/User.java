@@ -1,5 +1,6 @@
 package com.example.trash2cash.Entities;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +20,8 @@ public class User{
 
     //Map with all the user's requests
     private Map<Integer, Request> userRequestList;
+    //User's rewards
+    private RewardList rewardList;
 
     //Constructor
     public User(String name, int id, float level, int rewardPoints/*, String image*/) {
@@ -73,10 +76,10 @@ public class User{
     public void storeMaterialsAndItemsAmounts() {
 
         //temp maps for items and their amount only
-        HashMap<String, Integer> plasticmap = new HashMap<>();
-        HashMap<String, Integer> papermap = new HashMap<>();
-        HashMap<String, Integer> aluminummap = new HashMap<>();
-        HashMap<String, Integer> glassmap = new HashMap<>();
+        HashMap<String, Integer> plasticMap = new HashMap<>();
+        HashMap<String, Integer> paperMap = new HashMap<>();
+        HashMap<String, Integer> aluminumMap = new HashMap<>();
+        HashMap<String, Integer> glassMap = new HashMap<>();
 
 
         for(Request req: approvedRequest) {
@@ -89,21 +92,21 @@ public class User{
 
             //Seperate the items of the materials, calculate their amount and store them in temp hashMaps
             if(material.getType().equals("PLASTIC")) {
-                plasticmap.put(itemType.getItemType(),plasticmap.getOrDefault(itemType.getItemType(),0)+1);
+                plasticMap.put(itemType.getItemType(),plasticMap.getOrDefault(itemType.getItemType(),0)+1);
             } else if (material.getType().equals("GLASS")) {
-                glassmap.put(itemType.getItemType(),glassmap.getOrDefault(itemType.getItemType(),0)+1);
+                glassMap.put(itemType.getItemType(),glassMap.getOrDefault(itemType.getItemType(),0)+1);
             }else if(material.getType().equals("PAPER")) {
-                papermap.put(itemType.getItemType(),papermap.getOrDefault(itemType.getItemType(),0)+1);
+                paperMap.put(itemType.getItemType(),paperMap.getOrDefault(itemType.getItemType(),0)+1);
             } else {
-                aluminummap.put(itemType.getItemType(),aluminummap.getOrDefault(itemType.getItemType(),0)+1);
+                aluminumMap.put(itemType.getItemType(),aluminumMap.getOrDefault(itemType.getItemType(),0)+1);
             }
         }
 
         //store the materials and their items with their amounts in the items_amounts hashMap
-        items_amount.put("PAPER",papermap);
-        items_amount.put("GLASS", glassmap);
-        items_amount.put("PLASTIC", plasticmap);
-        items_amount.put("ALUMINUM",aluminummap);
+        items_amount.put("PAPER",paperMap);
+        items_amount.put("GLASS", glassMap);
+        items_amount.put("PLASTIC", plasticMap);
+        items_amount.put("ALUMINUM",aluminumMap);
     }
 
 
@@ -167,6 +170,24 @@ public class User{
         return perB;
     }
 
+    //Method to find the points of the next reward user wants
+    public int getRemainingRewardPoints() {
+
+        int points = 0;
+        //list sorting to find the first reward that the user does not have
+        Collections.sort(rewardList);
+
+        for (Reward reward : rewardList) {
+            if (!hasReward(reward)) {
+                if (reward.getCost() > getRewardPoints()) {
+                    points = reward.getCost();
+                    break;
+                }
+            }
+        }
+
+        return points;
+    }
     public Map<Integer, Request> getRecyclableItemList() {
         return userRequestList;
     }
@@ -181,6 +202,13 @@ public class User{
 
     public void addLevel(float level){
         this.level += level;
+    }
+
+    public boolean hasReward(Reward reward) {
+        for(Reward r : this.rewardList){
+            if(reward.equals(r)) return true;
+        }
+        return false;
     }
 }
 

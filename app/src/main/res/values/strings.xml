@@ -57,7 +57,7 @@
     <!--User profile activity-->
     <string name="user_name_tag_text">Username:</string>
     <string name="user_level_tag_text">Level:</string>
-    <string name="user_points_tag_text">Points:</string>
+    <string name="user_points_tag_text">Reward Points:</string>
     <string name="plastic_chart_text">Plastic</string>
     <string name="paper_chart_text">Paper</string>
     <string name="aluminum_chart_text">Aluminum</string>
@@ -77,4 +77,5 @@
     <string name="third_barChart_title">Amounts of paper materials in percentage</string>
     <string name="fourth_barChart_title">Amounts of plastic materials in percentage</string>
     <string name="fifth_barChart_title">Amounts of aluminum materials in percentage</string>
+    <string name="progress_bar_title_text">Points remaining for the next reward</string>
 </resources>
