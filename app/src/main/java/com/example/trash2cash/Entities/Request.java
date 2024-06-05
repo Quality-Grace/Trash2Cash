@@ -1,6 +1,8 @@
 package com.example.trash2cash.Entities;
 
-public class Request {
+import java.io.Serializable;
+
+public class Request implements Serializable {
     private RecyclableItem requestItem;
     private RequestStatus requestStatus;
 

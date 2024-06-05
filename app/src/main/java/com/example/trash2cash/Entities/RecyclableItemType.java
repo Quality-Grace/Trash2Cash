@@ -1,6 +1,8 @@
 package com.example.trash2cash.Entities;
 
-public enum RecyclableItemType {
+import java.io.Serializable;
+
+public enum RecyclableItemType implements Serializable {
     BAG("BAG"),
     BOTTLE("BOTTLE"),
     CAN("CAN"),
@@ -15,5 +17,14 @@ public enum RecyclableItemType {
 
     public String getItemType() {
         return itemType;
+    }
+
+    public static RecyclableItemType fromString(String text) {
+        for (RecyclableItemType itemType : RecyclableItemType.values()) {
+            if (itemType.itemType.equalsIgnoreCase(text)) {
+                return itemType;
+            }
+        }
+        throw new IllegalArgumentException("No constant with text " + text + " found");
     }
 }

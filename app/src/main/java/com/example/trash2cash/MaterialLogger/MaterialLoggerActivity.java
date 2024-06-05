@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
+import com.example.trash2cash.DB.OkHttpHandler;
 import com.example.trash2cash.Entities.RecyclableItem;
 import com.example.trash2cash.Entities.RecyclableItemType;
 import com.example.trash2cash.Entities.RecyclableManager;
@@ -26,13 +27,16 @@ import com.example.trash2cash.Entities.RequestStatus;
 import com.example.trash2cash.Entities.User;
 import com.example.trash2cash.R;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MaterialLoggerActivity extends AppCompatActivity {
 
-    private static final ArrayList<Request> itemList = new ArrayList<>();
+    private static ArrayList<Request> itemList;
     private MaterialLoggerAdapter myAdapter;
+
+    private final OkHttpHandler okHttpHandler = new OkHttpHandler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +44,11 @@ public class MaterialLoggerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_material_logger);
 
         spinnerInitialization();
+        try {
+            itemList = okHttpHandler.takeRequestsByUserId(RecyclableManager.getRecyclableManager().getUser().getId());
+        } catch (Exception e) {
+            itemList = new ArrayList<>();
+        }
 
         // Set up the RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
@@ -69,7 +78,14 @@ public class MaterialLoggerActivity extends AppCompatActivity {
             User user = recyclableManager.getUser();
             RecyclableMaterial recyclableMaterial = recyclableManager.getRecyclableMaterial(material);
             RecyclableItem recyclableItem = recyclableManager.createRecyclableItem(recyclableMaterial, RecyclableItemType.valueOf(item));
-            itemList.add(recyclableManager.addRequest(recyclableItem, user.getId(), RequestStatus.PENDING));
+            int item_id = 0;
+            try {
+                item_id = okHttpHandler.addItem(recyclableMaterial.getType(), recyclableItem.getType().getItemType());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            Request request = recyclableManager.addRequest(new RecyclableItem(recyclableMaterial, recyclableItem.getType(), recyclableItem.getImage(), item_id), user.getId(), RequestStatus.PENDING);
+            itemList.add(request);
             myAdapter.notifyItemInserted(itemList.size() - 1);
         };
     }

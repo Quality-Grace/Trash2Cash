@@ -3,7 +3,9 @@ package com.example.trash2cash.Entities;
 
 import android.graphics.Color;
 
-public class RecyclableMaterial {
+import java.io.Serializable;
+
+public class RecyclableMaterial implements Serializable {
     private final String type;
     private int exp;
     private int rewardAmount;

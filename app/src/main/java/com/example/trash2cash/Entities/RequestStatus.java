@@ -1,6 +1,8 @@
 package com.example.trash2cash.Entities;
 
-public enum RequestStatus {
+import java.io.Serializable;
+
+public enum RequestStatus implements Serializable {
     PENDING("PENDING"),
     APPROVED("APPROVED"),
     REJECTED("REJECTED");

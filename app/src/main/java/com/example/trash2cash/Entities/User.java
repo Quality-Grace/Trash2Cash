@@ -3,6 +3,8 @@ package com.example.trash2cash.Entities;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.example.trash2cash.DB.OkHttpHandler;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +24,9 @@ public class User {
         this.rewardPoints = rewardPoints;
         userRequestList = new HashMap<>();
         this.rewardList = new RewardList();
+        for (Request r : new OkHttpHandler().takeRequestsByUserId(id)){
+            userRequestList.put(r.getId(), r);
+        }
     }
 
     public String getName() {
@@ -49,7 +54,9 @@ public class User {
     }
 
     public void addRequest(Request request){
-        userRequestList.put(request.getId(), request);
+        for (Request r : new OkHttpHandler().takeRequestsByUserId(id)){
+            userRequestList.put(r.getId(), r);
+        }
     }
 
     public void alterStatus(Request request, RequestStatus status){

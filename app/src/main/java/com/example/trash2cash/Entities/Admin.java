@@ -1,5 +1,7 @@
 package com.example.trash2cash.Entities;
 
+import com.example.trash2cash.DB.OkHttpHandler;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +21,23 @@ public class Admin {
 
     private Admin() {
         this.recyclableRequests = new HashMap<>();
+        try {
+            List<Integer> userIds = new OkHttpHandler().getAllUserIds();
+
+            for (int userId : userIds) {
+                List<Request> finalRequests = new ArrayList<>();
+                List<Request> requests = new OkHttpHandler().takeRequestsByUserId(userId);
+                for (Request request : requests) {
+                    if (request.getRequestStatus().equals(RequestStatus.PENDING))
+                        finalRequests.add(request);
+                }
+                recyclableRequests.put(userId, finalRequests);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+            System.err.println("No users found");
+        }
+
     }
 
     public static Admin getAdmin(){
@@ -32,6 +51,7 @@ public class Admin {
     public void approve(int user_id, Request request) {
         try {
             Objects.requireNonNull(recyclableRequests.get(user_id)).remove(request);
+            new OkHttpHandler().alterRequestStatus(request.getId(), RequestStatus.APPROVED);
             RecyclableManager.getRecyclableManager().alterRequest(request, user_id, RequestStatus.APPROVED);
             RecyclableManager.getRecyclableManager().addPoints(request.getRequestItem(), user_id);
         } catch (NullPointerException e){
@@ -42,6 +62,7 @@ public class Admin {
     public void reject(int user_id, Request request) {
         try {
             Objects.requireNonNull(recyclableRequests.get(user_id)).remove(request);
+            new OkHttpHandler().alterRequestStatus(request.getId(), RequestStatus.REJECTED);
             RecyclableManager.getRecyclableManager().alterRequest(request, user_id, RequestStatus.REJECTED);
         } catch (NullPointerException e){
             System.err.println("This user or recyclableItem doesn't exist");
@@ -56,6 +77,19 @@ public class Admin {
             List<Request> recyclableItems = new ArrayList<>();
             recyclableItems.add(request);
             recyclableRequests.put(user_id, recyclableItems);
+        }
+    }
+
+    public void updateRecyclableItemRequest() {
+        List<Integer> userIds = new OkHttpHandler().getAllUserIds();
+        for (int userId : userIds) {
+            List<Request> finalRequests = new ArrayList<>();
+            List<Request> requests = new OkHttpHandler().takeRequestsByUserId(userId);
+            for (Request request : requests) {
+                if (request.getRequestStatus().equals(RequestStatus.PENDING))
+                    finalRequests.add(request);
+            }
+            recyclableRequests.put(userId, finalRequests);
         }
     }
 

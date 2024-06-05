@@ -59,13 +59,28 @@ if ($conn->query($sql) === TRUE) {
     echo "Error creating table: " . $conn->error . "<br>";
 }
 
-// // Insert values into the RecyclableMaterialTypes table
-// $sql = "INSERT INTO RecyclableMaterialTypes (TYPE, EXP, REWARD_AMOUNT, IMAGE, COLOUR) VALUES
-// ('Paper', 0, 0, '/paper_type.png', '#D1CCBA'),
-// ('Glass', 0, 0, '/glass_type.png', '#9FD7CA'),
-// ('Metal', 0, 0, '/metal_type.png', '#545454'),
-// ('Plastic', 0, 0, '/plastic_type.png', '#376DAE'),
-// ('Other', 0, 0, '/other_type.png', '#8BC34A')";
+// Check if the RecyclableMaterialTypes table is empty
+$result = $conn->query("SELECT COUNT(*) AS count FROM RecyclableMaterialTypes");
+$row = $result->fetch_assoc();
+$count = $row['count'];
+
+if ($count == 0) {
+    // Insert values into the RecyclableMaterialTypes table
+    $sql = "INSERT INTO RecyclableMaterialTypes (TYPE, EXP, REWARD_AMOUNT, IMAGE, COLOUR) VALUES
+    ('Paper', 0, 0, '/paper_type.png', '#D1CCBA'),
+    ('Glass', 0, 0, '/glass_type.png', '#9FD7CA'),
+    ('Metal', 0, 0, '/metal_type.png', '#545454'),
+    ('Plastic', 0, 0, '/plastic_type.png', '#376DAE'),
+    ('Other', 0, 0, '/other_type.png', '#8BC34A')";
+
+    if ($conn->query($sql) === TRUE) {
+        echo "Values inserted successfully";
+    } else {
+        echo "Error inserting values: " . $conn->error;
+    }
+} else {
+    echo "RecyclableMaterialTypes table is not empty";
+}
 
 if ($conn->query($sql) === TRUE) {
     echo "Initial data inserted into 'RecyclableMaterialTypes' successfully<br>";
@@ -91,9 +106,10 @@ $sql = "CREATE TABLE IF NOT EXISTS requests (
     id INT(6) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     user_id INT(6) UNSIGNED NOT NULL,
     item_id INT(6) UNSIGNED NOT NULL,
+    status VARCHAR(100) COLLATE utf8_bin NOT NULL,
     FOREIGN KEY (item_id) REFERENCES items(id),
     FOREIGN KEY (user_id) REFERENCES users(id)
-    )";
+    )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin";
 
 if ($conn->query($sql) === TRUE) {
     echo "Table requests created successfully";

@@ -1,6 +1,8 @@
 package com.example.trash2cash.Entities;
 
-public class RecyclableItem {
+import java.io.Serializable;
+
+public class RecyclableItem implements Serializable {
 
     private final RecyclableMaterial material;
 

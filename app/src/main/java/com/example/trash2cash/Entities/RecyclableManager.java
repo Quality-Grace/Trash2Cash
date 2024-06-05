@@ -1,7 +1,9 @@
 package com.example.trash2cash.Entities;
 
+import com.example.trash2cash.DB.OkHttpHandler;
 import com.example.trash2cash.R;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,14 +44,17 @@ public class RecyclableManager {
     public Request addRequest(RecyclableItem recyclableItem, int user_id, RequestStatus status){
         Request request = null;
         try {
-            request = new Request(recyclableItem, status, requestId, user_id);
+            Integer id = new OkHttpHandler().addRequest(user_id, recyclableItem.getId(), status);
+            request = new Request(recyclableItem, status, id, user_id);
             User user = users.get(user_id);
             assert user != null;
             user.addRequest(request);
-            addRecyclableItemRequest(request, user_id);
+            Admin.getAdmin().updateRecyclableItemRequest();
             requestId++;
         } catch (NullPointerException e){
             System.err.println("This user with user id does not exist!");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
         return request;
     }
@@ -67,6 +72,7 @@ public class RecyclableManager {
         assert user != null;
         user.addLevel(level);
         user.addRewardPoints(recyclableItem.getMaterial().getRewardAmount());
+        new OkHttpHandler().updateUser(user);
     }
 
     public void alterRequest(Request requestItem, int user_id, RequestStatus approved) {
@@ -94,8 +100,8 @@ public class RecyclableManager {
                 image = R.drawable.ic_launcher_foreground;
                 break;
         }
-        int id = recyclableItemId++;
-        return new RecyclableItem(material, type, image, id);
+
+        return new RecyclableItem(material, type, image, recyclableItemId++);
     }
 
     public RecyclableMaterial getRecyclableMaterial(String name) {
@@ -108,6 +114,8 @@ public class RecyclableManager {
 
     public void setActiveUser(User user){
         activeUser = user;
+        if(!users.containsKey(user.getId()))
+            users.put(user.getId(), user);
     }
 
     public User getUserById(int id){
