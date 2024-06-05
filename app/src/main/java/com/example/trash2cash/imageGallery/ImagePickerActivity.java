@@ -8,11 +8,10 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 
@@ -20,6 +19,10 @@ import com.example.trash2cash.DB.OkHttpHandler;
 import com.example.trash2cash.R;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 
@@ -63,32 +66,59 @@ public class ImagePickerActivity extends AppCompatActivity implements ImagePicke
                 .build()));
     }
 
-    public String getRealPathFromURI(Uri contentUri) {
-        Cursor cursor = null;
-        try {
-            String[] proj = { MediaStore.Images.Media.DATA };
-            cursor = this.getContentResolver().query(contentUri,  proj, null, null, null);
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
-    }
-
     public void endActivity(Uri resultData){
         Intent resultIntent = new Intent();
-
         OkHttpHandler okHttpHandler = new OkHttpHandler();
-        File file = new File(getRealPathFromURI(resultData));
+
+        InputStream stream;
+        try {
+            stream = this.getContentResolver().openInputStream(resultData);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        File file = createTempFileFromInputStream(this, stream);
         String urlString = okHttpHandler.uploadImage(OkHttpHandler.getPATH() + "uploadImage.php", file);
 
         resultIntent.putExtra("url", urlString);
         setResult(Activity.RESULT_OK, resultIntent);
 
         finish();
+    }
+
+    public static File createTempFileFromInputStream(Context context, InputStream inputStream) {
+        File tempFile = null;
+        FileOutputStream outputStream = null;
+
+        try {
+            // Create a temporary file
+            tempFile = File.createTempFile("temp", ".tmp", context.getCacheDir());
+
+            // Open an OutputStream to write to the temporary file
+            outputStream = new FileOutputStream(tempFile);
+
+            // Read from the InputStream and write to the OutputStream
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                // Close the streams
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return tempFile;
     }
 
     // Same functionality with the endActivity method except it's for the images from the recycler view
