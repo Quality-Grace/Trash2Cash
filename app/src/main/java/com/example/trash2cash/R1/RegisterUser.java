@@ -139,7 +139,11 @@ public class RegisterUser extends Fragment {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { /* do nothing */ }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                input[0] = !(s.toString().isEmpty());
+                if(s.toString().equalsIgnoreCase("admin")) {
+                    input[0] = false;
+                } else {
+                    input[0] = !(s.toString().isEmpty());
+                }
                 button.setEnabled(input[0] && input[1] && input[2] && input[3]);
             }
             @Override
@@ -189,6 +193,8 @@ public class RegisterUser extends Fragment {
         boolean result = false;
         int registerCode;
         OkHttpHandler okHttpHandler = new OkHttpHandler();
+
+
 
         result = okHttpHandler.userExists(email.getText().toString(), password.getText().toString());
 
