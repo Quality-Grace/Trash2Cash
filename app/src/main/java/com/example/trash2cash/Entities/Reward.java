@@ -2,7 +2,7 @@ package com.example.trash2cash.Entities;
 
 import java.util.UUID;
 
-public class Reward {
+public class Reward implements Comparable<Reward>{
     private int cost;
     private int level;
     private final String icon;
@@ -59,5 +59,12 @@ public class Reward {
 
     public String getCode() {
         return this.code;
+    }
+
+    //method for sorting
+    public int compareTo(Reward other) {
+        if(cost == other.getCost()) return 0;
+        else if (cost > other.getCost()) return 1;
+        else return -1;
     }
 }

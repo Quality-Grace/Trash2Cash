@@ -1,20 +1,30 @@
 package com.example.trash2cash.Entities;
 
 import com.example.trash2cash.DB.OkHttpHandler;
-
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 public class User {
-
     private String email;
     private String name;
     private int id;
     private float level;
     private float rewardPoints;
-    private Map<Integer, Request> userRequestList;
     private RewardList rewardList;
     private String image;
+
+    //Approved Requests
+    private ArrayList<Request> approvedRequest = new ArrayList<>();
+    //Amount of materials, plastic, glass etc
+    private HashMap<String, Integer> materials_amount;
+    //Amount of specific items, plastic bag, aluminum box, glass bottle e.t.c
+    private HashMap<String, HashMap<String,Integer>> items_amount;
+
+    //Map with all the user's requests
+    private Map<Integer, Request> userRequestList;
+
     public User(String email, String name, int id, float level, float rewardPoints, String image, RewardList rewardList) {
         this.email = email;
         this.name = name;
@@ -23,6 +33,9 @@ public class User {
         this.rewardPoints = rewardPoints;
         this.image = image;
         this.rewardList = rewardList;
+
+        materials_amount = new HashMap<>();
+        items_amount = new HashMap<>();
 
         userRequestList = new HashMap<>();
         for (Request r : new OkHttpHandler().takeRequestsByUserId(id)){
@@ -50,6 +63,153 @@ public class User {
         this.rewardPoints += rewardPoints;
     }
 
+    public void setRewardPoints(int p) {rewardPoints = p;}
+
+    public String getImage() {
+        return image;
+    }
+
+    //Method to find only the approved requests
+    public void storeApprovedRequests() {
+        for(int key: userRequestList.keySet()) {
+            Request req = userRequestList.get(key);
+            RequestStatus status = req.getRequestStatus();
+            if(status.equals(RequestStatus.APPROVED)) {
+                approvedRequest.add(req);
+            }
+        }
+    }
+
+    //Method to isolate the amounts of materials and specific items
+    public void storeMaterialsAndItemsAmounts() {
+
+        //temp maps for items and their amount only
+        HashMap<String, Integer> plasticMap = new HashMap<>();
+        HashMap<String, Integer> paperMap = new HashMap<>();
+        HashMap<String, Integer> aluminumMap = new HashMap<>();
+        HashMap<String, Integer> glassMap = new HashMap<>();
+
+
+        for(Request req: approvedRequest) {
+            RecyclableItem recitem = req.getRequestItem();
+            RecyclableMaterial material = recitem.getMaterial();
+            RecyclableItemType itemType = recitem.getType();
+
+
+            //store the materials and their amounts after the calculation.
+            if(materials_amount.containsKey(material.getType())){
+                materials_amount.put(material.getType(), materials_amount.get(material.getType()) + 1);
+            } else {
+                materials_amount.put(material.getType(), 1);
+            }
+
+            //Seperate the items of the materials, calculate their amount and store them in temp hashMaps
+            switch (material.getType()) {
+                case "Plastic":
+                    if(plasticMap.containsKey(itemType.getItemType())){
+                        plasticMap.put(itemType.getItemType(), plasticMap.get(itemType.getItemType()) + 1);
+                    } else {
+                        plasticMap.put(itemType.getItemType(), 1);
+                    }
+                    break;
+                case "Glass":
+                    if(glassMap.containsKey(itemType.getItemType())){
+                        glassMap.put(itemType.getItemType(), glassMap.get(itemType.getItemType()) + 1);
+                    } else {
+                        glassMap.put(itemType.getItemType(), 1);
+                    }
+                    break;
+                case "Paper":
+                    if(paperMap.containsKey(itemType.getItemType())){
+                        paperMap.put(itemType.getItemType(), paperMap.get(itemType.getItemType()) + 1);
+                    } else {
+                        paperMap.put(itemType.getItemType(), 1);
+                    }
+                    break;
+                default:
+                    if(aluminumMap.containsKey(itemType.getItemType())){
+                        aluminumMap.put(itemType.getItemType(), aluminumMap.get(itemType.getItemType()) + 1);
+                    } else {
+                        aluminumMap.put(itemType.getItemType(), 1);
+                    }
+                    break;
+            }
+        }
+
+        //store the materials and their items with their amounts in the items_amounts hashMap
+        items_amount.put("Paper",paperMap);
+        items_amount.put("Glass", glassMap);
+        items_amount.put("Plastic", plasticMap);
+        items_amount.put("Metal",aluminumMap);
+    }
+
+
+    public int getMaterialAmount(String material) {
+        return materials_amount.get(material);
+    }
+
+    public HashMap<String, Integer> getMaterials_and_Amounts() {
+        return materials_amount;
+    }
+
+    //Method to calculate the total amount of materials
+    public int calculateTotalMaterialsAmount() {
+        int totalAmount = 0;
+
+        for (String key : materials_amount.keySet()) {
+            Integer value = materials_amount.get(key);
+            totalAmount += value;
+        }
+
+        return totalAmount;
+    }
+
+    //Method to calculate the percentage of each material
+    public float calculateMaterialAmountPercentage(String mat) {
+        int totalAmount = calculateTotalMaterialsAmount();
+
+        float perA = (getMaterialAmount(mat) / (float)totalAmount) * 100;
+        float perB = Math.round(perA);
+
+        return (float)perB;
+    }
+
+    public int getItemAmount(String material, String item) {
+        return items_amount.get(material).get(item);
+    }
+
+    public HashMap<String, HashMap<String,Integer>>getItems_and_Amounts() {
+        return items_amount;
+    }
+
+    //Method to calculate the percentage of each item
+    public float calculateItemAmountPercentage(String material,String item) {
+        int totalAmount = getMaterialAmount(material);
+
+        float perA = (getItemAmount(material,item) / (float)totalAmount) * 100;
+        float perB = Math.round(perA);
+
+        return perB;
+    }
+
+    //Method to find the points of the next reward user wants
+    public int getRemainingRewardPoints() {
+
+        int points = 0;
+        //list sorting to find the first reward that the user does not have
+        Collections.sort(rewardList);
+
+        for (Reward reward : rewardList) {
+            if (!hasReward(reward)) {
+                if (reward.getCost() > getRewardPoints()) {
+                    points = reward.getCost();
+                    break;
+                }
+            }
+        }
+
+        return points;
+    }
     public Map<Integer, Request> getRecyclableItemList() {
         return userRequestList;
     }

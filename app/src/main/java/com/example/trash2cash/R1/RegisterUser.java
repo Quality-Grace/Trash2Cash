@@ -190,7 +190,7 @@ public class RegisterUser extends Fragment {
     }
 
     private void register() throws IOException {
-        boolean result = false;
+        boolean result;
         int registerCode;
         OkHttpHandler okHttpHandler = new OkHttpHandler();
 

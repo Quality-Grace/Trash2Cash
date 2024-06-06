@@ -13,7 +13,6 @@ import com.example.trash2cash.RewardSettings.RewardSettingsActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +32,10 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.RewardsTempButton)
                 .setOnClickListener(view -> startActivity(new Intent(MainActivity.this, RewardsActivity.class)));
+
+        // Find the button by its ID
+        findViewById(R.id.user_profile_btn)
+                .setOnClickListener(view -> startActivity(new Intent(MainActivity.this, UserProfileActivity.class)));
 
         setupNavigationListener(findViewById(R.id.bottomNavigationView));
     }

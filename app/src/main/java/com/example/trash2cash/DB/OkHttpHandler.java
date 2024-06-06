@@ -269,6 +269,9 @@ public class OkHttpHandler {
         Response response = clientRe.newCall(request).execute();
 
         System.out.println(response.code());
+        if(response.code()==200){
+            loginUser(email, password);
+        }
 
         return response.code();
     }
