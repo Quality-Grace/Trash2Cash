@@ -34,6 +34,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:layout_marginBottom="15dp"
                     android:orientation="vertical"
                     android:weightSum="2">
 
@@ -67,60 +68,14 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:layout_weight="1"
+                    android:layout_marginTop="7dp"
                     android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:layout_weight="1"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/user_level_tag"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/user_level_tag_text"
-                            android:textColor="@color/black1"
-                            android:layout_marginTop="4dp"
-                            android:textStyle="bold" />
-
-                        <RelativeLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginTop="15dp"
-                            android:layout_marginEnd="0dp"
-                            android:layout_marginBottom="10dp">
-
-
-                            <ProgressBar
-                                android:id="@+id/levelBar"
-                                style="?android:attr/progressBarStyleHorizontal"
-                                android:layout_width="90dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="2dp"
-                                android:max="1000009"
-                                android:progressDrawable="@drawable/custom_reward_progressbar" />
-
-                            <TextView
-                                android:id="@+id/user_level"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:text="@string/level_text"
-                                android:textColor="@color/white" />
-                        </RelativeLayout>
-
-                    </LinearLayout>
-
 
                     <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginTop="0dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_marginTop="2dp"
                         android:layout_marginEnd="0dp">
 
                         <TextView
@@ -140,6 +95,55 @@
                             android:textAlignment="textEnd"
                             android:textColor="@color/black" />
                     </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/user_level_tag"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/user_level_tag_text"
+                            android:textColor="@color/black1"
+                            android:layout_marginTop="0dp"
+                            android:textStyle="bold" />
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="0dp"
+                            android:layout_marginBottom="10dp">
+
+
+                            <ProgressBar
+                                android:id="@+id/levelBar"
+                                style="?android:attr/progressBarStyleHorizontal"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:max="1000009"
+                                android:progressDrawable="@drawable/custom_reward_progressbar" />
+
+                            <TextView
+                                android:id="@+id/user_level"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:text="@string/level_text"
+                                android:textColor="@color/white" />
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+
+
 
                 </LinearLayout>
 
