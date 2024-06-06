@@ -67,11 +67,13 @@ public class RecyclableManager {
         Admin.getAdmin().addRecyclableItemRequest(recyclableItem, user_id);
     }
     public void addPoints(RecyclableItem recyclableItem, int user_id) {
-        float level = (float) recyclableItem.getMaterial().getExp() /(100* ((float) 1.25));
+        int amount = recyclableItem.getMaterial().getRecycleAmount();
+
+        float level = (float) (recyclableItem.getMaterial().getExp() / amount ) /(100* ((float) 1.25));
         User user = users.get(user_id);
         assert user != null;
         user.addLevel(level);
-        user.addRewardPoints(recyclableItem.getMaterial().getRewardAmount());
+        user.addRewardPoints((float) recyclableItem.getMaterial().getRewardAmount() / amount);
         new OkHttpHandler().updateUser(user);
     }
 

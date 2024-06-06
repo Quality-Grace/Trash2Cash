@@ -60,12 +60,14 @@ public class RecyclableMaterialSettingsRecyclerAdapter extends RecyclerView.Adap
         holder.expBar.setProgress(recyclableMaterialTypes.get(position).getExp());
         setupSeekBarListener(holder.expBar, holder.expNum, position, "exp");
 
-
         holder.rewardNum.setText(String.valueOf(recyclableMaterialTypes.get(position).getRewardAmount()));
         setupEdiTextListener(holder.rewardBar, holder.rewardNum, position, "rewardAmount");
 
         holder.rewardBar.setProgress(recyclableMaterialTypes.get(position).getRewardAmount());
         setupSeekBarListener(holder.rewardBar, holder.rewardNum, position, "rewardAmount");
+
+        holder.recycleNum.setText(String.valueOf(recyclableMaterialTypes.get(position).getRecycleAmount()));
+        setupEdiTextListener(null, holder.recycleNum, position, "recycleAmount");
     }
 
     @Override
@@ -100,7 +102,7 @@ public class RecyclableMaterialSettingsRecyclerAdapter extends RecyclerView.Adap
 
     public void updateMaterialType(RecyclableMaterial materialType) throws Exception {
         OkHttpHandler okHttpHandler = new OkHttpHandler();
-        okHttpHandler.updateMaterialType(OkHttpHandler.getPATH()+"updateMaterialType.php?TYPE=\"" + materialType.getType() + "\"&EXP=" + materialType.getExp() + "&REWARD_AMOUNT=" + materialType.getRewardAmount());
+        okHttpHandler.updateMaterialType(OkHttpHandler.getPATH()+"updateMaterialType.php?TYPE=\"" + materialType.getType() + "\"&EXP=" + materialType.getExp() + "&REWARD_AMOUNT=" + materialType.getRewardAmount() + "&RECYCLE_AMOUNT=" + materialType.getRecycleAmount());
     }
 
     private void setupEdiTextListener(SeekBar seekBar, EditText editText, int position, String type) {
@@ -110,17 +112,27 @@ public class RecyclableMaterialSettingsRecyclerAdapter extends RecyclerView.Adap
 
             if(type.equals("exp")){
                 recyclableMaterialTypes.get(position).setExp(amount);
-            } else {
+            } else if(type.equals("rewardAmount")){
                 recyclableMaterialTypes.get(position).setRewardAmount(amount);
+            } else {
+                if(amount==0) amount = 1;
+                editText.setText(String.valueOf(amount));
+                recyclableMaterialTypes.get(position).setRecycleAmount(amount);
             }
 
-            seekBar.setProgress(amount);
+            if(seekBar!=null) seekBar.setProgress(amount);
+
+            try {
+                updateMaterialType(recyclableMaterialTypes.get(position));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         });
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
         private final TextView textView;
-        private final EditText expNum, rewardNum;
+        private final EditText expNum, rewardNum, recycleNum;
         private final ImageView imageView;
         private final SeekBar expBar, rewardBar;
         public MyViewHolder(@NonNull View itemView) {
@@ -132,6 +144,7 @@ public class RecyclableMaterialSettingsRecyclerAdapter extends RecyclerView.Adap
             expNum = itemView.findViewById(R.id.expNum);
             rewardBar = itemView.findViewById(R.id.rewardBar);
             rewardNum = itemView.findViewById(R.id.rewardNum);
+            recycleNum = itemView.findViewById(R.id.recylceNum);
         }
     }
 }

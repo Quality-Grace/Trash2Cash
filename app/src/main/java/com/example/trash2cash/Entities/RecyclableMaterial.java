@@ -9,13 +9,15 @@ public class RecyclableMaterial implements Serializable {
     private final String type;
     private int exp;
     private int rewardAmount;
+    private int recycleAmount;
     private final String image;
     private final int colour;
 
-    public RecyclableMaterial(String type, int exp, int rewardAmount, String image, String colour) {
+    public RecyclableMaterial(String type, int exp, int rewardAmount, int recycleAmount, String image, String colour) {
         this.type = type;
         this.exp = exp;
         this.rewardAmount = rewardAmount;
+        this.recycleAmount = recycleAmount;
         this.image = image;
         this.colour = Color.parseColor(colour);
     }
@@ -48,5 +50,13 @@ public class RecyclableMaterial implements Serializable {
 
     public boolean isOfType(String type) {
         return this.type.equals(type);
+    }
+
+    public void setRecycleAmount(int amount) {
+        this.recycleAmount = amount;
+    }
+
+    public int getRecycleAmount() {
+        return this.recycleAmount;
     }
 }
