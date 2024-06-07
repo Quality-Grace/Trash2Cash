@@ -56,7 +56,7 @@ public class RewardsActivity extends AppCompatActivity implements RewardRecycler
         bottomNavigationView.setOnItemSelectedListener(item -> {
             if(item.getItemId() == R.id.RecycleItem){
                 startActivity(new Intent(RewardsActivity.this, MaterialLoggerActivity.class));
-            } else if(item.getItemId() == R.id.StatsItem) {
+            } else if(item.getItemId() == R.id.ProfileItem) {
                 startActivity(new Intent(RewardsActivity.this, MainActivity.class));
             }
 

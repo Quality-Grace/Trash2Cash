@@ -66,7 +66,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
         // Setup navigation bar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.setSelectedItemId(R.id.StatsItem);
+        bottomNavigationView.setSelectedItemId(R.id.ProfileItem);
         setupNavigationListener(bottomNavigationView);
     }
 
@@ -121,7 +121,7 @@ public class UserProfileActivity extends AppCompatActivity {
         //set data to users info
         username.setText(username.getText().toString()+" "+user.getName());
         level.setText(String.valueOf(user.getLevel()));
-        points.setText(String.valueOf(user.getRewardPoints()));
+        points.setText(String.valueOf((int) user.getRewardPoints()));
         try {
             URL url = new URL(user.getImage());
             Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());

@@ -77,7 +77,7 @@ public class MaterialLoggerActivity extends AppCompatActivity {
         bottomNavigationView.setOnItemSelectedListener(item -> {
             if(item.getItemId() == R.id.RewardsItem) {
                 startActivity(new Intent(MaterialLoggerActivity.this, RewardsActivity.class));
-            } else if(item.getItemId() == R.id.StatsItem) {
+            } else if(item.getItemId() == R.id.ProfileItem) {
                 startActivity(new Intent(MaterialLoggerActivity.this, MainActivity.class));
             }
 

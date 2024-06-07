@@ -71,6 +71,7 @@ public class User {
 
     //Method to find only the approved requests
     public void storeApprovedRequests() {
+        approvedRequest.clear();
         for(int key: userRequestList.keySet()) {
             Request req = userRequestList.get(key);
             RequestStatus status = req.getRequestStatus();
@@ -80,8 +81,27 @@ public class User {
         }
     }
 
+    public void fillMaterialAmounts() {
+        storeApprovedRequests();
+        materials_amount.clear();
+        for (Request req : approvedRequest) {
+            RecyclableItem recItem = req.getRequestItem();
+            RecyclableMaterial material = recItem.getMaterial();
+
+            //store the materials and their amounts after the calculation.
+            if (materials_amount.containsKey(material.getType())) {
+                materials_amount.put(material.getType(), materials_amount.get(material.getType()) + 1);
+            } else {
+                materials_amount.put(material.getType(), 1);
+            }
+
+        }
+    }
+
     //Method to isolate the amounts of materials and specific items
     public void storeMaterialsAndItemsAmounts() {
+        materials_amount.clear();
+        items_amount.clear();
 
         //temp maps for items and their amount only
         HashMap<String, Integer> plasticMap = new HashMap<>();

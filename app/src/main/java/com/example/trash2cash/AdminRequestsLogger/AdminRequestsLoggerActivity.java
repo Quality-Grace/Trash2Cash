@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 public class AdminRequestsLoggerActivity extends AppCompatActivity implements AdminRequestsLoggerInterface{
 
-    private ArrayList<Request> itemList = new ArrayList<>();
+    private ArrayList<Request> requestList = new ArrayList<>();
 
     private AdminRequestsLoggerAdapter myAdapter;
 
@@ -36,11 +36,11 @@ public class AdminRequestsLoggerActivity extends AppCompatActivity implements Ad
         Admin admin = Admin.getAdmin();
 
         for(Integer user_id : admin.getRecyclableRequests().keySet()){
-            itemList.addAll(admin.getRecyclableRequests().get(user_id));
+            requestList.addAll(admin.getRecyclableRequests().get(user_id));
         }
 
 
-        myAdapter = new AdminRequestsLoggerAdapter(itemList, this, this);
+        myAdapter = new AdminRequestsLoggerAdapter(requestList, this, this);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
         recyclerView.setAdapter(myAdapter);
@@ -70,7 +70,7 @@ public class AdminRequestsLoggerActivity extends AppCompatActivity implements Ad
         View currentFocus = getCurrentFocus();
         if(currentFocus != null) currentFocus.clearFocus();
 
-        itemList.remove(position);
+        requestList.remove(position);
         myAdapter.notifyItemRemoved(position);
     }
 }

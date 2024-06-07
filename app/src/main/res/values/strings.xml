@@ -52,6 +52,7 @@
     <string name="reward_title_text_value">Reward Title</string>
     <string name="empty_text_field">Text Value</string>
     <string name="rewardsettings">RewardSettings</string>
+    <string name="update_types">Update types</string>
     <!-- Strings related to rewards -->
     <string name="available">AVAILABLE FOR YOU</string>
     <string name="other_rewards">OTHER REWARDS</string>
@@ -64,6 +65,7 @@
     <string name="claimed_rewards">Claimed Rewards</string>
     <!-- Strings related to navigation -->
     <string name="stats_item">Stats</string>
+    <string name="profile_item">Profile</string>
     <string name="recycle_item">Recycle</string>
     <string name="materials_item">Materials</string>
     <string name="rewards_item">Rewards</string>

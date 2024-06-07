@@ -2,9 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/StatsItem"
-        android:icon="@drawable/stats_icon"
-        android:title="@string/stats_item" />
+        android:id="@+id/ProfileItem"
+        android:icon="@drawable/profile_icon"
+        android:title="@string/profile_item" />
     <item
         android:id="@+id/RecycleItem"
         android:icon="@drawable/recycle_icon"

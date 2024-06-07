@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -68,6 +69,11 @@ public class RecyclableMaterialSettingsRecyclerAdapter extends RecyclerView.Adap
 
         holder.recycleNum.setText(String.valueOf(recyclableMaterialTypes.get(position).getRecycleAmount()));
         setupEdiTextListener(null, holder.recycleNum, position, "recycleAmount");
+
+        holder.updateTypesButton.setOnClickListener(view -> {
+            holder.view.clearFocus();
+            updateTypes(position);
+        });
     }
 
     @Override
@@ -85,18 +91,19 @@ public class RecyclableMaterialSettingsRecyclerAdapter extends RecyclerView.Adap
                 } else {
                     recyclableMaterialTypes.get(position).setRewardAmount(progress);
                 }
-                try {
-                    updateMaterialType(recyclableMaterialTypes.get(position));
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {}
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                try {
+                    updateMaterialType(recyclableMaterialTypes.get(position));
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
         });
     }
 
@@ -108,11 +115,12 @@ public class RecyclableMaterialSettingsRecyclerAdapter extends RecyclerView.Adap
     private void setupEdiTextListener(SeekBar seekBar, EditText editText, int position, String type) {
         editText.setOnFocusChangeListener((v, hasFocus) -> {
             int amount = UserInputParser.parseEditableTextToInt(editText.getText());
-            if(amount>1000) amount = 1000;
 
             if(type.equals("exp")){
+                if(amount>1000) amount = 1000;
                 recyclableMaterialTypes.get(position).setExp(amount);
             } else if(type.equals("rewardAmount")){
+                if(amount>100) amount = 100;
                 recyclableMaterialTypes.get(position).setRewardAmount(amount);
             } else {
                 if(amount==0) amount = 1;
@@ -121,13 +129,15 @@ public class RecyclableMaterialSettingsRecyclerAdapter extends RecyclerView.Adap
             }
 
             if(seekBar!=null) seekBar.setProgress(amount);
-
-            try {
-                updateMaterialType(recyclableMaterialTypes.get(position));
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
         });
+    }
+
+    private void updateTypes(int position){
+        try {
+            updateMaterialType(recyclableMaterialTypes.get(position));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
@@ -135,9 +145,12 @@ public class RecyclableMaterialSettingsRecyclerAdapter extends RecyclerView.Adap
         private final EditText expNum, rewardNum, recycleNum;
         private final ImageView imageView;
         private final SeekBar expBar, rewardBar;
+        private final Button updateTypesButton;
+        private final View view;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            view = itemView;
             textView = itemView.findViewById(R.id.textView);
             imageView = itemView.findViewById(R.id.profile_photo);
             expBar = itemView.findViewById(R.id.expBar);
@@ -145,6 +158,7 @@ public class RecyclableMaterialSettingsRecyclerAdapter extends RecyclerView.Adap
             rewardBar = itemView.findViewById(R.id.rewardBar);
             rewardNum = itemView.findViewById(R.id.rewardNum);
             recycleNum = itemView.findViewById(R.id.recylceNum);
+            updateTypesButton = itemView.findViewById(R.id.updateTypesButton);
         }
     }
 }
