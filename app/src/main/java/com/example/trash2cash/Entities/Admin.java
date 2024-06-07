@@ -23,7 +23,7 @@ public class Admin {
         this.recyclableRequests = new HashMap<>();
         try {
             List<Integer> userIds = new OkHttpHandler().getAllUserIds();
-
+            List<User> users = new OkHttpHandler().getAllUsers();
             for (int userId : userIds) {
                 List<Request> finalRequests = new ArrayList<>();
                 List<Request> requests = new OkHttpHandler().takeRequestsByUserId(userId);
@@ -32,6 +32,10 @@ public class Admin {
                         finalRequests.add(request);
                 }
                 recyclableRequests.put(userId, finalRequests);
+            }
+
+            for (User user: users) {
+                RecyclableManager.getRecyclableManager().addUser(user);
             }
         } catch (Exception e){
             e.printStackTrace();

@@ -34,7 +34,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class OkHttpHandler {
-    private static final String IP = "Your Ip";
+    private static final String IP = "192.168.68.105";
     private static final String PATH = "http://"+IP+"/trash2cash/";
     public OkHttpHandler() {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -393,7 +393,7 @@ public class OkHttpHandler {
         OkHttpClient client = new OkHttpClient();
 
         okhttp3.Request request = new okhttp3.Request.Builder()
-                .url(PATH+"takeAllUsers.php")
+                .url(PATH+"takeAllUsersId.php")
                 .post(RequestBody.create(MediaType.parse("application/json"), "{}"))
                 .build();
 
@@ -415,6 +415,36 @@ public class OkHttpHandler {
         }
 
         return userIds;
+    }
+
+    public List<User> getAllUsers() {
+        OkHttpClient client = new OkHttpClient();
+
+        okhttp3.Request request = new okhttp3.Request.Builder()
+                .url(PATH+"takeAllUsers.php")
+                .post(RequestBody.create(MediaType.parse("application/json"), "{}"))
+                .build();
+
+        List<User> users = new ArrayList<>();
+
+        try {
+            Response response = client.newCall(request).execute();
+
+            Gson gson = new Gson();
+            JsonArray jsonResponse = gson.fromJson(response.body().string(), JsonArray.class)
+                    .getAsJsonArray();
+            for (int i = 0; i < jsonResponse.size(); i++) {
+                JsonObject user = jsonResponse.get(i).getAsJsonObject();
+                RewardList rewardList =  gson.fromJson(user.get("rewardList").getAsString(), RewardList.class);
+                User newUser = new User(user.get("email").getAsString(), user.get("username").getAsString(), user.get("id").getAsInt(), user.get("level").getAsFloat(), user.get("rewardPoints").getAsFloat(), user.get("image").getAsString(), rewardList);
+                users.add(newUser);
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return users;
     }
 
     public void alterRequestStatus(Integer request_id, RequestStatus status){

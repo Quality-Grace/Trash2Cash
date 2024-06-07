@@ -121,8 +121,7 @@ public class RecyclableManager {
 
     public void setActiveUser(User user){
         activeUser = user;
-        if(!users.containsKey(user.getId()))
-            users.put(user.getId(), user);
+        users.put(user.getId(), user);
     }
 
     public User getUserById(int id){

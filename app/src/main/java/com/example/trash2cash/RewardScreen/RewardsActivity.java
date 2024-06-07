@@ -20,6 +20,7 @@ import com.example.trash2cash.MainActivity;
 import com.example.trash2cash.MaterialLogger.MaterialLoggerActivity;
 import com.example.trash2cash.R;
 import com.example.trash2cash.Entities.RewardList;
+import com.example.trash2cash.UserProfileActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.Comparator;
@@ -58,7 +59,7 @@ public class RewardsActivity extends AppCompatActivity implements RewardRecycler
             if(item.getItemId() == R.id.RecycleItem){
                 startActivity(new Intent(RewardsActivity.this, MaterialLoggerActivity.class));
             } else if(item.getItemId() == R.id.ProfileItem) {
-                startActivity(new Intent(RewardsActivity.this, MainActivity.class));
+                startActivity(new Intent(RewardsActivity.this, UserProfileActivity.class));
             } else if(item.getItemId() == R.id.LogoutItem){
                 startActivity(new Intent(RewardsActivity.this, LoginRegisterActivity.class));
             }

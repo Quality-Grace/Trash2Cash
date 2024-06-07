@@ -30,6 +30,7 @@ import com.example.trash2cash.LoginRegisterActivity;
 import com.example.trash2cash.MainActivity;
 import com.example.trash2cash.R;
 import com.example.trash2cash.RewardScreen.RewardsActivity;
+import com.example.trash2cash.UserProfileActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.IOException;
@@ -79,7 +80,7 @@ public class MaterialLoggerActivity extends AppCompatActivity {
             if(item.getItemId() == R.id.RewardsItem) {
                 startActivity(new Intent(MaterialLoggerActivity.this, RewardsActivity.class));
             } else if(item.getItemId() == R.id.ProfileItem) {
-                startActivity(new Intent(MaterialLoggerActivity.this, MainActivity.class));
+                startActivity(new Intent(MaterialLoggerActivity.this, UserProfileActivity.class));
             } else if(item.getItemId() == R.id.LogoutItem){
                 startActivity(new Intent(MaterialLoggerActivity.this, LoginRegisterActivity.class));
             }

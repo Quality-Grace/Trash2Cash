@@ -12,9 +12,11 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.trash2cash.AdminRequestsLogger.AdminRequestsLoggerActivity;
 import com.example.trash2cash.DB.OkHttpHandler;
 import com.example.trash2cash.MainActivity;
 import com.example.trash2cash.R;
+import com.example.trash2cash.UserProfileActivity;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Objects;
@@ -95,10 +97,15 @@ public class LoginUser extends Fragment {
             Objects.requireNonNull(email.getEditText()).setText("");
             Objects.requireNonNull(password.getEditText()).setText("");
             Toast.makeText(getContext(), "Login has failed", Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(getContext(), "Login successful", Toast.LENGTH_LONG).show();
+        } else if(emailString.equals("admin")){
+            Toast.makeText(getContext(), "Login successful as Admin", Toast.LENGTH_LONG).show();
 //            Metavasi se nea othoni
-            Intent intent = new Intent(requireActivity(), MainActivity.class);
+            Intent intent = new Intent(requireActivity(), AdminRequestsLoggerActivity.class);
+            startActivity(intent);
+        } else {
+            Toast.makeText(getContext(), "Login successful as " + emailString, Toast.LENGTH_LONG).show();
+//            Metavasi se nea othoni
+            Intent intent = new Intent(requireActivity(), UserProfileActivity.class);
             startActivity(intent);
         }
     }
