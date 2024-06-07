@@ -48,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, RewardsActivity.class));
             } else if(item.getItemId() == R.id.MaterialsItem){
                 startActivity(new Intent(MainActivity.this, RecyclableMaterialSettingsActivity.class));
+            } else if(item.getItemId() == R.id.LogoutItem){
+                startActivity(new Intent(MainActivity.this, LoginRegisterActivity.class));
             }
 
 //            if(item.getItemId() == R.id.RecycleItem){
@@ -56,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
 //                startActivity(new Intent(MainActivity.this, RewardSettingsActivity.class));
 //            } else if(item.getItemId() == R.id.MaterialsItem){
 //                startActivity(new Intent(MainActivity.this, RecyclableMaterialSettingsActivity.class));
+//            } else if(item.getItemId() == R.id.LogoutItem){
+//                startActivity(new Intent(MainActivity.this, LoginRegisterActivity.class));
 //            }
 
             return true;

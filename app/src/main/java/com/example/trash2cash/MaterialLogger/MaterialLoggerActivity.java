@@ -26,6 +26,7 @@ import com.example.trash2cash.Entities.RecyclableMaterialTypes;
 import com.example.trash2cash.Entities.Request;
 import com.example.trash2cash.Entities.RequestStatus;
 import com.example.trash2cash.Entities.User;
+import com.example.trash2cash.LoginRegisterActivity;
 import com.example.trash2cash.MainActivity;
 import com.example.trash2cash.R;
 import com.example.trash2cash.RewardScreen.RewardsActivity;
@@ -79,6 +80,8 @@ public class MaterialLoggerActivity extends AppCompatActivity {
                 startActivity(new Intent(MaterialLoggerActivity.this, RewardsActivity.class));
             } else if(item.getItemId() == R.id.ProfileItem) {
                 startActivity(new Intent(MaterialLoggerActivity.this, MainActivity.class));
+            } else if(item.getItemId() == R.id.LogoutItem){
+                startActivity(new Intent(MaterialLoggerActivity.this, LoginRegisterActivity.class));
             }
 
             return true;

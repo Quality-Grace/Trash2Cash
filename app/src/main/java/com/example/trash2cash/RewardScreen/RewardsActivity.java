@@ -15,6 +15,7 @@ import com.example.trash2cash.DB.OkHttpHandler;
 import com.example.trash2cash.Entities.RecyclableManager;
 import com.example.trash2cash.Entities.Reward;
 import com.example.trash2cash.Entities.User;
+import com.example.trash2cash.LoginRegisterActivity;
 import com.example.trash2cash.MainActivity;
 import com.example.trash2cash.MaterialLogger.MaterialLoggerActivity;
 import com.example.trash2cash.R;
@@ -58,6 +59,8 @@ public class RewardsActivity extends AppCompatActivity implements RewardRecycler
                 startActivity(new Intent(RewardsActivity.this, MaterialLoggerActivity.class));
             } else if(item.getItemId() == R.id.ProfileItem) {
                 startActivity(new Intent(RewardsActivity.this, MainActivity.class));
+            } else if(item.getItemId() == R.id.LogoutItem){
+                startActivity(new Intent(RewardsActivity.this, LoginRegisterActivity.class));
             }
 
             return true;

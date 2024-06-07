@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 import com.example.trash2cash.Entities.RecyclableManager;
 import com.example.trash2cash.Entities.RewardList;
@@ -35,5 +36,12 @@ public class UserClaimedRewardsActivity extends AppCompatActivity {
         // Adds snappy scrolling
         SnapHelper helper = new LinearSnapHelper();
         helper.attachToRecyclerView(claimedRewardsRecycler);
+
+        setAmountOfRewards((TextView) findViewById(R.id.claimedRewardsAmount), claimedRewardsList.size());
+    }
+
+    public void setAmountOfRewards(TextView textView, int amount) {
+        String text = textView.getText().toString() + " (" + amount + ")";
+        textView.setText(text);
     }
 }

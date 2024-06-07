@@ -266,6 +266,8 @@ public class UserProfileActivity extends AppCompatActivity {
                 startActivity(new Intent(UserProfileActivity.this, RewardsActivity.class));
             } else if(item.getItemId() == R.id.MaterialsItem){
                 startActivity(new Intent(UserProfileActivity.this, RecyclableMaterialSettingsActivity.class));
+            } else if(item.getItemId() == R.id.LogoutItem){
+                startActivity(new Intent(UserProfileActivity.this, LoginRegisterActivity.class));
             }
 
             return true;

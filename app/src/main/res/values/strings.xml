@@ -63,12 +63,14 @@
     <string name="rewards">Rewards</string>
     <string name="image_gallery_is_empty">The image gallery is empty</string>
     <string name="claimed_rewards">Claimed Rewards</string>
+    <string name="claimed_rewards_amount">Claimed rewards amount</string>
     <!-- Strings related to navigation -->
     <string name="stats_item">Stats</string>
     <string name="profile_item">Profile</string>
     <string name="recycle_item">Recycle</string>
     <string name="materials_item">Materials</string>
     <string name="rewards_item">Rewards</string>
+    <string name="logout_item">Logout</string>
     <!-- Strings related to the user profile -->
     <string name="user_name_tag_text">Username:</string>
     <string name="user_level_tag_text">Level:</string>

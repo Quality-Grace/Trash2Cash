@@ -13,4 +13,8 @@
         android:id="@+id/RewardsItem"
         android:icon="@drawable/rewards_icon"
         android:title="@string/rewards_item" />
+    <item
+        android:id="@+id/LogoutItem"
+        android:icon="@drawable/logout_icon"
+        android:title="@string/logout_item" />
 </menu>

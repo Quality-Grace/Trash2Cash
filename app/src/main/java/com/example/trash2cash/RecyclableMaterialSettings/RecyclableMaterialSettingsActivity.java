@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.trash2cash.AdminRequestsLogger.AdminRequestsLoggerActivity;
+import com.example.trash2cash.LoginRegisterActivity;
 import com.example.trash2cash.MainActivity;
 import com.example.trash2cash.R;
 import com.example.trash2cash.Entities.RecyclableMaterialTypes;
@@ -53,6 +54,8 @@ public class RecyclableMaterialSettingsActivity extends AppCompatActivity {
                 startActivity(new Intent(RecyclableMaterialSettingsActivity.this, RewardSettingsActivity.class));
             } else if(item.getItemId() == R.id.StatsItem) {
                 startActivity(new Intent(RecyclableMaterialSettingsActivity.this, MainActivity.class));
+            } else if(item.getItemId() == R.id.LogoutItem){
+                startActivity(new Intent(RecyclableMaterialSettingsActivity.this, LoginRegisterActivity.class));
             }
 
             return true;

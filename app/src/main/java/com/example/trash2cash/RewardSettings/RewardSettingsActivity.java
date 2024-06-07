@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.trash2cash.AdminRequestsLogger.AdminRequestsLoggerActivity;
 import com.example.trash2cash.DB.OkHttpHandler;
+import com.example.trash2cash.LoginRegisterActivity;
 import com.example.trash2cash.MainActivity;
 import com.example.trash2cash.RecyclableMaterialSettings.RecyclableMaterialSettingsActivity;
 import com.example.trash2cash.imageGallery.ImagePickerActivity;
@@ -100,6 +101,8 @@ public class RewardSettingsActivity extends AppCompatActivity implements RewardS
                 startActivity(new Intent(RewardSettingsActivity.this, RecyclableMaterialSettingsActivity.class));
             } else if(item.getItemId() == R.id.StatsItem) {
                 startActivity(new Intent(RewardSettingsActivity.this, MainActivity.class));
+            } else if(item.getItemId() == R.id.LogoutItem){
+                startActivity(new Intent(RewardSettingsActivity.this, LoginRegisterActivity.class));
             }
 
             return true;
