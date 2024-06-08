@@ -488,26 +488,29 @@ public class OkHttpHandler {
 
     //Mary - Utilized in ViewStats
     public List<UserStatistics> getTopUserStatistics(String url) throws Exception {
-        List<UserStatistics> userStatisticsList = new ArrayList<UserStatistics>();
-        OkHttpClient client = new OkHttpClient().newBuilder().build();
-        RequestBody body = RequestBody.create("", MediaType.parse("text/plain"));
-        okhttp3.Request request = new okhttp3.Request.Builder().url(url).method("POST", body).build();
-        Response response = client.newCall(request).execute();
-        assert response.body() != null;
-        String data = response.body().string();
+    List<UserStatistics> userStatisticsList = new ArrayList<>();
+    OkHttpClient client = new OkHttpClient().newBuilder().build();
+    RequestBody body = RequestBody.create("", MediaType.parse("text/plain"));
+    okhttp3.Request request = new okhttp3.Request.Builder().url(url).method("POST", body).build();
+    Response response = client.newCall(request).execute();
+    assert response.body() != null;
+    String data = response.body().string();
 
-        JSONArray jsonArray = new JSONArray(data);
-        for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject jsonObject = jsonArray.getJSONObject(i);
-            String userName = jsonObject.getString("userName");
-            int totalRecycledItems = jsonObject.getInt("totalRecycledItems");
-            float userLevel = (float) jsonObject.getDouble("userLevel");
-            float rewardPoints = (float) jsonObject.getDouble("rewardPoints");
+    JSONArray jsonArray = new JSONArray(data);
+    for (int i = 0; i < jsonArray.length(); i++) {
+        JSONObject jsonObject = jsonArray.getJSONObject(i);
+        int id = jsonObject.getInt("id");
+        float level = (float) jsonObject.getDouble("level");
+        float rewardPoints = (float) jsonObject.getDouble("rewardPoints");
 
-            UserStatistics userStatistics = new UserStatistics(userName, totalRecycledItems, userLevel, rewardPoints);
-            userStatisticsList.add(userStatistics);
-        }
-
-        return userStatisticsList;
+        UserStatistics userStatistics = new UserStatistics(id, level, rewardPoints);
+        userStatisticsList.add(userStatistics);
     }
+
+    return userStatisticsList;
+}
+
+
+
+
 }
