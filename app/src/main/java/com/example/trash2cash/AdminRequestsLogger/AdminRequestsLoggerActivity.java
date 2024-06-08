@@ -61,9 +61,9 @@ public class AdminRequestsLoggerActivity extends AppCompatActivity implements Ad
                 startActivity(new Intent(AdminRequestsLoggerActivity.this, RewardSettingsActivity.class));
             } else if(item.getItemId() == R.id.StatsItem) {
                 startActivity(new Intent(AdminRequestsLoggerActivity.this, MainActivity.class));
-            } else if(item.getItemId() == R.id.LogoutItem) {
+            } else if(item.getItemId() == R.id.LogoutItem){
                 startActivity(new Intent(AdminRequestsLoggerActivity.this, LoginRegisterActivity.class));
-           } else if(item.getItemId() == R.id.MaterialsItem) {
+            } else if(item.getItemId() == R.id.MaterialsItem){
                 startActivity(new Intent(AdminRequestsLoggerActivity.this, RecyclableMaterialSettingsActivity.class));
             }
 
