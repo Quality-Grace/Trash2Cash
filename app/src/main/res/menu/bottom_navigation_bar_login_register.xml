@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/loginItem"
-        android:icon="@drawable/profile_icon"
+        android:icon="@drawable/stats_icon"
         android:title="@string/login_item" />
     <item
         android:id="@+id/signUpItem"

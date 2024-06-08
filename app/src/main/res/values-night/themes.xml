@@ -1,35 +1,7 @@
-<resources>
-<!-- Base application theme. -->
-<style name="Base.Theme.Trash2Cash" parent="Theme.Material3.DayNight.NoActionBar">
-    <item name="colorPrimary">@color/royal_blue</item>
-    <item name="colorPrimaryVariant">@color/lightsky_blue</item>
-    <item name="colorOnPrimary">@color/white</item>
-
-    <item name="colorSecondary">@color/dark_blue</item>
-    <item name="colorSecondaryVariant">@color/dark_blue_variant</item>
-    <item name="colorOnSecondary">@color/white</item>
-
-    <item name="android:textColorHighlight">@color/blue</item>
-
-    <item name="bottomNavigationStyle">@style/BottomNavigationViewCustomStyle</item>
-    <item name="itemActiveIndicatorStyle">@style/CustomIndicator</item>
-
-    <item name="seekBarStyle">@style/customSeekBar</item>
-</style>
-
-<style name="BottomNavigationViewCustomStyle" parent="Widget.MaterialComponents.BottomNavigationView">
-    <item name="colorPrimary">@color/royal_blue</item>
-</style>
-
-<style name="CustomIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-    <item name="android:color">@color/royal_transparent_blue</item>
-</style>
-
-<style name="customSeekBar" parent="Widget.AppCompat.SeekBar">
-    <item name="android:progressBackgroundTint">@color/lightsky_transparent_blue</item>
-    <item name="android:progressTint">@color/royal_blue</item>
-    <item name="android:thumbTint">@color/dark_blue</item>
-</style>
-
-<style name="Theme.Trash2Cash" parent="Base.Theme.Trash2Cash" />
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Trash2Cash" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your dark theme here. -->
+        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+    </style>
 </resources>

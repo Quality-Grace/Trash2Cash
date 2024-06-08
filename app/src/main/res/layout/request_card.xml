@@ -21,8 +21,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:backgroundTint="@color/royal_blue"
             android:padding="20dp"
+            app:cardBackgroundColor="@color/add_card"
             app:cardCornerRadius="20dp"
             app:cardElevation="8dp">
 
@@ -48,14 +48,14 @@
                         android:layout_width="159dp"
                         android:layout_height="wrap_content"
                         android:text="Material"
-                        android:textSize="20sp" />
+                        android:textSize="28sp" />
 
                     <TextView
                         android:id="@+id/ItemTextView"
                         android:layout_width="match_parent"
-                        android:layout_height="64dp"
+                        android:layout_height="wrap_content"
                         android:text="Item"
-                        android:textSize="20sp" />
+                        android:textSize="24sp" />
                 </LinearLayout>
 
                 <ImageView

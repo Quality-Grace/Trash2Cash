@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/leaderboard_background_image">
+
+    <!-- Best Recyclers Leaderboard -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Best Recyclers Leaderboard"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@android:color/holo_green_dark"
+        android:paddingBottom="16dp"/>
+
+    <ListView
+        android:id="@+id/statisticsListView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="@android:color/holo_green_dark"
+        android:dividerHeight="1dp"
+        android:background="@android:color/white"/>
+
+</LinearLayout>

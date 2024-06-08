@@ -3,22 +3,18 @@
 
     <item
         android:id="@+id/StatsItem"
-        android:icon="@drawable/profile_icon"
+        android:icon="@drawable/stats_icon"
         android:title="@string/stats_item" />
-    <item
-        android:id="@+id/MaterialsItem"
-        android:icon="@drawable/recyclable_materials_icon"
-        android:title="@string/materials_item" />
     <item
         android:id="@+id/RecycleItem"
         android:icon="@drawable/recycle_icon"
         android:title="@string/recycle_item" />
     <item
+        android:id="@+id/MaterialsItem"
+        android:icon="@drawable/recyclable_materials_icon"
+        android:title="@string/materials_item" />
+    <item
         android:id="@+id/RewardsItem"
         android:icon="@drawable/rewards_icon"
         android:title="@string/rewards_item" />
-    <item
-        android:id="@+id/LogoutItem"
-        android:icon="@drawable/logout_icon"
-        android:title="@string/logout_item" />
 </menu>

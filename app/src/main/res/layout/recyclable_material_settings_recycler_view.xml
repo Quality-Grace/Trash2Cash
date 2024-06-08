@@ -53,39 +53,35 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="10dp">
+                android:layout_marginBottom="20dp"
+                android:gravity="center"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/recycleAmountText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
                     android:text="@string/recycle_quantity"
-                    android:textSize="18sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:textSize="18sp" />
 
                 <EditText
                     android:id="@+id/recylceNum"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:layout_marginStart="5dp"
                     android:autofillHints="@string/empty_num_field"
                     android:background="@null"
                     android:ems="10"
                     android:hint="@string/recycle_quantity_num_value"
-                    android:inputType="number"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/recycleAmountText"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:inputType="number" />
+            </LinearLayout>
 
             <SeekBar
                 android:id="@+id/expBar"
+                style="@style/blueSeekBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="1000" />
@@ -106,6 +102,7 @@
 
                 <EditText
                     android:id="@+id/expNum"
+                    style="@style/Widget.AppCompat.AutoCompleteTextView"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:autofillHints="@string/empty_num_field"
@@ -117,9 +114,10 @@
 
             <SeekBar
                 android:id="@+id/rewardBar"
+                style="@style/blueSeekBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:max="100" />
+                android:max="1000" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -145,21 +143,9 @@
                     android:ems="10"
                     android:hint="@string/reward_num_value"
                     android:inputType="number" />
-
             </LinearLayout>
 
         </LinearLayout>
-
-        <Button
-            android:id="@+id/updateTypesButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:text="@string/update_types"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
