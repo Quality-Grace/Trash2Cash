@@ -29,7 +29,6 @@
                 android:gravity="center_vertical"
                 android:weightSum="2">
 
-
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -42,7 +41,6 @@
                         android:id="@+id/profile_photo"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:layout_marginStart="0dp"
                         android:layout_marginTop="20dp"
                         android:gravity="center"
                         app:layout_constraintStart_toStartOf="parent"
@@ -53,8 +51,8 @@
                         android:id="@+id/user_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="0dp"
                         android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
                         android:gravity="center"
                         android:text="@string/user_name_tag_text"
                         android:textColor="@color/black"
@@ -63,19 +61,16 @@
 
                 </LinearLayout>
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="7dp"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content">
 
-                    <RelativeLayout
+                    <LinearLayout
+                        android:id="@+id/linearLayout3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="0dp"
-                        android:layout_marginTop="2dp"
-                        android:layout_marginEnd="0dp">
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
                         <TextView
                             android:id="@+id/user_points_tag"
@@ -89,18 +84,21 @@
                             android:id="@+id/user_points"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="100dp"
+                            android:layout_marginStart="5dp"
                             android:text="@string/points_text"
                             android:textAlignment="textEnd"
                             android:textColor="@color/black" />
-                    </RelativeLayout>
+                    </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
+                        android:id="@+id/linearLayout5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="horizontal">
+                        android:gravity="center|start"
+                        android:orientation="horizontal"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
                         <TextView
                             android:id="@+id/user_level_tag"
@@ -111,91 +109,131 @@
                             android:textColor="@color/black1"
                             android:textStyle="bold" />
 
-                        <RelativeLayout
+                        <TextView
+                            android:id="@+id/user_level"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginEnd="0dp"
-                            android:layout_marginBottom="10dp"
-                            android:gravity="center">
-
-
-                            <ProgressBar
-                                android:id="@+id/levelBar"
-                                style="?android:attr/progressBarStyleHorizontal"
-                                android:layout_width="100dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="2dp"
-                                android:max="1000009"
-                                android:progressDrawable="@drawable/custom_reward_progressbar" />
-
-                            <TextView
-                                android:id="@+id/user_level"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:text="@string/level_text"
-                                android:textColor="@color/white" />
-                        </RelativeLayout>
+                            android:text="@string/level_text"
+                            android:textColor="@color/black1"
+                            android:textStyle="bold" />
 
                     </LinearLayout>
 
+                    <Button
+                        android:id="@+id/my_rewards"
+                        android:layout_width="140dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:backgroundTint="@color/royal_blue"
+                        android:gravity="center|center_horizontal|center_vertical"
+                        android:text="@string/my_rewards_btn_text"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/linearLayout3"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
 
-                </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/progress_rewards"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_marginTop="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
                 android:gravity="center"
-                android:orientation="horizontal"
-                android:weightSum="2">
+                android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="250dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:weightSum="2">
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/progress_bar_title"
+                        android:id="@+id/reward_progress_bar_title_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/progress_bar_title_text"
+                        android:text="@string/reward_progress_bar_title_text"
+                        android:textAlignment="center"
                         android:textColor="@color/black1"
                         android:textSize="15sp"
                         android:textStyle="bold" />
 
-                    <ProgressBar
-                        android:id="@+id/rewardProgressBar"
-                        style="?android:attr/progressBarStyleHorizontal"
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="7dp"
-                        android:progressDrawable="@drawable/custom_reward_progressbar" />
+                        android:layout_marginTop="7dp">
 
+                        <ProgressBar
+                            android:id="@+id/rewardProgressBar"
+                            style="?android:attr/progressBarStyleHorizontal"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:progressDrawable="@drawable/custom_reward_progressbar"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/remainingRewardPointsProgressBar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintBottom_toBottomOf="@+id/rewardProgressBar"
+                            app:layout_constraintEnd_toEndOf="@+id/rewardProgressBar"
+                            app:layout_constraintStart_toStartOf="@+id/rewardProgressBar"
+                            app:layout_constraintTop_toTopOf="@+id/rewardProgressBar" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="150dp"
-                    android:layout_height="match_parent"
-                    android:gravity="center">
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-                    <Button
-                        android:id="@+id/my_rewards"
-                        android:layout_width="140dp"
+                    <TextView
+                        android:id="@+id/level_progress_bar_title_text"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:backgroundTint="@color/royale_blue"
-                        android:text="@string/my_rewards_btn_text" />
+                        android:text="@string/level_progress_bar_title_text"
+                        android:textAlignment="center"
+                        android:textColor="@color/black1"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp">
+
+                        <ProgressBar
+                            android:id="@+id/levelProgressBar"
+                            style="?android:attr/progressBarStyleHorizontal"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:progressDrawable="@drawable/custom_reward_progressbar"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/remainingLevelsProgressBar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintBottom_toBottomOf="@+id/levelProgressBar"
+                            app:layout_constraintEnd_toEndOf="@+id/levelProgressBar"
+                            app:layout_constraintStart_toStartOf="@+id/levelProgressBar"
+                            app:layout_constraintTop_toTopOf="@+id/levelProgressBar" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </LinearLayout>
+
             </LinearLayout>
 
             <androidx.cardview.widget.CardView
@@ -221,7 +259,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/first_barChart_title"
-                        android:textColor="@color/royale_blue"
+                        android:textColor="@color/royal_blue"
                         android:textSize="17sp"
                         android:textStyle="bold"></TextView>
 
@@ -260,7 +298,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/second_barChart_title"
-                        android:textColor="@color/royale_blue"
+                        android:textColor="@color/royal_blue"
                         android:textSize="17sp"
                         android:textStyle="bold"></TextView>
 
@@ -303,7 +341,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/third_barChart_title"
-                        android:textColor="@color/royale_blue"
+                        android:textColor="@color/royal_blue"
                         android:textSize="17sp"
                         android:textStyle="bold"></TextView>
 
@@ -344,7 +382,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/fourth_barChart_title"
-                        android:textColor="@color/royale_blue"
+                        android:textColor="@color/royal_blue"
                         android:textSize="17sp"
                         android:textStyle="bold"></TextView>
 
@@ -384,12 +422,52 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/fifth_barChart_title"
-                        android:textColor="@color/royale_blue"
+                        android:textColor="@color/royal_blue"
                         android:textSize="17sp"
                         android:textStyle="bold"></TextView>
 
                     <com.github.mikephil.charting.charts.BarChart
                         android:id="@+id/aluminum_barChart"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="0dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="0dp"
+                        android:layout_weight="2"
+                        android:padding="6dp"></com.github.mikephil.charting.charts.BarChart>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:elevation="10dp"
+                app:cardCornerRadius="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/sixth_barChart_title"
+                        android:textColor="@color/royal_blue"
+                        android:textSize="17sp"
+                        android:textStyle="bold"></TextView>
+
+                    <com.github.mikephil.charting.charts.BarChart
+                        android:id="@+id/other_barChart"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_gravity="center"
@@ -408,6 +486,7 @@
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:itemActiveIndicatorStyle="@style/CustomIndicator"
         app:itemIconSize="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

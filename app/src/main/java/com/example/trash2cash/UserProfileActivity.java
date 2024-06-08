@@ -44,9 +44,6 @@ public class UserProfileActivity extends AppCompatActivity {
     //HashMap for user's specific items and amounts
     HashMap<String, HashMap<String,Integer>> items_map;
 
-    //current progress for rewards progress bar
-    int currentProgress = 0;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,10 +73,10 @@ public class UserProfileActivity extends AppCompatActivity {
         setDataInfo();
 
         //set data to level bar
-        levelProgressBar();
+        //levelProgressBar();
 
         //set data to progress bar
-        rewardProgressBar();
+        setProgressBarData();
 
         //ArrayList with all percentages of materials
         ArrayList<Float> percentages = new ArrayList<>();
@@ -131,26 +128,27 @@ public class UserProfileActivity extends AppCompatActivity {
         }
     }
 
-    public void levelProgressBar() {
-        ProgressBar level_bar = findViewById(R.id.levelBar);
-        TextView level_text = findViewById(R.id.user_level);
+    public void setProgressBarData() {
+        int[] remainingValues = user.getRemainingValues();
+        rewardProgressBar(remainingValues[0]);
+        levelProgressBar(remainingValues[1]);
+    }
 
+    public void levelProgressBar(int max) {
+        ProgressBar level_bar = findViewById(R.id.levelProgressBar);
         int currentLevel = (int)Math.floor(user.getLevel());
-        //demical part of level
-        float demical = user.getLevel() - currentLevel;
-        //make the demical part in scale 0-100 for the progress bar
-        int progress = (int)(demical * 100);
-        level_bar.setMax(100);
-        level_text.setText(String.valueOf(currentLevel));
-        level_bar.setProgress(progress);
+        level_bar.setMax(max);
+        level_bar.setProgress(currentLevel);
+        ((TextView)findViewById(R.id.remainingLevelsProgressBar)).setText(currentLevel + "/" + max);
         level_bar.invalidate();
     }
 
-    public void rewardProgressBar() {
+    public void rewardProgressBar(int max) {
         ProgressBar pr = findViewById(R.id.rewardProgressBar);
-        currentProgress = (int) Math.floor(user.getRewardPoints());
-        pr.setMax(user.getRemainingRewardPoints());
+        int currentProgress = (int) Math.floor(user.getRewardPoints());
+        pr.setMax(max);
         pr.setProgress(currentProgress);
+        ((TextView)findViewById(R.id.remainingRewardPointsProgressBar)).setText(currentProgress + "/" + max);
         pr.invalidate();
 
     }
@@ -172,10 +170,11 @@ public class UserProfileActivity extends AppCompatActivity {
 
         //Define colors for each material
         ArrayList<Integer> colors = new ArrayList<>();
-        colors.add(Color.parseColor("#6495ED")); // glass color
-        colors.add(Color.parseColor("#CCCC00")); // aluminum color
-        colors.add(Color.parseColor("#3CB371")); // paper color
-        colors.add(Color.parseColor("#DC143C")); // plastic color
+        colors.add(Color.parseColor("#42adff")); // glass color
+        colors.add(Color.parseColor("#fff842")); // aluminum color
+        colors.add(Color.parseColor("#42ff45")); // paper color
+        colors.add(Color.parseColor("#ff4242")); // plastic color
+        colors.add(Color.parseColor("#6a6a6a")); // other color
 
         //Create PieDataSet and configure properties
         PieDataSet pieDataSet = new PieDataSet(materials, "Materials");
@@ -211,8 +210,11 @@ public class UserProfileActivity extends AppCompatActivity {
             case "Paper":
                 barChart = findViewById(R.id.paper_barChart);
                 break;
-            default:
+            case "Aluminium":
                 barChart = findViewById(R.id.aluminum_barChart);
+                break;
+            default:
+                barChart = findViewById(R.id.other_barChart);
                 break;
         }
 

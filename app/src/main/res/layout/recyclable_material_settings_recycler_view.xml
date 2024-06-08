@@ -86,7 +86,6 @@
 
             <SeekBar
                 android:id="@+id/expBar"
-                style="@style/blueSeekBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="1000" />
@@ -107,7 +106,6 @@
 
                 <EditText
                     android:id="@+id/expNum"
-                    style="@style/Widget.AppCompat.AutoCompleteTextView"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:autofillHints="@string/empty_num_field"
@@ -119,7 +117,6 @@
 
             <SeekBar
                 android:id="@+id/rewardBar"
-                style="@style/blueSeekBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="100" />

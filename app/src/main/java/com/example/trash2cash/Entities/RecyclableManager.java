@@ -104,7 +104,7 @@ public class RecyclableManager {
                 image = R.drawable.can;
                 break;
             case CARD_BOARD:
-                image = R.drawable.ic_launcher_foreground;
+                image = R.drawable.card_board;
                 break;
         }
 

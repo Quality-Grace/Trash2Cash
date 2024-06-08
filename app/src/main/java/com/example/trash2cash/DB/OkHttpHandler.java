@@ -34,7 +34,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class OkHttpHandler {
-    private static final String IP = "192.168.68.105";
+    private static final String IP = "Your Ip";
     private static final String PATH = "http://"+IP+"/trash2cash/";
     public OkHttpHandler() {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();

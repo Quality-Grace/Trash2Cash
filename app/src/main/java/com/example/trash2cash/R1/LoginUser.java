@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment;
 
 import com.example.trash2cash.AdminRequestsLogger.AdminRequestsLoggerActivity;
 import com.example.trash2cash.DB.OkHttpHandler;
-import com.example.trash2cash.MainActivity;
 import com.example.trash2cash.R;
 import com.example.trash2cash.UserProfileActivity;
 import com.google.android.material.textfield.TextInputLayout;

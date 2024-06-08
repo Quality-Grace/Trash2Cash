@@ -21,8 +21,8 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 
 import com.example.trash2cash.DB.OkHttpHandler;
-import com.example.trash2cash.MainActivity;
 import com.example.trash2cash.R;
+import com.example.trash2cash.UserProfileActivity;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -208,7 +208,7 @@ public class RegisterUser extends Fragment {
             }
             if (registerCode == 200){
                 Toast.makeText(getContext(), "Register successful", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(requireActivity(), MainActivity.class);
+                Intent intent = new Intent(requireActivity(), UserProfileActivity.class);
                 startActivity(intent);
             }
         }

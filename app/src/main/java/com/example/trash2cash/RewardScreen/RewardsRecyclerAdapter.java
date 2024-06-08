@@ -64,13 +64,24 @@ public class RewardsRecyclerAdapter extends RecyclerView.Adapter<RewardsRecycler
         }
 
         if(!available) {
-            String requirement = rewardList.get(position).getCost() - currentUser.getRewardPoints() + " points left";
-            holder.requiredLevelText.setText(requirement);
-            holder.requiredLevelText.setMovementMethod(new ScrollingMovementMethod());
+            float levelsLeft = rewardList.get(position).getLevel() - currentUser.getLevel();
+            if(levelsLeft>0) {
+                String requirement = levelsLeft + " levels left to unlock";
+                holder.requiredLevelText.setText(requirement);
+                holder.requiredLevelText.setMovementMethod(new ScrollingMovementMethod());
+            } else {
+                holder.requiredLevelText.setVisibility(View.GONE);
+            }
 
-            requirement = rewardList.get(position).getLevel() - currentUser.getLevel()+ " levels left";
-            holder.requiredCostText.setText(requirement);
-            holder.requiredCostText.setMovementMethod(new ScrollingMovementMethod());
+            float pointsLeft = rewardList.get(position).getCost() - currentUser.getRewardPoints();
+            if(pointsLeft>0){
+                String requirement = pointsLeft + " points left to unlock";
+                holder.requiredCostText.setText(requirement);
+                holder.requiredCostText.setMovementMethod(new ScrollingMovementMethod());
+            } else {
+                holder.requiredCostText.setVisibility(View.GONE);
+            }
+
         }
     }
 

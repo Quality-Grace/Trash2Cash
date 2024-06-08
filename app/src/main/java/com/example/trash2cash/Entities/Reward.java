@@ -63,8 +63,6 @@ public class Reward implements Comparable<Reward>{
 
     //method for sorting
     public int compareTo(Reward other) {
-        if(cost == other.getCost()) return 0;
-        else if (cost > other.getCost()) return 1;
-        else return -1;
+        return Integer.compare(cost, other.getCost());
     }
 }

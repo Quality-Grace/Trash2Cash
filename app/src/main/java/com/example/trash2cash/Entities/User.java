@@ -108,7 +108,7 @@ public class User {
         HashMap<String, Integer> paperMap = new HashMap<>();
         HashMap<String, Integer> aluminumMap = new HashMap<>();
         HashMap<String, Integer> glassMap = new HashMap<>();
-
+        HashMap<String, Integer> otherMap = new HashMap<>();
 
         for(Request req: approvedRequest) {
             RecyclableItem recitem = req.getRequestItem();
@@ -146,11 +146,18 @@ public class User {
                         paperMap.put(itemType.getItemType(), 1);
                     }
                     break;
-                default:
+                case "Aluminium":
                     if(aluminumMap.containsKey(itemType.getItemType())){
                         aluminumMap.put(itemType.getItemType(), aluminumMap.get(itemType.getItemType()) + 1);
                     } else {
                         aluminumMap.put(itemType.getItemType(), 1);
+                    }
+                    break;
+                case "Other":
+                    if(otherMap.containsKey(itemType.getItemType())){
+                        otherMap.put(itemType.getItemType(), otherMap.get(itemType.getItemType()) + 1);
+                    } else {
+                        otherMap.put(itemType.getItemType(), 1);
                     }
                     break;
             }
@@ -160,7 +167,8 @@ public class User {
         items_amount.put("Paper",paperMap);
         items_amount.put("Glass", glassMap);
         items_amount.put("Plastic", plasticMap);
-        items_amount.put("Metal",aluminumMap);
+        items_amount.put("Aluminium",aluminumMap);
+        items_amount.put("Other", otherMap);
     }
 
 
@@ -212,23 +220,29 @@ public class User {
         return perB;
     }
 
-    //Method to find the points of the next reward user wants
-    public int getRemainingRewardPoints() {
-
-        int points = 0;
+    //Method to find the points and levels required for the next reward
+    public int[] getRemainingValues() {
+        int[] remainingValues = {0, 0};
         //list sorting to find the first reward that the user does not have
-        Collections.sort(rewardList);
+        RewardList availableRewards = new RewardList(OkHttpHandler.getPATH()+"populateRewards.php");
+        Collections.sort(availableRewards);
 
-        for (Reward reward : rewardList) {
+        boolean done = false;
+        for (Reward reward : availableRewards) {
             if (!hasReward(reward)) {
                 if (reward.getCost() > getRewardPoints()) {
-                    points = reward.getCost();
-                    break;
+                    remainingValues[0] = reward.getCost();
+                    done = true;
                 }
+                if (reward.getLevel() > getLevel()) {
+                    remainingValues[1] = reward.getLevel();
+                    done = true;
+                }
+                if(done) break;
             }
         }
 
-        return points;
+        return remainingValues;
     }
     public Map<Integer, Request> getRecyclableItemList() {
         return userRequestList;

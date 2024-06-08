@@ -93,5 +93,7 @@
     <string name="third_barChart_title">Amounts of paper materials in percentage</string>
     <string name="fourth_barChart_title">Amounts of plastic materials in percentage</string>
     <string name="fifth_barChart_title">Amounts of aluminum materials in percentage</string>
-    <string name="progress_bar_title_text">Points remaining for the next reward</string>
+    <string name="sixth_barChart_title">Amounts of other materials in percentage</string>
+    <string name="reward_progress_bar_title_text">Points remaining for the next reward</string>
+    <string name="level_progress_bar_title_text">Levels remaining for the next reward</string>
 </resources>
