@@ -11,6 +11,7 @@ import com.example.trash2cash.Entities.Reward;
 import com.example.trash2cash.Entities.RewardList;
 import com.example.trash2cash.Entities.Request;
 import com.example.trash2cash.Entities.User;
+import com.example.trash2cash.ViewStats.UserStatistics;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -33,8 +34,10 @@ import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+
+
 public class OkHttpHandler {
-    private static final String IP = "Your ip address";
+    private static final String IP = "192.168.1.23";
     private static final String PATH = "http://"+IP+"/trash2cash/";
     public OkHttpHandler() {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -393,7 +396,7 @@ public class OkHttpHandler {
         OkHttpClient client = new OkHttpClient();
 
         okhttp3.Request request = new okhttp3.Request.Builder()
-                .url(PATH+"takeAllUsersId.php")
+                .url(PATH+"takeAllUsers.php")
                 .post(RequestBody.create(MediaType.parse("application/json"), "{}"))
                 .build();
 
@@ -415,36 +418,6 @@ public class OkHttpHandler {
         }
 
         return userIds;
-    }
-
-    public List<User> getAllUsers() {
-        OkHttpClient client = new OkHttpClient();
-
-        okhttp3.Request request = new okhttp3.Request.Builder()
-                .url(PATH+"takeAllUsers.php")
-                .post(RequestBody.create(MediaType.parse("application/json"), "{}"))
-                .build();
-
-        List<User> users = new ArrayList<>();
-
-        try {
-            Response response = client.newCall(request).execute();
-
-            Gson gson = new Gson();
-            JsonArray jsonResponse = gson.fromJson(response.body().string(), JsonArray.class)
-                    .getAsJsonArray();
-            for (int i = 0; i < jsonResponse.size(); i++) {
-                JsonObject user = jsonResponse.get(i).getAsJsonObject();
-                RewardList rewardList =  gson.fromJson(user.get("rewardList").getAsString(), RewardList.class);
-                User newUser = new User(user.get("email").getAsString(), user.get("username").getAsString(), user.get("id").getAsInt(), user.get("level").getAsFloat(), user.get("rewardPoints").getAsFloat(), user.get("image").getAsString(), rewardList);
-                users.add(newUser);
-            }
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        return users;
     }
 
     public void alterRequestStatus(Integer request_id, RequestStatus status){
@@ -511,5 +484,30 @@ public class OkHttpHandler {
             throw new RuntimeException(e);
         }
 
+    }
+
+    //Mary - Utilized in ViewStats
+    public List<UserStatistics> getTopUserStatistics(String url) throws Exception {
+        List<UserStatistics> userStatisticsList = new ArrayList<UserStatistics>();
+        OkHttpClient client = new OkHttpClient().newBuilder().build();
+        RequestBody body = RequestBody.create("", MediaType.parse("text/plain"));
+        okhttp3.Request request = new okhttp3.Request.Builder().url(url).method("POST", body).build();
+        Response response = client.newCall(request).execute();
+        assert response.body() != null;
+        String data = response.body().string();
+
+        JSONArray jsonArray = new JSONArray(data);
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            String userName = jsonObject.getString("userName");
+            int totalRecycledItems = jsonObject.getInt("totalRecycledItems");
+            float userLevel = (float) jsonObject.getDouble("userLevel");
+            float rewardPoints = (float) jsonObject.getDouble("rewardPoints");
+
+            UserStatistics userStatistics = new UserStatistics(userName, totalRecycledItems, userLevel, rewardPoints);
+            userStatisticsList.add(userStatistics);
+        }
+
+        return userStatisticsList;
     }
 }
