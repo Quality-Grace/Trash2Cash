@@ -36,8 +36,8 @@ public class UserStatisticsAdapter extends ArrayAdapter<UserStatistics> {
         TextView recycledItemsTextView = convertView.findViewById(R.id.recycledItemsTextView);
 
         rankTextView.setText(String.valueOf(position + 1));
-        userNameTextView.setText(userStatistics.getUserName());
-        recycledItemsTextView.setText("Total Recycled Items: " + userStatistics.getTotalRecycledItems());
+        userNameTextView.setText(userStatistics.getId());
+        recycledItemsTextView.setText("Total Reward Points: " + userStatistics.getRewardPoints());
 
         // Set badge based on position
         if (position == 0) {

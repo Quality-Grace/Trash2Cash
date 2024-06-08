@@ -17,7 +17,7 @@ public class AdminStatisticsActivity extends AppCompatActivity {
     private UserStatisticsAdapter statisticsAdapter;
     private List<UserStatistics> statisticsList = new ArrayList<>();
     private OkHttpHandler okHttpHandler = new OkHttpHandler();
-    private static final String STATS_URL = OkHttpHandler.getPATH() + "getUserStatistics.php";
+    private static final String STATS_URL = OkHttpHandler.getPATH() + "getTopUserStatistics.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
