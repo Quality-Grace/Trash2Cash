@@ -124,10 +124,20 @@ public class RewardsActivity extends AppCompatActivity implements RewardRecycler
 
         currentUser.addReward(availableRewards.get(position));
         OkHttpHandler okHttpHandler = new OkHttpHandler();
+        okHttpHandler.updateUser(currentUser);
         okHttpHandler.updateUserRewardList(currentUser);
 
         availableRewards.remove(position);
         availableRewardsAdapter.notifyItemRemoved(position);
+        for(int i=availableRewards.size()-1; i>=0; i--){
+            if(availableRewards.get(i).getCost()>currentUser.getRewardPoints()){
+                otherRewards.add(0, availableRewards.get(i));
+                otherRewardsAdapter.notifyItemInserted(0);
+                availableRewards.remove(i);
+                availableRewardsAdapter.notifyItemRemoved(i);
+            }
+        }
+
         updateAmountOfRewards(findViewById (R.id.availableRewardsText), availableRewards.size());
     }
 }

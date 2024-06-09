@@ -262,7 +262,13 @@ public class User {
         this.level += level;
     }
 
-    public void addReward(Reward reward) { this.rewardList.add(reward); }
+    public void addReward(Reward reward) {
+        float rewardCost = reward.getCost();
+        if(rewardCost <= rewardPoints){
+            this.rewardPoints -= rewardCost;
+            this.rewardList.add(reward);
+        }
+    }
 
     public RewardList getRewardList() {
         return this.rewardList;

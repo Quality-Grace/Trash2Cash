@@ -13,8 +13,8 @@ import com.example.trash2cash.R;
 import java.util.List;
 
 public class UserStatisticsAdapter extends ArrayAdapter<UserStatistics> {
-    private Context context;
-    private List<UserStatistics> userStatisticsList;
+    private final Context context;
+    private final List<UserStatistics> userStatisticsList;
 
     public UserStatisticsAdapter(Context context, List<UserStatistics> userStatisticsList) {
         super(context, R.layout.list_item_statistics, userStatisticsList);
@@ -37,7 +37,7 @@ public class UserStatisticsAdapter extends ArrayAdapter<UserStatistics> {
 
         rankTextView.setText(String.valueOf(position + 1));
         userNameTextView.setText(userStatistics.getName());
-        recycledItemsTextView.setText("Total Reward Points: " + userStatistics.getRewardPoints());
+        recycledItemsTextView.setText(recycledItemsTextView.getText().toString() + " " + userStatistics.getRewardPoints());
 
         // Set badge based on position
         if (position == 0) {

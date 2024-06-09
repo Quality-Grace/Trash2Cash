@@ -1,5 +1,2 @@
-Set your ip on the network_security_config.xml and the OkHttpHandler.java file.
-In the OkHttpHandler.java file you can change the name of the main directory by changing the path const.
-The default name of that directory is "trash2cash".
-You also need to create that directory and ensure that all the php processes have the necessary permissions to create directories in that directory.
-After creating the main directory on your server, simply move the "recyclableMaterialTypes" directory into it by copying and pasting.
+To setup the database go to your htdocs dir, create a new directory named "trash2cash", fill it with all this files.
+In order for the app to access your db you also need to type your ip in the OkHttp class and in the network_security_config.xml.

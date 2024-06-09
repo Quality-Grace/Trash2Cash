@@ -7,7 +7,6 @@ import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.trash2cash.AdminRequestsLogger.AdminRequestsLoggerActivity;
-import com.example.trash2cash.DB.OkHttpHandler;
 import com.example.trash2cash.Entities.RecyclableManager;
 import com.example.trash2cash.Entities.User;
 import com.example.trash2cash.LoginRegisterActivity;
@@ -24,18 +23,15 @@ import java.util.Map;
 
 public class AdminStatisticsActivity extends AppCompatActivity {
 
-    private ListView statisticsListView;
     private UserStatisticsAdapter statisticsAdapter;
     private List<UserStatistics> statisticsList = new ArrayList<>();
-    private OkHttpHandler okHttpHandler = new OkHttpHandler();
-    private static final String STATS_URL = OkHttpHandler.getPATH() + "getUserStatistics.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_statistics);
 
-        statisticsListView = findViewById(R.id.statisticsListView);
+        ListView statisticsListView = findViewById(R.id.statisticsListView);
         statisticsAdapter = new UserStatisticsAdapter(this, statisticsList);
         statisticsListView.setAdapter(statisticsAdapter);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
@@ -52,7 +48,7 @@ public class AdminStatisticsActivity extends AppCompatActivity {
                 for(User user : users.values()){
                     userStatistics.add(new UserStatistics(user.getId(), user.getLevel(), user.getRewardPoints(), user.getName()));
                 }
-                Collections.sort(userStatistics, Collections.reverseOrder());
+                userStatistics.sort(Collections.reverseOrder());
                 runOnUiThread(() -> displayStatistics(userStatistics));
             } catch (Exception e) {
                 e.printStackTrace();

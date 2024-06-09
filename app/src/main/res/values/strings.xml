@@ -99,4 +99,5 @@
     <string name="reward_progress_bar_title_text">Points remaining for the next reward</string>
     <string name="level_progress_bar_title_text">Levels remaining for the next reward</string>
     <string name="best_recyclers_leaderboard">Best Recyclers Leaderboard</string>
+    <string name="total_reard_points">Total Reward Points:</string>
 </resources>
