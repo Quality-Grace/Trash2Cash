@@ -2,6 +2,7 @@ package com.example.trash2cash.RewardSettings;
 
 import android.text.Editable;
 
+// Class used when parsing editable text fields
 public class UserInputParser {
     public static int parseEditableTextToInt(Editable text){
         try{

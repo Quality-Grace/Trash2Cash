@@ -43,8 +43,10 @@ public class UserClaimedRewardsActivity extends AppCompatActivity {
         SnapHelper helper = new LinearSnapHelper();
         helper.attachToRecyclerView(claimedRewardsRecycler);
 
+        // Updates the title of the screen to contain the amount of rewards that the user has claimed
         setAmountOfRewards(findViewById(R.id.claimedRewardsAmount), claimedRewardsList.size());
 
+        // Initializes the navigation bar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.ProfileItem);
         setupNavigationListener(bottomNavigationView);

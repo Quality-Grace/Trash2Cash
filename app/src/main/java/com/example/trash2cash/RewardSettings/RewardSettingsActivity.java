@@ -55,6 +55,7 @@ public class RewardSettingsActivity extends AppCompatActivity implements RewardS
         SnapHelper helper = new LinearSnapHelper();
         helper.attachToRecyclerView(recyclerView);
 
+        // Allows the user to long click the card in order to add a reward to the reward list
         findViewById(R.id.rewardSettingsCard).setOnLongClickListener(view -> {
             addCard();
             return true;
@@ -62,6 +63,7 @@ public class RewardSettingsActivity extends AppCompatActivity implements RewardS
 
         ImageView image = findViewById(R.id.addRewardImage);
 
+        // Handles the result from the image picker
         ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK) {
@@ -80,14 +82,16 @@ public class RewardSettingsActivity extends AppCompatActivity implements RewardS
                     }
                 });
 
-
+        // Initializes the image listener that starts the image picker
         image.setOnClickListener(view -> {
             Intent intent = new Intent(this, ImagePickerActivity.class);
             launcher.launch(intent);
         });
 
+        // Helpful toast message to inform the admin quickly on how to add or remove a reward
         Toast.makeText(getApplicationContext(), "Long tap on card to add/remove a reward", Toast.LENGTH_LONG).show();
 
+        // Initializes the navigation bar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         setupNavigationListener(bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.RewardsItem);
@@ -117,13 +121,17 @@ public class RewardSettingsActivity extends AppCompatActivity implements RewardS
 
         String icon = (String) findViewById(R.id.addRewardImage).getTag();
 
+        // If the icon doesn't have a valid url, a default image will load
         if(icon == null) {
             icon = "android.resource://"+ Objects.requireNonNull(R.class.getPackage()).getName()+"/"+R.drawable.ic_launcher_foreground;
         }
 
+        // Creates the reward and adds it to the rewardList
         Reward reward = new Reward(title, cost, level, icon);
         rewardList.add(reward);
         int position = rewardList.size()==0 ? 0: rewardList.size()-1;
+
+        // Inserts the reward to the db
         OkHttpHandler okHttpHandler = new OkHttpHandler();
         try {
             okHttpHandler.insertReward(OkHttpHandler.getPATH()+"insertReward.php?COST=" + reward.getCost() + "&LEVEL=" + reward.getLevel() + "&ICON=" + reward.getIcon() + "&TITLE=" + reward.getTitle() + "&CODE=" + reward.getCode());
@@ -131,7 +139,9 @@ public class RewardSettingsActivity extends AppCompatActivity implements RewardS
             e.printStackTrace();
         }
 
+        // Updates the adapter
         adapter.notifyItemInserted(position);
+        // Informs the admin that a reward was added
         Toast.makeText(getApplicationContext(), "New reward was added to the list!", Toast.LENGTH_SHORT).show();
     }
 
@@ -141,14 +151,19 @@ public class RewardSettingsActivity extends AppCompatActivity implements RewardS
         View currentFocus = getCurrentFocus();
         if(currentFocus!=null) currentFocus.clearFocus();
 
+        // Removes the reward from the db
         OkHttpHandler okHttpHandler = new OkHttpHandler();
         try{
             okHttpHandler.deleteReward(OkHttpHandler.getPATH()+"deleteReward.php?CODE=\"" + rewardList.get(position).getCode() + "\"");
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        // Removes the reward from the reward list and updates the adapter
         rewardList.remove(rewardList.get(position));
         adapter.notifyItemRemoved(position);
+
+        // Informs the admin that the reward was removed
         Toast.makeText(getApplicationContext(), "The reward was removed from the list!", Toast.LENGTH_SHORT).show();
     }
 

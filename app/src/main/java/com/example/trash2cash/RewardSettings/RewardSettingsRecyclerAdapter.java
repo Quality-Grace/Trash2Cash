@@ -41,15 +41,19 @@ public class RewardSettingsRecyclerAdapter extends RecyclerView.Adapter<RewardSe
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        // Initializes the title of the reward card and a listener to allow the editing of its value
         holder.titleText.setText(String.valueOf(rewardList.get(position).getTitle()));
         setupEditTextListener(holder.titleText, position, "title");
 
+        // Initializes the cost of the reward card and a listener to allow the editing of its value
         holder.costText.setText(String.valueOf(rewardList.get(position).getCost()));
         setupEditTextListener(holder.costText, position, "cost");
 
+        // Initializes the level requirement of the reward card and a listener to allow the editing of its value
         holder.levelRequiredText.setText(String.valueOf(rewardList.get(position).getLevel()));
         setupEditTextListener(holder.levelRequiredText, position, "level");
 
+        // Loads the reward image
         try {
             URL url = new URL(rewardList.get(position).getIcon());
             Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
@@ -71,6 +75,7 @@ public class RewardSettingsRecyclerAdapter extends RecyclerView.Adapter<RewardSe
                 rewardList.get(position).setTitle(UserInputParser.parseEditableTextToString((editText.getText())));
             }
 
+            // Updates the reward db to contain the new value
             try {
                 rewardRecyclerInterface.updateReward(rewardList.get(position), position);
             } catch (Exception e) {
@@ -97,6 +102,7 @@ public class RewardSettingsRecyclerAdapter extends RecyclerView.Adapter<RewardSe
             rewardImage = itemView.findViewById(R.id.rewardImage);
 
             CardView cardView = itemView.findViewById(R.id.rewardSettingsCard);
+            // Adds the ability for the user to remove a card with a long click
             cardView.setOnLongClickListener(view -> {
                 if(rewardRecyclerInterface != null){
                     int pos = getAdapterPosition();

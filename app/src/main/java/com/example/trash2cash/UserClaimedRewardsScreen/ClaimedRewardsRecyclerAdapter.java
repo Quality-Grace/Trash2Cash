@@ -40,12 +40,15 @@ public class ClaimedRewardsRecyclerAdapter extends RecyclerView.Adapter<ClaimedR
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        // Sets the title of the card
         holder.titleText.setText(String.valueOf(rewardList.get(position).getTitle()));
         holder.titleText.setMovementMethod(new ScrollingMovementMethod());
 
+        // Sets the cost of the card
         holder.codeText.setText(rewardList.get(position).getCode());
         holder.codeText.setMovementMethod(new ScrollingMovementMethod());
 
+        // Loads the image of the card
         try {
             URL url = new URL(rewardList.get(position).getIcon());
             Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());

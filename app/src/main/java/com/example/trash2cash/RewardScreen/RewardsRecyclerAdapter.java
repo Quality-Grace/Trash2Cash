@@ -42,6 +42,7 @@ public class RewardsRecyclerAdapter extends RecyclerView.Adapter<RewardsRecycler
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view;
+        // The same adapter is used for the available rewards and the other ones
         if(available) view = inflater.inflate(R.layout.available_rewards_recycler_view, parent, false);
         else view = inflater.inflate(R.layout.other_rewards_recycler_view, parent, false);
         return new RewardsRecyclerAdapter.MyViewHolder(view, rewardsRecyclerAdapter, available);
@@ -49,11 +50,14 @@ public class RewardsRecyclerAdapter extends RecyclerView.Adapter<RewardsRecycler
 
     @Override
     public void onBindViewHolder(@NonNull RewardsRecyclerAdapter.MyViewHolder holder, int position) {
+        // Sets the reward card title text
         holder.titleText.setText(String.valueOf(rewardList.get(position).getTitle()));
         holder.titleText.setMovementMethod(new ScrollingMovementMethod());
 
+        // Sets the reward card cost text
         holder.costText.setText(String.valueOf(rewardList.get(position).getCost()));
 
+        // Loads the reward image
         try {
             URL url = new URL(rewardList.get(position).getIcon());
             Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
@@ -64,6 +68,8 @@ public class RewardsRecyclerAdapter extends RecyclerView.Adapter<RewardsRecycler
         }
 
         if(!available) {
+            // This is used for the other rewards.
+            // It sets the text in the reward cards informing the user of what he is lacking in order to claim the reward.
             float levelsLeft = rewardList.get(position).getLevel() - currentUser.getLevel();
             if(levelsLeft>0) {
                 String requirement = levelsLeft + " levels left to unlock";
@@ -105,6 +111,7 @@ public class RewardsRecyclerAdapter extends RecyclerView.Adapter<RewardsRecycler
 
             if(available){
                 Button claimRewardButton = itemView.findViewById(R.id.claimRewardButton);
+                // Adds the ability for the user to claim a reward
                 claimRewardButton.setOnClickListener(view -> {
                     if(rewardRecyclerInterface != null){
                         int pos = getAdapterPosition();

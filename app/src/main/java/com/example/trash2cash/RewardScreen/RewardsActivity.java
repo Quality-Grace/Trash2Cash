@@ -122,14 +122,17 @@ public class RewardsActivity extends AppCompatActivity implements RewardRecycler
     public void claimReward(int position) {
         User currentUser =  RecyclableManager.getRecyclableManager().getUser();
 
+        // Adds the reward to the user list and then updates the db
         currentUser.addReward(availableRewards.get(position));
         OkHttpHandler okHttpHandler = new OkHttpHandler();
         okHttpHandler.updateUser(currentUser);
         okHttpHandler.updateUserRewardList(currentUser);
 
+        // Removes the reward from the available reward list and informs the user
         availableRewards.remove(position);
         availableRewardsAdapter.notifyItemRemoved(position);
         for(int i=availableRewards.size()-1; i>=0; i--){
+            // After the user points get altered it removes from the available rewards list all the rewards that are no longer claimable with his current points
             if(availableRewards.get(i).getCost()>currentUser.getRewardPoints()){
                 otherRewards.add(0, availableRewards.get(i));
                 otherRewardsAdapter.notifyItemInserted(0);
@@ -138,6 +141,8 @@ public class RewardsActivity extends AppCompatActivity implements RewardRecycler
             }
         }
 
+        // Updates the amount of rewards texts
         updateAmountOfRewards(findViewById (R.id.availableRewardsText), availableRewards.size());
+        updateAmountOfRewards(findViewById (R.id.otherRewardsText), otherRewards.size());
     }
 }

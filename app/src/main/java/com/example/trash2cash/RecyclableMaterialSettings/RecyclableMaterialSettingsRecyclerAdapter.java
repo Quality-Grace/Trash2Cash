@@ -44,6 +44,7 @@ public class RecyclableMaterialSettingsRecyclerAdapter extends RecyclerView.Adap
     public void onBindViewHolder(@NonNull RecyclableMaterialSettingsRecyclerAdapter.MyViewHolder holder, int position) {
         holder.textView.setText(recyclableMaterialTypes.get(position).getType());
 
+        // Loads the background image
         try {
             String urlString = OkHttpHandler.getPATH() + recyclableMaterialTypes.get(position).getImage();
             URL url = new URL(urlString);
@@ -55,21 +56,27 @@ public class RecyclableMaterialSettingsRecyclerAdapter extends RecyclerView.Adap
             e.printStackTrace();
         }
 
+        // Sets the text and a listener for the exp text field
         holder.expNum.setText(String.valueOf(recyclableMaterialTypes.get(position).getExp()));
         setupEdiTextListener(holder.expBar, holder.expNum, position, "exp");
 
+        // Sets the bar and a listener for the exp seek bar
         holder.expBar.setProgress(recyclableMaterialTypes.get(position).getExp());
         setupSeekBarListener(holder.expBar, holder.expNum, position, "exp");
 
+        // Sets the text and a listener for the reward amount text field
         holder.rewardNum.setText(String.valueOf(recyclableMaterialTypes.get(position).getRewardAmount()));
         setupEdiTextListener(holder.rewardBar, holder.rewardNum, position, "rewardAmount");
 
+        // Sets the bar and a listener for the reward amount seek bar
         holder.rewardBar.setProgress(recyclableMaterialTypes.get(position).getRewardAmount());
         setupSeekBarListener(holder.rewardBar, holder.rewardNum, position, "rewardAmount");
 
+        // Sets the text and a listener for the recycle amount text field
         holder.recycleNum.setText(String.valueOf(recyclableMaterialTypes.get(position).getRecycleAmount()));
         setupEdiTextListener(null, holder.recycleNum, position, "recycleAmount");
 
+        // Sets a listener to the update types button that updates the db when clicked
         holder.updateTypesButton.setOnClickListener(view -> {
             holder.view.clearFocus();
             updateTypes(position);
@@ -117,17 +124,18 @@ public class RecyclableMaterialSettingsRecyclerAdapter extends RecyclerView.Adap
             int amount = UserInputParser.parseEditableTextToInt(editText.getText());
 
             if(type.equals("exp")){
-                if(amount>1000) amount = 1000;
+                if(amount>1000) amount = 1000; // The max amount of xp that an admin can give
                 recyclableMaterialTypes.get(position).setExp(amount);
             } else if(type.equals("rewardAmount")){
-                if(amount>100) amount = 100;
+                if(amount>100) amount = 100; // The max amount of reward points that an admin can give
                 recyclableMaterialTypes.get(position).setRewardAmount(amount);
             } else {
-                if(amount==0) amount = 1;
+                if(amount==0) amount = 1; // The parser returns 0 by default if it can't parse but the minimum amount for recycling should always be 1
                 editText.setText(String.valueOf(amount));
                 recyclableMaterialTypes.get(position).setRecycleAmount(amount);
             }
 
+            // Updates the seekbar to the amount that the adming tped
             if(seekBar!=null) seekBar.setProgress(amount);
         });
     }
