@@ -21,8 +21,8 @@ import android.widget.Toast;
 import com.example.trash2cash.AdminRequestsLogger.AdminRequestsLoggerActivity;
 import com.example.trash2cash.DB.OkHttpHandler;
 import com.example.trash2cash.LoginRegisterActivity;
-import com.example.trash2cash.MainActivity;
 import com.example.trash2cash.RecyclableMaterialSettings.RecyclableMaterialSettingsActivity;
+import com.example.trash2cash.ViewStats.AdminStatisticsActivity;
 import com.example.trash2cash.imageGallery.ImagePickerActivity;
 import com.example.trash2cash.R;
 import com.example.trash2cash.Entities.Reward;
@@ -100,7 +100,7 @@ public class RewardSettingsActivity extends AppCompatActivity implements RewardS
             } else if(item.getItemId() == R.id.MaterialsItem) {
                 startActivity(new Intent(RewardSettingsActivity.this, RecyclableMaterialSettingsActivity.class));
             } else if(item.getItemId() == R.id.StatsItem) {
-                startActivity(new Intent(RewardSettingsActivity.this, MainActivity.class));
+                startActivity(new Intent(RewardSettingsActivity.this, AdminStatisticsActivity.class));
             } else if(item.getItemId() == R.id.LogoutItem){
                 startActivity(new Intent(RewardSettingsActivity.this, LoginRegisterActivity.class));
             }

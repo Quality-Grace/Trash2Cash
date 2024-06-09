@@ -1,5 +1,7 @@
 package com.example.trash2cash.Entities;
 
+import androidx.annotation.Nullable;
+
 import com.example.trash2cash.DB.OkHttpHandler;
 
 import java.util.ArrayList;
@@ -13,14 +15,18 @@ public class Admin {
 
     private static Admin instance;
 
-    private final Map<Integer, List<Request>> recyclableRequests;
+    private static Map<Integer, List<Request>> recyclableRequests;
 
     public Map<Integer, List<Request>> getRecyclableRequests() {
         return recyclableRequests;
     }
 
     private Admin() {
-        this.recyclableRequests = new HashMap<>();
+       initiliazeAdmin();
+    }
+
+    private static void initiliazeAdmin() {
+        recyclableRequests = new HashMap<>();
         try {
             List<Integer> userIds = new OkHttpHandler().getAllUserIds();
             List<User> users = new OkHttpHandler().getAllUsers();
@@ -41,7 +47,6 @@ public class Admin {
             e.printStackTrace();
             System.err.println("No users found");
         }
-
     }
 
     public static Admin getAdmin(){
@@ -49,6 +54,7 @@ public class Admin {
             instance = new Admin();
             return instance;
         }
+        initiliazeAdmin();
         return instance;
     }
 

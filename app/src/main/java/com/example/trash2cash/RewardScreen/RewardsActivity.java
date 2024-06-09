@@ -16,7 +16,6 @@ import com.example.trash2cash.Entities.RecyclableManager;
 import com.example.trash2cash.Entities.Reward;
 import com.example.trash2cash.Entities.User;
 import com.example.trash2cash.LoginRegisterActivity;
-import com.example.trash2cash.MainActivity;
 import com.example.trash2cash.MaterialLogger.MaterialLoggerActivity;
 import com.example.trash2cash.R;
 import com.example.trash2cash.Entities.RewardList;

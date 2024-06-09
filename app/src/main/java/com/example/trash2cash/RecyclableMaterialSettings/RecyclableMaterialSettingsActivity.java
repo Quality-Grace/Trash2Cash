@@ -12,10 +12,10 @@ import android.view.View;
 
 import com.example.trash2cash.AdminRequestsLogger.AdminRequestsLoggerActivity;
 import com.example.trash2cash.LoginRegisterActivity;
-import com.example.trash2cash.MainActivity;
 import com.example.trash2cash.R;
 import com.example.trash2cash.Entities.RecyclableMaterialTypes;
 import com.example.trash2cash.RewardSettings.RewardSettingsActivity;
+import com.example.trash2cash.ViewStats.AdminStatisticsActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class RecyclableMaterialSettingsActivity extends AppCompatActivity {
@@ -53,7 +53,7 @@ public class RecyclableMaterialSettingsActivity extends AppCompatActivity {
             } else if(item.getItemId() == R.id.RewardsItem) {
                 startActivity(new Intent(RecyclableMaterialSettingsActivity.this, RewardSettingsActivity.class));
             } else if(item.getItemId() == R.id.StatsItem) {
-                startActivity(new Intent(RecyclableMaterialSettingsActivity.this, MainActivity.class));
+                startActivity(new Intent(RecyclableMaterialSettingsActivity.this, AdminStatisticsActivity.class));
             } else if(item.getItemId() == R.id.LogoutItem){
                 startActivity(new Intent(RecyclableMaterialSettingsActivity.this, LoginRegisterActivity.class));
             }

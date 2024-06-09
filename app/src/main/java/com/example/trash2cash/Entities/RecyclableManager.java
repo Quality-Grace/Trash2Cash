@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class RecyclableManager {
 
-    private final Map<Integer, User> users;
+    private static Map<Integer, User> users;
 
     private static int requestId = 0;
 
@@ -17,17 +17,20 @@ public class RecyclableManager {
 
     private static RecyclableManager instance;
 
-    private final HashMap<String, RecyclableMaterial> recyclableItems;
+    private static HashMap<String, RecyclableMaterial> recyclableItems;
 
     private int recyclableItemId = 0;
 
     private RecyclableManager() {
+        users = new HashMap<>();
+        initilizeMaterials();
+    }
 
+    public static void initilizeMaterials() {
         recyclableItems = new HashMap<>();
-        for (RecyclableMaterial material: new RecyclableMaterialTypes()) {
+        for (RecyclableMaterial material : new RecyclableMaterialTypes()) {
             recyclableItems.put(material.getType(), material);
         }
-        users = new HashMap<>();
     }
 
     public Map<Integer, User> getUsers() {
@@ -38,6 +41,7 @@ public class RecyclableManager {
         if(instance == null){
             instance = new RecyclableManager();
         }
+        initilizeMaterials();
         return instance;
     }
 

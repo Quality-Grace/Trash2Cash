@@ -27,7 +27,6 @@ import com.example.trash2cash.Entities.Request;
 import com.example.trash2cash.Entities.RequestStatus;
 import com.example.trash2cash.Entities.User;
 import com.example.trash2cash.LoginRegisterActivity;
-import com.example.trash2cash.MainActivity;
 import com.example.trash2cash.R;
 import com.example.trash2cash.RewardScreen.RewardsActivity;
 import com.example.trash2cash.UserProfileActivity;

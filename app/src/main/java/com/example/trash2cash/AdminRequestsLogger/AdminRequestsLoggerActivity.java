@@ -13,10 +13,10 @@ import androidx.recyclerview.widget.SnapHelper;
 import com.example.trash2cash.Entities.Admin;
 import com.example.trash2cash.Entities.Request;
 import com.example.trash2cash.LoginRegisterActivity;
-import com.example.trash2cash.MainActivity;
 import com.example.trash2cash.R;
 import com.example.trash2cash.RecyclableMaterialSettings.RecyclableMaterialSettingsActivity;
 import com.example.trash2cash.RewardSettings.RewardSettingsActivity;
+import com.example.trash2cash.ViewStats.AdminStatisticsActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -60,7 +60,7 @@ public class AdminRequestsLoggerActivity extends AppCompatActivity implements Ad
             if(item.getItemId() == R.id.RewardsItem) {
                 startActivity(new Intent(AdminRequestsLoggerActivity.this, RewardSettingsActivity.class));
             } else if(item.getItemId() == R.id.StatsItem) {
-                startActivity(new Intent(AdminRequestsLoggerActivity.this, MainActivity.class));
+                startActivity(new Intent(AdminRequestsLoggerActivity.this, AdminStatisticsActivity.class));
             } else if(item.getItemId() == R.id.LogoutItem){
                 startActivity(new Intent(AdminRequestsLoggerActivity.this, LoginRegisterActivity.class));
             } else if(item.getItemId() == R.id.MaterialsItem){

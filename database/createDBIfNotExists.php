@@ -67,11 +67,11 @@ if ($conn->query($sql) === TRUE) {
     if ($count == 0) {
         // Insert values into the RecyclableMaterialTypes table
         $sql = "INSERT INTO RecyclableMaterialTypes (TYPE, EXP, REWARD_AMOUNT, RECYCLE_AMOUNT, IMAGE, COLOUR) VALUES
-        ('Paper', 0, 0, 1, '/paper_type.png', '#42ff45'),
-        ('Glass', 0, 0, 1, '/glass_type.png', '#42adff'),
-        ('Aluminium', 0, 0, 1, '/metal_type.png', '#fff842'),
-        ('Plastic', 0, 0, 1, '/plastic_type.png', '#ff4242'),
-        ('Other', 0, 0, 1, '/other_type.png', '#6a6a6a')";
+        ('Paper', 10, 1, 1, '/paper_type.png', '#42ff45'),
+        ('Glass', 10, 1, 1, '/glass_type.png', '#42adff'),
+        ('Aluminium', 10, 1, 1, '/metal_type.png', '#fff842'),
+        ('Plastic', 10, 1, 1, '/plastic_type.png', '#ff4242'),
+        ('Other', 10, 1, 1, '/other_type.png', '#6a6a6a')";
 
         if ($conn->query($sql) === TRUE) {
             echo "Values inserted successfully";
