@@ -70,15 +70,18 @@ public class ImagePickerActivity extends AppCompatActivity implements ImagePicke
         Intent resultIntent = new Intent();
         OkHttpHandler okHttpHandler = new OkHttpHandler();
 
+        // Takes the image uri and creates a stream
         InputStream stream;
         try {
             stream = this.getContentResolver().openInputStream(resultData);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
+        // Uses that stream to create a temp file and upload it to the server
         File file = createTempFileFromInputStream(this, stream);
         String urlString = okHttpHandler.uploadImage(OkHttpHandler.getPATH() + "uploadImage.php", file);
 
+        // Returns the image url
         resultIntent.putExtra("url", urlString);
         setResult(Activity.RESULT_OK, resultIntent);
 
@@ -131,7 +134,7 @@ public class ImagePickerActivity extends AppCompatActivity implements ImagePicke
         finish();
     }
 
-
+    // List with the all the image urls stored in the db
     public void initializeImageList(){
         OkHttpHandler okHttpHandler = new OkHttpHandler();
         try {

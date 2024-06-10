@@ -37,6 +37,7 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
 
     @Override
     public void onBindViewHolder(@NonNull GalleryRecyclerAdapter.MyViewHolder holder, int position) {
+        // Loads the default and saved images for the image picker
         try {
             String urlString = imageList.get(position);
             URL url = new URL(urlString);

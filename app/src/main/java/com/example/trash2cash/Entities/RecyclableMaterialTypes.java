@@ -5,6 +5,7 @@ import com.example.trash2cash.DB.OkHttpHandler;
 import java.util.ArrayList;
 
 public class RecyclableMaterialTypes extends ArrayList<RecyclableMaterial> {
+    // Retrieves all the recyclable materials from the db
     public RecyclableMaterialTypes() {
         String url= OkHttpHandler.getPATH()+"populateRecyclableMaterialTypes.php";
         try {
@@ -15,6 +16,7 @@ public class RecyclableMaterialTypes extends ArrayList<RecyclableMaterial> {
         }
     }
 
+    // Returns a list of those types
     public ArrayList<String> getTypes(){
         ArrayList<String> typesList = new ArrayList<>();
         for(RecyclableMaterial material : this){
@@ -24,6 +26,7 @@ public class RecyclableMaterialTypes extends ArrayList<RecyclableMaterial> {
         return typesList;
     }
 
+    // Given a type it returns the corresponding recyclable material
     public RecyclableMaterial getRecyclableMaterial(String type) {
         for(RecyclableMaterial material : this){
             if(material.isOfType(type)) return material;
