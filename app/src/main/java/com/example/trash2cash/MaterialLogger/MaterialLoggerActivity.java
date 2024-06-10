@@ -137,6 +137,9 @@ public class MaterialLoggerActivity extends AppCompatActivity {
                     case "BOX":
                         itemImage.setImageResource(R.drawable.box);
                     break;
+                    case "CARD_BOARD":
+                        itemImage.setImageResource(R.drawable.card_board);
+                        break;
                     default:
                         itemImage.setImageResource(R.drawable.ic_launcher_foreground);
 
