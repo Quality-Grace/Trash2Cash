@@ -84,11 +84,11 @@
 
         <ImageView
             android:id="@+id/addItemBtn"
-            android:layout_width="80dp"
-            android:layout_height="65dp"
+            android:layout_width="58dp"
+            android:layout_height="51dp"
+            android:layout_gravity="center|top"
             android:layout_marginBottom="-45dp"
             android:contentDescription="@string/addItemBtn"
-            android:layout_gravity="center|top"
             app:srcCompat="@drawable/add_card_btn" />
 
     </FrameLayout>

@@ -1,5 +1,6 @@
 package com.example.trash2cash.DB;
 
+import android.icu.text.SymbolTable;
 import android.os.StrictMode;
 
 import com.example.trash2cash.Entities.RecyclableItem;
@@ -34,7 +35,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class OkHttpHandler {
-    private static final String IP = "Your Ip";
+    private static final String IP = "192.168.1.207";
     private static final String PATH = "http://"+IP+"/trash2cash/";
     public OkHttpHandler() {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();

@@ -12,6 +12,7 @@ import android.widget.SpinnerAdapter;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -153,7 +154,25 @@ public class MaterialLoggerActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 CardView cardView = findViewById(R.id.addItemCardView);
                 String selectedMaterial = materialSelector.getSelectedItem().toString();
-                cardView.setCardBackgroundColor(new RecyclableMaterialTypes().getRecyclableMaterial(selectedMaterial).getColour());
+                System.out.println("MATERIAL: " + selectedMaterial);
+                switch (selectedMaterial) {
+                    case "Aluminium" :
+                        cardView.setCardBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.aluminium));
+                        break;
+                    case "Paper" :
+                        cardView.setCardBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.paper));
+                        break;
+                    case "Glass" :
+                        cardView.setCardBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.glass));
+                        break;
+                    case "Plastic" :
+                        cardView.setCardBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.plastic));
+                        break;
+                    case "Other" :
+                        cardView.setCardBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.reward_card_grey));
+                        break;
+                    default: cardView.setCardBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.reward_card));
+                }
             }
 
             @Override
