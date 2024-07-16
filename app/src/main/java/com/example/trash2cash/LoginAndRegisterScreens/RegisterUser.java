@@ -1,4 +1,4 @@
-package com.example.trash2cash.R1;
+package com.example.trash2cash.LoginAndRegisterScreens;
 
 import android.content.Context;
 import android.content.Intent;
@@ -22,7 +22,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.trash2cash.DB.OkHttpHandler;
 import com.example.trash2cash.R;
-import com.example.trash2cash.UserProfileActivity;
+import com.example.trash2cash.UserNavigationActivity;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -126,8 +126,9 @@ public class RegisterUser extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // inflates the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_register2, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_register_user, container, false);
         button = rootView.findViewById(R.id.registerBtn);
+        button.setEnabled(false);
         email = rootView.findViewById(R.id.editTextTextEmailAddress);
         username = rootView.findViewById(R.id.editTextTextUserName);
         password = rootView.findViewById(R.id.editTextTextPassword);
@@ -208,7 +209,7 @@ public class RegisterUser extends Fragment {
             }
             if (registerCode == 200){
                 Toast.makeText(getContext(), "Register successful", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(requireActivity(), UserProfileActivity.class);
+                Intent intent = new Intent(requireActivity(), UserNavigationActivity.class);
                 startActivity(intent);
             }
         }

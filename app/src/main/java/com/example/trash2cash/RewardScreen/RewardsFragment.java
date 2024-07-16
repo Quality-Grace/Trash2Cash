@@ -1,70 +1,61 @@
 package com.example.trash2cash.RewardScreen;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.trash2cash.DB.OkHttpHandler;
 import com.example.trash2cash.Entities.RecyclableManager;
 import com.example.trash2cash.Entities.Reward;
-import com.example.trash2cash.Entities.User;
-import com.example.trash2cash.LoginRegisterActivity;
-import com.example.trash2cash.MaterialLogger.MaterialLoggerActivity;
-import com.example.trash2cash.R;
 import com.example.trash2cash.Entities.RewardList;
-import com.example.trash2cash.UserProfileActivity;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.example.trash2cash.Entities.User;
+import com.example.trash2cash.R;
 
 import java.util.Comparator;
 
-
-public class RewardsActivity extends AppCompatActivity implements RewardRecyclerInterface {
+public class RewardsFragment extends Fragment implements RewardRecyclerInterface {
     private final RewardList rewardList = new RewardList(OkHttpHandler.getPATH()+"populateRewards.php");
     private final  RewardList availableRewards = new RewardList();
     private final RewardList otherRewards = new RewardList();
     private RewardsRecyclerAdapter availableRewardsAdapter, otherRewardsAdapter;
+    private View rootView;
+
+    public RewardsFragment() {
+        // Required empty public constructor
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_rewards);
+    }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        rootView = inflater.inflate(R.layout.fragment_rewards, container, false);
         // Fills the availableRewards and otherRewards lists
         initializeLists();
 
-        setAmountOfRewards(findViewById (R.id.availableRewardsText), availableRewards.size());
-        setAmountOfRewards(findViewById (R.id.otherRewardsText), otherRewards.size());
+        setAmountOfRewards(rootView.findViewById (R.id.availableRewardsText), availableRewards.size());
+        setAmountOfRewards(rootView.findViewById (R.id.otherRewardsText), otherRewards.size());
 
-        RecyclerView availableForYouRecycler = findViewById(R.id.availableForYouRecycler);
+        RecyclerView availableForYouRecycler = rootView.findViewById(R.id.availableForYouRecycler);
         initializeRecycler(availableForYouRecycler, availableRewards, true);
 
-        RecyclerView otherRewardsRecycler = findViewById(R.id.otherRewardsRecycler);
+        RecyclerView otherRewardsRecycler = rootView.findViewById(R.id.otherRewardsRecycler);
         initializeRecycler(otherRewardsRecycler, otherRewards, false);
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.setSelectedItemId(R.id.RewardsItem);
-        setupNavigationListener(bottomNavigationView);
-    }
-
-    public void setupNavigationListener(BottomNavigationView bottomNavigationView){
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            if(item.getItemId() == R.id.RecycleItem){
-                startActivity(new Intent(RewardsActivity.this, MaterialLoggerActivity.class));
-            } else if(item.getItemId() == R.id.ProfileItem) {
-                startActivity(new Intent(RewardsActivity.this, UserProfileActivity.class));
-            } else if(item.getItemId() == R.id.LogoutItem){
-                startActivity(new Intent(RewardsActivity.this, LoginRegisterActivity.class));
-            }
-
-            return true;
-        });
+        return rootView;
     }
 
     public void initializeLists(){
@@ -103,15 +94,15 @@ public class RewardsActivity extends AppCompatActivity implements RewardRecycler
     public void initializeRecycler(RecyclerView recycler, RewardList rewardList, Boolean available){
         // Adds CardView components to the Recycler
         if(available) {
-            availableRewardsAdapter = new RewardsRecyclerAdapter(this, rewardList, available, this);
+            availableRewardsAdapter = new RewardsRecyclerAdapter(getContext(), rewardList, available, this);
             recycler.setAdapter(availableRewardsAdapter);
         } else {
-            otherRewardsAdapter = new RewardsRecyclerAdapter(this, rewardList, available, this);
+            otherRewardsAdapter = new RewardsRecyclerAdapter(getContext(), rewardList, available, this);
             recycler.setAdapter(otherRewardsAdapter);
         }
 
         // Sets a vertical layout for the Recycler
-        recycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
         // Adds snappy scrolling
         SnapHelper helper = new LinearSnapHelper();
@@ -142,7 +133,7 @@ public class RewardsActivity extends AppCompatActivity implements RewardRecycler
         }
 
         // Updates the amount of rewards texts
-        updateAmountOfRewards(findViewById (R.id.availableRewardsText), availableRewards.size());
-        updateAmountOfRewards(findViewById (R.id.otherRewardsText), otherRewards.size());
+        updateAmountOfRewards(rootView.findViewById (R.id.availableRewardsText), availableRewards.size());
+        updateAmountOfRewards(rootView.findViewById (R.id.otherRewardsText), otherRewards.size());
     }
 }

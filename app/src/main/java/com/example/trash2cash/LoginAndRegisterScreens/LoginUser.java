@@ -1,4 +1,4 @@
-package com.example.trash2cash.R1;
+package com.example.trash2cash.LoginAndRegisterScreens;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,12 +12,10 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
-import com.example.trash2cash.AdminRequestsLogger.AdminRequestsLoggerActivity;
+import com.example.trash2cash.AdminNavigationActivity;
 import com.example.trash2cash.DB.OkHttpHandler;
-import com.example.trash2cash.Entities.Admin;
 import com.example.trash2cash.R;
-import com.example.trash2cash.UserProfileActivity;
-import com.example.trash2cash.ViewStats.AdminStatisticsActivity;
+import com.example.trash2cash.UserNavigationActivity;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Objects;
@@ -101,12 +99,12 @@ public class LoginUser extends Fragment {
         } else if(emailString.equals("admin")){
             Toast.makeText(getContext(), "Login successful as Admin", Toast.LENGTH_LONG).show();
 //            Metavasi se nea othoni
-            Intent intent = new Intent(requireActivity(), AdminRequestsLoggerActivity.class);
+            Intent intent = new Intent(requireActivity(), AdminNavigationActivity.class);
             startActivity(intent);
         } else {
             Toast.makeText(getContext(), "Login successful as " + emailString, Toast.LENGTH_LONG).show();
 //            Metavasi se nea othoni
-            Intent intent = new Intent(requireActivity(), UserProfileActivity.class);
+            Intent intent = new Intent(requireActivity(), UserNavigationActivity.class);
             startActivity(intent);
         }
     }

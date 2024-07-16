@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".R1.LoginUser">
+    tools:context=".LoginAndRegisterScreens.LoginUser">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -48,6 +48,7 @@
 
         <Button
             android:id="@+id/login_user_button"
+            style="@style/enabledDisabledButton"
             android:layout_width="249dp"
             android:layout_height="51dp"
             android:layout_marginTop="32dp"

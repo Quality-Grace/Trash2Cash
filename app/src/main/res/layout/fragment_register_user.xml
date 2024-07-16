@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:backgroundTint="#535050"
-    tools:context=".R1.RegisterUser">
+    tools:context=".LoginAndRegisterScreens.RegisterUser">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -72,10 +72,10 @@
 
         <Button
             android:id="@+id/registerBtn"
+            style="@style/enabledDisabledButton"
             android:layout_width="249dp"
             android:layout_height="51dp"
             android:layout_marginTop="32dp"
-            android:backgroundTint="#D8D5D5"
             android:text="@string/RegisterString"
             android:textAppearance="@style/TextAppearance.AppCompat.Menu"
             app:cornerRadius="0dp"

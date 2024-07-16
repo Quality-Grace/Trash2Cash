@@ -1,22 +1,24 @@
 package com.example.trash2cash.MaterialLogger;
 
-import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
+
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.LinearSnapHelper;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SnapHelper;
 
 import com.example.trash2cash.DB.OkHttpHandler;
 import com.example.trash2cash.Entities.RecyclableItem;
@@ -27,27 +29,33 @@ import com.example.trash2cash.Entities.RecyclableMaterialTypes;
 import com.example.trash2cash.Entities.Request;
 import com.example.trash2cash.Entities.RequestStatus;
 import com.example.trash2cash.Entities.User;
-import com.example.trash2cash.LoginRegisterActivity;
 import com.example.trash2cash.R;
-import com.example.trash2cash.RewardScreen.RewardsActivity;
-import com.example.trash2cash.UserProfileActivity;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MaterialLoggerActivity extends AppCompatActivity {
-
+public class MaterialLoggerFragment extends Fragment {
     private static ArrayList<Request> itemList;
     private MaterialLoggerAdapter myAdapter;
+    private View rootView;
 
     private final OkHttpHandler okHttpHandler = new OkHttpHandler();
 
+    public MaterialLoggerFragment() {
+        // Required empty public constructor
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_material_logger);
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        rootView = inflater.inflate(R.layout.fragment_material_logger, container, false);
 
         spinnerInitialization();
         try {
@@ -57,36 +65,20 @@ public class MaterialLoggerActivity extends AppCompatActivity {
         }
 
         // Set up the RecyclerView
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = rootView.findViewById(R.id.recyclerView);
 
-        myAdapter = new MaterialLoggerAdapter(itemList, this);
+        myAdapter = new MaterialLoggerAdapter(itemList, getContext());
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, true));
         recyclerView.setAdapter(myAdapter);
 
         SnapHelper helper = new LinearSnapHelper();
         helper.attachToRecyclerView(recyclerView);
 
-        ImageView addItemBtn = findViewById(R.id.addItemBtn);
+        ImageView addItemBtn = rootView.findViewById(R.id.addItemBtn);
         addItemBtn.setOnClickListener(addItemCardListener());
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.setSelectedItemId(R.id.RecycleItem);
-        setupNavigationListener(bottomNavigationView);
-    }
-
-    public void setupNavigationListener(BottomNavigationView bottomNavigationView){
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            if(item.getItemId() == R.id.RewardsItem) {
-                startActivity(new Intent(MaterialLoggerActivity.this, RewardsActivity.class));
-            } else if(item.getItemId() == R.id.ProfileItem) {
-                startActivity(new Intent(MaterialLoggerActivity.this, UserProfileActivity.class));
-            } else if(item.getItemId() == R.id.LogoutItem){
-                startActivity(new Intent(MaterialLoggerActivity.this, LoginRegisterActivity.class));
-            }
-
-            return true;
-        });
+        return rootView;
     }
 
     /**
@@ -95,8 +87,8 @@ public class MaterialLoggerActivity extends AppCompatActivity {
      */
     private View.OnClickListener addItemCardListener() {
         return view -> {
-            String item = ((Spinner) findViewById(R.id.itemSelector)).getSelectedItem().toString();
-            String material = ((Spinner) findViewById(R.id.materialSelector)).getSelectedItem().toString();
+            String item = ((Spinner) rootView.findViewById(R.id.itemSelector)).getSelectedItem().toString();
+            String material = ((Spinner) rootView.findViewById(R.id.materialSelector)).getSelectedItem().toString();
 
             RecyclableManager recyclableManager = RecyclableManager.getRecyclableManager();
             User user = recyclableManager.getUser();
@@ -116,13 +108,13 @@ public class MaterialLoggerActivity extends AppCompatActivity {
 
     private void spinnerInitialization() {
         // Set up the Spinner
-        Spinner itemSelector = findViewById(R.id.itemSelector);
-        Spinner materialSelector = findViewById(R.id.materialSelector);
+        Spinner itemSelector = rootView.findViewById(R.id.itemSelector);
+        Spinner materialSelector = rootView.findViewById(R.id.materialSelector);
 
         itemSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                ImageView itemImage = findViewById(R.id.itemImage);
+                ImageView itemImage = rootView.findViewById(R.id.itemImage);
                 String selectedItem = itemSelector.getSelectedItem().toString();
                 switch (selectedItem){
                     case "BAG":
@@ -130,13 +122,13 @@ public class MaterialLoggerActivity extends AppCompatActivity {
                         break;
                     case "BOTTLE":
                         itemImage.setImageResource(R.drawable.bottle);
-                    break;
+                        break;
                     case "CAN":
                         itemImage.setImageResource(R.drawable.can);
-                    break;
+                        break;
                     case "BOX":
                         itemImage.setImageResource(R.drawable.box);
-                    break;
+                        break;
                     case "CARD_BOARD":
                         itemImage.setImageResource(R.drawable.card_board);
                         break;
@@ -155,26 +147,26 @@ public class MaterialLoggerActivity extends AppCompatActivity {
         materialSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                CardView cardView = findViewById(R.id.addItemCardView);
+                CardView cardView = rootView.findViewById(R.id.addItemCardView);
                 String selectedMaterial = materialSelector.getSelectedItem().toString();
                 System.out.println("MATERIAL: " + selectedMaterial);
                 switch (selectedMaterial) {
                     case "Aluminium" :
-                        cardView.setCardBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.aluminium));
+                        cardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.aluminium));
                         break;
                     case "Paper" :
-                        cardView.setCardBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.paper));
+                        cardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.paper));
                         break;
                     case "Glass" :
-                        cardView.setCardBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.glass));
+                        cardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.glass));
                         break;
                     case "Plastic" :
-                        cardView.setCardBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.plastic));
+                        cardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.plastic));
                         break;
                     case "Other" :
-                        cardView.setCardBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.reward_card_grey));
+                        cardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.reward_card_grey));
                         break;
-                    default: cardView.setCardBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.reward_card));
+                    default: cardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.reward_card));
                 }
             }
 
@@ -192,8 +184,7 @@ public class MaterialLoggerActivity extends AppCompatActivity {
     @NonNull
     private SpinnerAdapter getStringMaterialArrayAdapter() {
         // Create an ArrayAdapter using the list of items and a default spinner layout
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, new RecyclableMaterialTypes().getTypes());
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, new RecyclableMaterialTypes().getTypes());
 
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -210,8 +201,7 @@ public class MaterialLoggerActivity extends AppCompatActivity {
         spinnerItems.add(RecyclableItemType.CARD_BOARD.toString());
 
         // Create an ArrayAdapter using the list of items and a default spinner layout
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, spinnerItems);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, spinnerItems);
 
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

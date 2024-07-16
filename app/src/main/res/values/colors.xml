@@ -26,4 +26,6 @@
     <color name = "dark_green">#09680D</color>
     <color name="red">#FF5151</color>
 
+    <color name="disabled_button_colour">#D8D5D5</color>
+
 </resources>

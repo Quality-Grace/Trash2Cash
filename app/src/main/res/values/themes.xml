@@ -31,5 +31,9 @@
         <item name="android:thumbTint">@color/dark_blue</item>
     </style>
 
+    <style name="enabledDisabledButton" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/button_state_colors</item>
+    </style>
+
     <style name="Theme.Trash2Cash" parent="Base.Theme.Trash2Cash" />
 </resources>

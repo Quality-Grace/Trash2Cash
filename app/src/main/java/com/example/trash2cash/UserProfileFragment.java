@@ -1,22 +1,23 @@
 package com.example.trash2cash;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.trash2cash.Entities.RecyclableManager;
 import com.example.trash2cash.Entities.User;
-import com.example.trash2cash.MaterialLogger.MaterialLoggerActivity;
-import com.example.trash2cash.RecyclableMaterialSettings.RecyclableMaterialSettingsActivity;
-import com.example.trash2cash.RewardScreen.RewardsActivity;
-import com.example.trash2cash.UserClaimedRewardsScreen.UserClaimedRewardsActivity;
+import com.example.trash2cash.UserClaimedRewardsScreen.UserClaimedRewardsFragment;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -28,27 +29,35 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class UserProfileActivity extends AppCompatActivity {
-
+public class UserProfileFragment extends Fragment {
     //Find the active user
     User user;
     //HashMap for user's materials and amounts
     HashMap<String, Integer> materials_map;
     //HashMap for user's specific items and amounts
     HashMap<String, HashMap<String,Integer>> items_map;
+    private View rootView;
+
+    public UserProfileFragment() {
+        // Required empty public constructor
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_profile);
+    }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        rootView = inflater.inflate(R.layout.fragment_user_profile, container, false);
         //store the data in the user's attributes
         user = RecyclableManager.getRecyclableManager().getUser();
         user.storeApprovedRequests();
@@ -59,14 +68,15 @@ public class UserProfileActivity extends AppCompatActivity {
         SetData();
 
         // Setup on click listener for the claimed rewards screen
-        findViewById(R.id.my_rewards).setOnClickListener(view -> startActivity(new Intent(UserProfileActivity.this, UserClaimedRewardsActivity.class)));
+        rootView.findViewById(R.id.my_rewards).setOnClickListener(view -> switchFragment(new UserClaimedRewardsFragment()));
 
-        // Setup navigation bar
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.setSelectedItemId(R.id.ProfileItem);
-        setupNavigationListener(bottomNavigationView);
+        return rootView;
     }
-
+    public void switchFragment(Fragment fragment){
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragmentContainerView, fragment);
+        transaction.commit();
+    }
     public void SetData() {
 
         //set data to users information
@@ -110,10 +120,10 @@ public class UserProfileActivity extends AppCompatActivity {
         TextView username,level,points;
         ImageView image;
 
-        username = findViewById(R.id.user_name);
-        level = findViewById(R.id.user_level);
-        points = findViewById(R.id.user_points);
-        image = findViewById(R.id.profile_photo);
+        username = rootView.findViewById(R.id.user_name);
+        level = rootView.findViewById(R.id.user_level);
+        points = rootView.findViewById(R.id.user_points);
+        image = rootView.findViewById(R.id.profile_photo);
 
         //set data to users info
         username.setText(username.getText().toString()+" "+user.getName());
@@ -135,20 +145,20 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     public void levelProgressBar(int max) {
-        ProgressBar level_bar = findViewById(R.id.levelProgressBar);
+        ProgressBar level_bar = rootView.findViewById(R.id.levelProgressBar);
         int currentLevel = (int)Math.floor(user.getLevel());
         level_bar.setMax(max);
         level_bar.setProgress(currentLevel);
-        ((TextView)findViewById(R.id.remainingLevelsProgressBar)).setText(currentLevel + "/" + max);
+        ((TextView)rootView.findViewById(R.id.remainingLevelsProgressBar)).setText(currentLevel + "/" + max);
         level_bar.invalidate();
     }
 
     public void rewardProgressBar(int max) {
-        ProgressBar pr = findViewById(R.id.rewardProgressBar);
+        ProgressBar pr = rootView.findViewById(R.id.rewardProgressBar);
         int currentProgress = (int) Math.floor(user.getRewardPoints());
         pr.setMax(max);
         pr.setProgress(currentProgress);
-        ((TextView)findViewById(R.id.remainingRewardPointsProgressBar)).setText(currentProgress + "/" + max);
+        ((TextView)rootView.findViewById(R.id.remainingRewardPointsProgressBar)).setText(currentProgress + "/" + max);
         pr.invalidate();
 
     }
@@ -157,7 +167,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
         //Take the PieChart
         PieChart pieChart;
-        pieChart = findViewById(R.id.pieChart);
+        pieChart = rootView.findViewById(R.id.pieChart);
 
         //ArrayList for PieChartEntries
         ArrayList<PieEntry> materials = new ArrayList<>();
@@ -202,19 +212,19 @@ public class UserProfileActivity extends AppCompatActivity {
         BarChart barChart;
         switch (material) {
             case "Glass":
-                barChart = findViewById(R.id.glass_barChart);
+                barChart = rootView.findViewById(R.id.glass_barChart);
                 break;
             case "Plastic":
-                barChart = findViewById(R.id.plastic_barChart);
+                barChart = rootView.findViewById(R.id.plastic_barChart);
                 break;
             case "Paper":
-                barChart = findViewById(R.id.paper_barChart);
+                barChart = rootView.findViewById(R.id.paper_barChart);
                 break;
             case "Aluminium":
-                barChart = findViewById(R.id.aluminum_barChart);
+                barChart = rootView.findViewById(R.id.aluminum_barChart);
                 break;
             default:
-                barChart = findViewById(R.id.other_barChart);
+                barChart = rootView.findViewById(R.id.other_barChart);
                 break;
         }
 
@@ -259,21 +269,4 @@ public class UserProfileActivity extends AppCompatActivity {
         // Refresh the chart
         barChart.invalidate();
     }
-
-    public void setupNavigationListener(BottomNavigationView bottomNavigationView){
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            if(item.getItemId() == R.id.RecycleItem){
-                startActivity(new Intent(UserProfileActivity.this, MaterialLoggerActivity.class));
-            } else if(item.getItemId() == R.id.RewardsItem) {
-                startActivity(new Intent(UserProfileActivity.this, RewardsActivity.class));
-            } else if(item.getItemId() == R.id.MaterialsItem){
-                startActivity(new Intent(UserProfileActivity.this, RecyclableMaterialSettingsActivity.class));
-            } else if(item.getItemId() == R.id.LogoutItem){
-                startActivity(new Intent(UserProfileActivity.this, LoginRegisterActivity.class));
-            }
-
-            return true;
-        });
-    }
-
 }

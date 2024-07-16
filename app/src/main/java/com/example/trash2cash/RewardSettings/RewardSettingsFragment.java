@@ -1,67 +1,75 @@
 package com.example.trash2cash.RewardSettings;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.LinearSnapHelper;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SnapHelper;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
+
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.trash2cash.AdminRequestsLogger.AdminRequestsLoggerActivity;
 import com.example.trash2cash.DB.OkHttpHandler;
-import com.example.trash2cash.LoginRegisterActivity;
-import com.example.trash2cash.RecyclableMaterialSettings.RecyclableMaterialSettingsActivity;
-import com.example.trash2cash.ViewStats.AdminStatisticsActivity;
-import com.example.trash2cash.imageGallery.ImagePickerActivity;
-import com.example.trash2cash.R;
 import com.example.trash2cash.Entities.Reward;
 import com.example.trash2cash.Entities.RewardList;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.example.trash2cash.R;
+import com.example.trash2cash.imageGallery.ImagePickerActivity;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
 
-public class RewardSettingsActivity extends AppCompatActivity implements RewardSettingsRecyclerInterface {
+public class RewardSettingsFragment extends Fragment implements RewardSettingsRecyclerInterface {
     private final RewardList rewardList = new RewardList(OkHttpHandler.getPATH()+"populateRewards.php");
     private RewardSettingsRecyclerAdapter adapter;
+    private View rootView;
+
+    public RewardSettingsFragment() {
+        // Required empty public constructor
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reward_settings);
+    }
 
-        RecyclerView recyclerView = findViewById(R.id.rewardSettingsRecyclerView);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        rootView = inflater.inflate(R.layout.fragment_reward_settings, container, false);
+        RecyclerView recyclerView = rootView.findViewById(R.id.rewardSettingsRecyclerView);
 
         // Adds CardView components to the Recycler
-        adapter = new RewardSettingsRecyclerAdapter(this, rewardList, this);
+        adapter = new RewardSettingsRecyclerAdapter(getContext(), rewardList, this);
         recyclerView.setAdapter(adapter);
 
         // Sets a vertical layout for the Recycler
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
         // Adds snappy scrolling
         SnapHelper helper = new LinearSnapHelper();
         helper.attachToRecyclerView(recyclerView);
 
         // Allows the user to long click the card in order to add a reward to the reward list
-        findViewById(R.id.rewardSettingsCard).setOnLongClickListener(view -> {
+        rootView.findViewById(R.id.rewardSettingsCard).setOnLongClickListener(view -> {
             addCard();
             return true;
         });
 
-        ImageView image = findViewById(R.id.addRewardImage);
+        ImageView image = rootView.findViewById(R.id.addRewardImage);
 
         // Handles the result from the image picker
         ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
@@ -84,42 +92,23 @@ public class RewardSettingsActivity extends AppCompatActivity implements RewardS
 
         // Initializes the image listener that starts the image picker
         image.setOnClickListener(view -> {
-            Intent intent = new Intent(this, ImagePickerActivity.class);
+            Intent intent = new Intent(getContext(), ImagePickerActivity.class);
             launcher.launch(intent);
         });
 
         // Helpful toast message to inform the admin quickly on how to add or remove a reward
-        Toast.makeText(getApplicationContext(), "Long tap on card to add/remove a reward", Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), "Long tap on card to add/remove a reward", Toast.LENGTH_LONG).show();
 
-        // Initializes the navigation bar
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        setupNavigationListener(bottomNavigationView);
-        bottomNavigationView.setSelectedItemId(R.id.RewardsItem);
-    }
-
-    public void setupNavigationListener(BottomNavigationView bottomNavigationView){
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            if(item.getItemId() == R.id.RecycleItem){
-                startActivity(new Intent(RewardSettingsActivity.this, AdminRequestsLoggerActivity.class));
-            } else if(item.getItemId() == R.id.MaterialsItem) {
-                startActivity(new Intent(RewardSettingsActivity.this, RecyclableMaterialSettingsActivity.class));
-            } else if(item.getItemId() == R.id.StatsItem) {
-                startActivity(new Intent(RewardSettingsActivity.this, AdminStatisticsActivity.class));
-            } else if(item.getItemId() == R.id.LogoutItem){
-                startActivity(new Intent(RewardSettingsActivity.this, LoginRegisterActivity.class));
-            }
-
-            return true;
-        });
+        return rootView;
     }
 
     // Adds a new reward to the list
     public void addCard(){
-        String title = UserInputParser.parseEditableTextToString(((EditText) findViewById(R.id.addRewardTitleText)).getText());
-        int cost = UserInputParser.parseEditableTextToInt(((EditText) findViewById(R.id.addCostText)).getText());
-        int level = UserInputParser.parseEditableTextToInt(((EditText) findViewById(R.id.addLevelRequiredText)).getText());
+        String title = UserInputParser.parseEditableTextToString(((EditText) rootView.findViewById(R.id.addRewardTitleText)).getText());
+        int cost = UserInputParser.parseEditableTextToInt(((EditText) rootView.findViewById(R.id.addCostText)).getText());
+        int level = UserInputParser.parseEditableTextToInt(((EditText) rootView.findViewById(R.id.addLevelRequiredText)).getText());
 
-        String icon = (String) findViewById(R.id.addRewardImage).getTag();
+        String icon = (String) rootView.findViewById(R.id.addRewardImage).getTag();
 
         // If the icon doesn't have a valid url, a default image will load
         if(icon == null) {
@@ -142,13 +131,13 @@ public class RewardSettingsActivity extends AppCompatActivity implements RewardS
         // Updates the adapter
         adapter.notifyItemInserted(position);
         // Informs the admin that a reward was added
-        Toast.makeText(getApplicationContext(), "New reward was added to the list!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "New reward was added to the list!", Toast.LENGTH_SHORT).show();
     }
 
     // Removes a reward from the list
     @Override
     public void removeCardOnLongClick(int position) {
-        View currentFocus = getCurrentFocus();
+        View currentFocus = getActivity().getCurrentFocus();
         if(currentFocus!=null) currentFocus.clearFocus();
 
         // Removes the reward from the db
@@ -164,7 +153,7 @@ public class RewardSettingsActivity extends AppCompatActivity implements RewardS
         adapter.notifyItemRemoved(position);
 
         // Informs the admin that the reward was removed
-        Toast.makeText(getApplicationContext(), "The reward was removed from the list!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "The reward was removed from the list!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
