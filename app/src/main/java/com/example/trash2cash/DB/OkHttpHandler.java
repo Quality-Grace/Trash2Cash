@@ -181,28 +181,6 @@ public class OkHttpHandler {
         client.newCall(request).execute();
     }
 
-    public boolean userExists (String email, String password) throws IOException {
-        initializeDB_Server();
-        OkHttpClient client = new OkHttpClient().newBuilder().build();
-
-        RequestBody body = new FormBody.Builder()
-                .add("email", email)
-                .add("password", password)
-                .build();
-
-        okhttp3.Request request = new okhttp3.Request.Builder()
-                .url(PATH+"loginUser.php")
-                .post(body)
-                .build();
-
-        try {
-            Response response = client.newCall(request).execute();
-            return !response.body().string().equals("0");
-        } catch (IOException e) {
-            return false;
-        }
-    }
-
     public boolean loginUser(String email, String password) throws IOException {
         initializeDB_Server();
         OkHttpClient client = new OkHttpClient().newBuilder().build();
@@ -264,16 +242,16 @@ public class OkHttpHandler {
                 .post(body)
                 .build();
 
-
-
         Response response = clientRe.newCall(request).execute();
-
-        System.out.println(response.code());
-        if(response.code()==200){
+        String result = response.body().string();
+        if(result.contains("User already exists!")) {
+            return 1;
+        } else if(result.contains("New record created successfully")){
             loginUser(email, password);
+            return 2;
         }
 
-        return response.code();
+        return 0;
     }
 
     private static void initializeDB_Server() throws IOException {
