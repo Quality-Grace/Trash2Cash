@@ -1,7 +1,5 @@
 package com.example.trash2cash;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -29,9 +27,8 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -129,13 +126,8 @@ public class UserProfileFragment extends Fragment {
         username.setText(username.getText().toString()+" "+user.getName());
         level.setText(String.valueOf(user.getLevel()));
         points.setText(String.valueOf((int) user.getRewardPoints()));
-        try {
-            URL url = new URL(user.getImage());
-            Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-            image.setImageBitmap(bmp);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+
+        Picasso.with(getContext()).load(user.getImage()).placeholder(R.drawable.profile_icon).error(R.drawable.profile_icon).into(image);
     }
 
     public void setProgressBarData() {

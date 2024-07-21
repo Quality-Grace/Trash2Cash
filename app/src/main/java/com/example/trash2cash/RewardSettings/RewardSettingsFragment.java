@@ -2,8 +2,6 @@ package com.example.trash2cash.RewardSettings;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -26,10 +24,7 @@ import com.example.trash2cash.Entities.Reward;
 import com.example.trash2cash.Entities.RewardList;
 import com.example.trash2cash.R;
 import com.example.trash2cash.imageGallery.ImagePickerActivity;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.Objects;
+import com.squareup.picasso.Picasso;
 
 public class RewardSettingsFragment extends Fragment implements RewardSettingsRecyclerInterface {
     private final RewardList rewardList = new RewardList(OkHttpHandler.getPATH()+"populateRewards.php");
@@ -78,14 +73,8 @@ public class RewardSettingsFragment extends Fragment implements RewardSettingsRe
                         Intent data = result.getData();
                         if (data != null) {
                             String urlString = data.getStringExtra("url");
-                            try {
-                                URL url = new URL(urlString);
-                                Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                                image.setImageBitmap(bmp);
-                                image.setTag(urlString);
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
+                            Picasso.with(getContext()).load(urlString).placeholder(R.drawable.ic_launcher_foreground).error(R.drawable.ic_launcher_foreground).into(image);
+                            image.setTag(urlString);
                         }
                     }
                 });
@@ -109,11 +98,6 @@ public class RewardSettingsFragment extends Fragment implements RewardSettingsRe
         int level = UserInputParser.parseEditableTextToInt(((EditText) rootView.findViewById(R.id.addLevelRequiredText)).getText());
 
         String icon = (String) rootView.findViewById(R.id.addRewardImage).getTag();
-
-        // If the icon doesn't have a valid url, a default image will load
-        if(icon == null) {
-            icon = "android.resource://"+ Objects.requireNonNull(R.class.getPackage()).getName()+"/"+R.drawable.ic_launcher_foreground;
-        }
 
         // Creates the reward and adds it to the rewardList
         Reward reward = new Reward(title, cost, level, icon);

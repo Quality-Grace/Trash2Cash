@@ -1,8 +1,6 @@
 package com.example.trash2cash.RecyclableMaterialSettings;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +18,7 @@ import com.example.trash2cash.Entities.RecyclableMaterial;
 import com.example.trash2cash.R;
 import com.example.trash2cash.Entities.RecyclableMaterialTypes;
 import com.example.trash2cash.RewardSettings.UserInputParser;
-
-import java.net.URL;
+import com.squareup.picasso.Picasso;
 
 public class RecyclableMaterialSettingsRecyclerAdapter extends RecyclerView.Adapter<RecyclableMaterialSettingsRecyclerAdapter.MyViewHolder> {
     private final Context context;
@@ -45,16 +42,8 @@ public class RecyclableMaterialSettingsRecyclerAdapter extends RecyclerView.Adap
         holder.textView.setText(recyclableMaterialTypes.get(position).getType());
 
         // Loads the background image
-        try {
-            String urlString = OkHttpHandler.getPATH() + recyclableMaterialTypes.get(position).getImage();
-            URL url = new URL(urlString);
-
-            Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-
-            holder.imageView.setImageBitmap(bmp);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        String urlString = OkHttpHandler.getPATH() + recyclableMaterialTypes.get(position).getImage();
+        Picasso.with(context).load(urlString).placeholder(R.drawable.ic_launcher_foreground).error(R.drawable.ic_launcher_foreground).into(holder.imageView);
 
         // Sets the text and a listener for the exp text field
         holder.expNum.setText(String.valueOf(recyclableMaterialTypes.get(position).getExp()));

@@ -2,8 +2,6 @@ package com.example.trash2cash.RewardSettings;
 
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.trash2cash.R;
 import com.example.trash2cash.Entities.RewardList;
-
-import java.io.IOException;
-import java.net.URL;
+import com.squareup.picasso.Picasso;
 
 public class RewardSettingsRecyclerAdapter extends RecyclerView.Adapter<RewardSettingsRecyclerAdapter.MyViewHolder> {
     private final Context context;
@@ -54,15 +50,8 @@ public class RewardSettingsRecyclerAdapter extends RecyclerView.Adapter<RewardSe
         setupEditTextListener(holder.levelRequiredText, position, "level");
 
         // Loads the reward image
-        try {
-            URL url = new URL(rewardList.get(position).getIcon());
-            Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-            holder.rewardImage.setImageBitmap(bmp);
-            holder.rewardImage.setTag(rewardList.get(position).getIcon());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        Picasso.with(context).load(rewardList.get(position).getIcon()).placeholder(R.drawable.ic_launcher_foreground).error(R.drawable.ic_launcher_foreground).into(holder.rewardImage);
+        holder.rewardImage.setTag(rewardList.get(position).getIcon());
     }
 
     private void setupEditTextListener(EditText editText, int position, String type) {

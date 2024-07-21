@@ -1,8 +1,6 @@
 package com.example.trash2cash.imageGallery;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.trash2cash.R;
+import com.squareup.picasso.Picasso;
 
-import java.net.URL;
 import java.util.ArrayList;
 
 public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecyclerAdapter.MyViewHolder> {
@@ -38,16 +36,7 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
     @Override
     public void onBindViewHolder(@NonNull GalleryRecyclerAdapter.MyViewHolder holder, int position) {
         // Loads the default and saved images for the image picker
-        try {
-            String urlString = imageList.get(position);
-            URL url = new URL(urlString);
-
-            Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-
-            holder.imageView.setImageBitmap(bmp);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Picasso.with(context).load(imageList.get(position)).placeholder(R.drawable.ic_launcher_foreground).error(R.drawable.ic_launcher_foreground).into(holder.imageView);
     }
 
     @Override

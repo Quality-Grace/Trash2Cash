@@ -1,8 +1,6 @@
 package com.example.trash2cash.RewardScreen;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,9 +16,8 @@ import com.example.trash2cash.Entities.RecyclableManager;
 import com.example.trash2cash.Entities.User;
 import com.example.trash2cash.R;
 import com.example.trash2cash.Entities.RewardList;
+import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
-import java.net.URL;
 
 public class RewardsRecyclerAdapter extends RecyclerView.Adapter<RewardsRecyclerAdapter.MyViewHolder>{
     private final Context context;
@@ -58,14 +55,8 @@ public class RewardsRecyclerAdapter extends RecyclerView.Adapter<RewardsRecycler
         holder.costText.setText(String.valueOf(rewardList.get(position).getCost()));
 
         // Loads the reward image
-        try {
-            URL url = new URL(rewardList.get(position).getIcon());
-            Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-            holder.rewardImage.setImageBitmap(bmp);
-            holder.rewardImage.setTag(rewardList.get(position).getIcon());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Picasso.with(context).load(rewardList.get(position).getIcon()).placeholder(R.drawable.ic_launcher_foreground).error(R.drawable.ic_launcher_foreground).into(holder.rewardImage);
+        holder.rewardImage.setTag(rewardList.get(position).getIcon());
 
         if(!available) {
             // This is used for the other rewards.

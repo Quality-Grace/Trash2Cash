@@ -2,8 +2,6 @@ package com.example.trash2cash.LoginAndRegisterScreens;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
@@ -23,13 +21,13 @@ import androidx.fragment.app.Fragment;
 import com.example.trash2cash.DB.OkHttpHandler;
 import com.example.trash2cash.R;
 import com.example.trash2cash.UserNavigationActivity;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.regex.Pattern;
 
 /**
@@ -70,17 +68,10 @@ public class RegisterUser extends Fragment {
                 File file = createTempFileFromInputStream(context, stream);
                 String urlString = okHttpHandler.uploadImage(OkHttpHandler.getPATH() + "uploadUserImage.php", file);
 
-                try {
-                    URL url = new URL(urlString);
-                    Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                    image.setImageBitmap(bmp);
-                    image.setTag(urlString);
-                    input[3] = true;
-                    button.setEnabled(input[0] && input[1] && input[2]);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-
+                Picasso.with(context).load(urlString).placeholder(R.drawable.profile_icon).error(R.drawable.profile_icon).into(image);
+                image.setTag(urlString);
+                input[3] = true;
+                button.setEnabled(input[0] && input[1] && input[2]);
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
             }
