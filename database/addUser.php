@@ -26,13 +26,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die("Connection failed: " . $dbh->connect_error);
     }
 
-    $query = "SELECT * FROM users WHERE email='$email' AND password='$password'";
-    $result = mysqli_query($dbh, $query);
+    // Hash the password
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-    if (mysqli_num_rows($result) < 1) {
+    // Check if user already exists
+    $query = "SELECT * FROM users WHERE email=?";
+    $stmt = $dbh->prepare($query);
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows < 1) {
         // Prepare and bind
         $stmt = $dbh->prepare("INSERT INTO users (email, username, password, level, rewardPoints, image, rewardList) VALUES (?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssddss", $email, $username, $password, $level, $rewardPoints, $image, $reward_list);
+        $stmt->bind_param("sssddss", $email, $username, $hashed_password, $level, $rewardPoints, $image, $reward_list);
 
         // Execute the statement
         if ($stmt->execute()) {
@@ -41,12 +48,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "Error: " . $stmt->error;
         }
     } else {
-        echo "user already exists!";
+        echo "User already exists!";
     }
-
-
-
-
 
     // Close the statement and connection
     $stmt->close();

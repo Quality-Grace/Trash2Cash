@@ -30,6 +30,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.regex.Pattern;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -143,7 +144,7 @@ public class RegisterUser extends Fragment {
                 if(s.toString().equalsIgnoreCase("admin")) {
                     input[0] = false;
                 } else {
-                    input[0] = !(s.toString().isEmpty());
+                    input[0] = !(s.toString().isEmpty()) && isValidMail(s.toString());
                 }
                 button.setEnabled(input[0] && input[1] && input[2] && input[3]);
             }
@@ -191,27 +192,31 @@ public class RegisterUser extends Fragment {
     }
 
     private void register() throws IOException {
-        boolean result;
-        int registerCode;
+        int result;
         OkHttpHandler okHttpHandler = new OkHttpHandler();
 
-
-
-        result = okHttpHandler.userExists(email.getText().toString(), password.getText().toString());
-
-        if(result) {
-            Toast.makeText(getContext(), "User already exists!", Toast.LENGTH_LONG).show();
-        } else {
-            try {
-                registerCode = okHttpHandler.registerUser(email.getText().toString(), username.getText().toString(), password.getText().toString(), image.getTag().toString());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            if (registerCode == 200){
-                Toast.makeText(getContext(), "Register successful", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(requireActivity(), UserNavigationActivity.class);
-                startActivity(intent);
-            }
+        try {
+            result = okHttpHandler.registerUser(email.getText().toString(), username.getText().toString(), password.getText().toString(), image.getTag().toString());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+
+        if(result == 1) {
+            Toast.makeText(getContext(), "User already exists!", Toast.LENGTH_LONG).show();
+        } else if(result == 2) {
+            Toast.makeText(getContext(), "Register successful", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(requireActivity(), UserNavigationActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    public boolean isValidMail(String email)
+    {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+ "[a-zA-Z0-9_+&*-]+)*@" + "(?:[a-zA-Z0-9-]+\\.)+[a-z" + "A-Z]{2,7}$";
+
+        Pattern pat = Pattern.compile(emailRegex);
+        if (email == null)
+            return false;
+        return pat.matcher(email).matches();
     }
 }
