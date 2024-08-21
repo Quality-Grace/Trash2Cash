@@ -36,13 +36,21 @@ public class AdminRequestsLoggerFragment extends Fragment implements AdminReques
 
         RecyclerView recyclerView = rootView.findViewById(R.id.requestsRecyclerView);
 
-        Admin admin = Admin.getAdmin();
-
-        for(Integer user_id : admin.getRecyclableRequests().keySet()){
-            requestList.addAll(admin.getRecyclableRequests().get(user_id));
-        }
-
         myAdapter = new AdminRequestsLoggerAdapter(requestList, getContext(), this);
+
+        new Thread(()->{
+            requestList.clear();
+            Admin admin = Admin.getAdmin();
+
+            for(Integer user_id : admin.getRecyclableRequests().keySet()){
+                requestList.addAll(admin.getRecyclableRequests().get(user_id));
+            }
+
+            try{
+                requireActivity().runOnUiThread(()-> myAdapter.notifyDataSetChanged());
+            } catch (Exception ignored){}
+
+        }).start();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, true));
         recyclerView.setAdapter(myAdapter);
@@ -55,7 +63,7 @@ public class AdminRequestsLoggerFragment extends Fragment implements AdminReques
 
     @Override
     public void onRequestClick(int position) {
-        View currentFocus = getActivity().getCurrentFocus();
+        View currentFocus = requireActivity().getCurrentFocus();
         if(currentFocus != null) currentFocus.clearFocus();
 
         requestList.remove(position);

@@ -21,6 +21,8 @@ public class AdminNavigationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
 
+        ((BottomNavigationView)findViewById(R.id.bottomNavigationView)).setSelectedItemId(R.id.RecycleItem);
+
         ((BottomNavigationView)findViewById(R.id.bottomNavigationView)).setOnItemSelectedListener(item -> {
             if(item.getItemId() == R.id.RewardsItem) {
                 switchFragment(new RewardSettingsFragment());

@@ -27,7 +27,7 @@ import com.example.trash2cash.imageGallery.ImagePickerActivity;
 import com.squareup.picasso.Picasso;
 
 public class RewardSettingsFragment extends Fragment implements RewardSettingsRecyclerInterface {
-    private final RewardList rewardList = new RewardList(OkHttpHandler.getPATH()+"populateRewards.php");
+    private final RewardList rewardList = new RewardList();
     private RewardSettingsRecyclerAdapter adapter;
     private View rootView;
 
@@ -50,6 +50,15 @@ public class RewardSettingsFragment extends Fragment implements RewardSettingsRe
         // Adds CardView components to the Recycler
         adapter = new RewardSettingsRecyclerAdapter(getContext(), rewardList, this);
         recyclerView.setAdapter(adapter);
+
+        new Thread(()->{
+            rewardList.clear();
+            rewardList.addAll(new RewardList(OkHttpHandler.getPATH()+"populateRewards.php"));
+            try{
+                requireActivity().runOnUiThread(()-> adapter.notifyDataSetChanged());
+            } catch(Exception ignored){}
+        }).start();
+
 
         // Sets a vertical layout for the Recycler
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
@@ -121,7 +130,7 @@ public class RewardSettingsFragment extends Fragment implements RewardSettingsRe
     // Removes a reward from the list
     @Override
     public void removeCardOnLongClick(int position) {
-        View currentFocus = getActivity().getCurrentFocus();
+        View currentFocus = requireActivity().getCurrentFocus();
         if(currentFocus!=null) currentFocus.clearFocus();
 
         // Removes the reward from the db

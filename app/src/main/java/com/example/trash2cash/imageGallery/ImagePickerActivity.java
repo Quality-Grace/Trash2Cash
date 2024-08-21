@@ -35,9 +35,6 @@ public class ImagePickerActivity extends AppCompatActivity implements ImagePicke
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_picker);
 
-        // Fills the imageList array with image ids
-        initializeImageList();
-
         if(imageList.size()==0) {
             findViewById(R.id.imageGalleryIsEmptyText).setVisibility(View.VISIBLE);
         }
@@ -47,6 +44,18 @@ public class ImagePickerActivity extends AppCompatActivity implements ImagePicke
         // Adds images to the recyclerView
         GalleryRecyclerAdapter adapter = new GalleryRecyclerAdapter(this, imageList, this);
         recyclerView.setAdapter(adapter);
+
+        // Fills the imageList array with image ids
+        new Thread(()->{
+            initializeImageList();
+            this.runOnUiThread(()->{
+                adapter.notifyDataSetChanged();
+
+                if(imageList.size()!=0) {
+                    findViewById(R.id.imageGalleryIsEmptyText).setVisibility(View.GONE);
+                }
+            });
+        }).start();
 
         // Sets a grid layout for the Recycler
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);

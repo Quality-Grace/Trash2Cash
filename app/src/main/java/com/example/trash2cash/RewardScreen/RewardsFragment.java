@@ -23,7 +23,7 @@ import com.example.trash2cash.R;
 import java.util.Comparator;
 
 public class RewardsFragment extends Fragment implements RewardRecyclerInterface {
-    private final RewardList rewardList = new RewardList(OkHttpHandler.getPATH()+"populateRewards.php");
+    private final RewardList rewardList = new RewardList();
     private final  RewardList availableRewards = new RewardList();
     private final RewardList otherRewards = new RewardList();
     private RewardsRecyclerAdapter availableRewardsAdapter, otherRewardsAdapter;
@@ -43,17 +43,31 @@ public class RewardsFragment extends Fragment implements RewardRecyclerInterface
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_rewards, container, false);
-        // Fills the availableRewards and otherRewards lists
-        initializeLists();
-
-        setAmountOfRewards(rootView.findViewById (R.id.availableRewardsText), availableRewards.size());
-        setAmountOfRewards(rootView.findViewById (R.id.otherRewardsText), otherRewards.size());
+        setAmountOfRewards(rootView.findViewById (R.id.availableRewardsText), 0);
+        setAmountOfRewards(rootView.findViewById (R.id.otherRewardsText),0);
 
         RecyclerView availableForYouRecycler = rootView.findViewById(R.id.availableForYouRecycler);
         initializeRecycler(availableForYouRecycler, availableRewards, true);
 
         RecyclerView otherRewardsRecycler = rootView.findViewById(R.id.otherRewardsRecycler);
         initializeRecycler(otherRewardsRecycler, otherRewards, false);
+
+        new Thread(()->{
+            rewardList.clear();
+            rewardList.addAll(new RewardList(OkHttpHandler.getPATH()+"populateRewards.php"));
+
+            // Fills the availableRewards and otherRewards lists
+            initializeLists();
+            updateAmountOfRewards(rootView.findViewById (R.id.availableRewardsText), availableRewards.size());
+            updateAmountOfRewards(rootView.findViewById (R.id.otherRewardsText), otherRewards.size());
+
+            try{
+                requireActivity().runOnUiThread(()->{
+                    availableRewardsAdapter.notifyDataSetChanged();
+                    otherRewardsAdapter.notifyDataSetChanged();
+                });
+            } catch (Exception ignored) {}
+        }).start();
 
         return rootView;
     }
@@ -87,7 +101,10 @@ public class RewardsFragment extends Fragment implements RewardRecyclerInterface
 
         if(indexOfPar != -1) {
             text = text.substring(0, indexOfPar-1) + " (" + amount + ")";
-            textView.setText(text);
+            String finalText = text;
+            try{
+                requireActivity().runOnUiThread(()->textView.setText(finalText));
+            } catch (Exception ignored){}
         }
     }
 

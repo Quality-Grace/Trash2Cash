@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MaterialLoggerFragment extends Fragment {
-    private static ArrayList<Request> itemList;
+    private static ArrayList<Request> itemList = new ArrayList<>();
     private MaterialLoggerAdapter myAdapter;
     private View rootView;
 
@@ -58,16 +58,25 @@ public class MaterialLoggerFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_material_logger, container, false);
 
         spinnerInitialization();
-        try {
-            itemList = okHttpHandler.takeRequestsByUserId(RecyclableManager.getRecyclableManager().getUser().getId());
-        } catch (Exception e) {
-            itemList = new ArrayList<>();
-        }
 
         // Set up the RecyclerView
         RecyclerView recyclerView = rootView.findViewById(R.id.recyclerView);
 
         myAdapter = new MaterialLoggerAdapter(itemList, getContext());
+
+        new Thread(()->{
+            try {
+                itemList.clear();
+                itemList.addAll(okHttpHandler.takeRequestsByUserId(RecyclableManager.getRecyclableManager().getUser().getId()));
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try{
+                requireActivity().runOnUiThread(() -> myAdapter.notifyDataSetChanged());
+            } catch (Exception ignored) {}
+        }).start();
+
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, true));
         recyclerView.setAdapter(myAdapter);
@@ -152,21 +161,21 @@ public class MaterialLoggerFragment extends Fragment {
                 System.out.println("MATERIAL: " + selectedMaterial);
                 switch (selectedMaterial) {
                     case "Aluminium" :
-                        cardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.aluminium));
+                        cardView.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.aluminium));
                         break;
                     case "Paper" :
-                        cardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.paper));
+                        cardView.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.paper));
                         break;
                     case "Glass" :
-                        cardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.glass));
+                        cardView.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.glass));
                         break;
                     case "Plastic" :
-                        cardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.plastic));
+                        cardView.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.plastic));
                         break;
                     case "Other" :
-                        cardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.reward_card_grey));
+                        cardView.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.reward_card_grey));
                         break;
-                    default: cardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.reward_card));
+                    default: cardView.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.reward_card));
                 }
             }
 

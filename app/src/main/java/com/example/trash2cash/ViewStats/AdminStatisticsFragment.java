@@ -53,7 +53,9 @@ public class AdminStatisticsFragment extends Fragment {
                     userStatistics.add(new UserStatistics(user.getId(), user.getLevel(), user.getRewardPoints(), user.getName()));
                 }
                 userStatistics.sort(Collections.reverseOrder());
-                getActivity().runOnUiThread(() -> displayStatistics(userStatistics));
+                try{
+                    requireActivity().runOnUiThread(() -> displayStatistics(userStatistics));
+                } catch (Exception ignored){}
             } catch (Exception e) {
                 e.printStackTrace();
             }
